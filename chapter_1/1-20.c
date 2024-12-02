@@ -3,8 +3,8 @@
 
 int _getline(char s[], int lim);
 void copy(char to[], char from[]);
+
 int main() {
-  printf("aye, siwmae\n");
   char curr[MAXLINE];
   char output[MAXLINE];
   int len;
