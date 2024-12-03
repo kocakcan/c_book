@@ -13,7 +13,7 @@ int main(void) {
   while ((c = getchar()) != EOF) {
     if (c == '\t') {
       nblanks = TABSTOP - (position - 1) % TABSTOP;
-      for (int i = 0; i < nblanks; i++) {
+      for (int i = 0; i < nblanks; ++i) {
         putchar(' ');
         ++position;
       }
