@@ -26,8 +26,6 @@ int main() {
     printf("%s\n", line);
   }
 
-  printf("aye, siwmae");
-
   return 0;
 }
 
