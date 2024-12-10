@@ -8,14 +8,17 @@ void copy(char to[], char from[]);
 int main() {
   char curr[MAXLINE];
   char line[MAXLINE];
-  int len = 0;
+  int len = 0, size = 0;
 
   while ((len = _getline(curr, MAXLINE)) > 0) {
-      copy(line, curr);
+    copy(line, curr);
+    ++size;
   }
 
   // Print the line in reverse
-  reverse(line);
+  if (size > 0) {
+    reverse(line);
+  }
 
   return 0;
 }
@@ -27,7 +30,7 @@ int _getline(char s[], int lim) {
     s[i] = c;
 
   if (c == '\n') {
-    s[i] = c;
+    // s[i] = c;
     ++i;
   }
 
@@ -47,7 +50,7 @@ void copy(char to[], char from[]) {
 void reverse(char s[]) {
   int i = 0;
 
-  while (s[i] != '\n') {
+  while (s[i] != '\0') {
     ++i;
   }
 
