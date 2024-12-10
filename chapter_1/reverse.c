@@ -8,18 +8,14 @@ void copy(char to[], char from[]);
 int main() {
   char curr[MAXLINE];
   char line[MAXLINE];
-  int len, max = 0;
+  int len = 0;
 
   while ((len = _getline(curr, MAXLINE)) > 0) {
-    if (len >= max) {
-      max = len;
       copy(line, curr);
-    }
   }
 
-  if (max > 0) {
-    reverse(line);
-  }
+  // Print the line in reverse
+  reverse(line);
 
   return 0;
 }
