@@ -9,6 +9,8 @@
 #include <stdio.h>
 
 int main() {
+  // -2^(N - 1) to 2^(N - 1) - 1 -> Signed
+  // 0 to 2^(N) - 1 -> Unsigned
   printf("On this machine:\n");
   printf("int: %ld bits\n", (sizeof(int) * 8));
   printf("signed int: %ld bits\n", (sizeof(signed int) * 8));
