@@ -19,5 +19,10 @@ int main() {
   printf("unsigned int max: %ld bits\n", UINT_MAX);
   printf("signed int max: %d bits\n", INT_MAX);
 
+  int nchars = printf("Today I've learned that printf returns the numbers of "
+                      "characters successfully read. Wow!\n");
+
+  printf("There were %d characters in above sentence.\n", nchars);
+
   return 0;
 }
