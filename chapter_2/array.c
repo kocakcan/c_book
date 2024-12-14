@@ -52,7 +52,7 @@ void bubble_sort(int arr[], const int size) {
 
     // If no swaps occurred, the array is already sorted
     if (swapped == 0) {
-      return;
+      break;
     }
   }
 }
