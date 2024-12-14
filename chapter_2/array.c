@@ -1,35 +1,26 @@
 #include <stdio.h>
 
+void printa(const int arr[], size_t size);
 void bubble_sort(int arr[], const int size);
 
 int main() {
-  int numbers[] = {14, 11, 50, 23, 27, 41};
+  int numbers[1000];
+
+  for (int i = 0; i < 1000; ++i)
+    numbers[i] = i + (i % 2);
+
   const int size = sizeof(numbers) / sizeof(numbers[0]);
 
   printf("Unsorted array:\n");
-  for (int i = 0; i < size; ++i)
-    printf("%d\t", numbers[i]);
+  printa(numbers, size);
 
   bubble_sort(numbers, size);
 
   printf("Sorted array:\n");
-  for (int i = 0; i < size; ++i)
-    printf("%d\t", numbers[i]);
+  printa(numbers, size);
 
   return 0;
 }
-
-// void bubble_sort(int arr[], const int size) {
-//   int temp;
-//   // Goes beyond the range
-//   for (int i = 0; i < size; ++i) {
-//     if (arr[i] > arr[i + 1]) {
-//       temp = arr[i + 1];
-//       arr[i + 1] = arr[i];
-//       arr[i] = temp;
-//     }
-//   }
-// }
 
 void bubble_sort(int arr[], const int size) {
   int temp, swapped;
@@ -55,4 +46,16 @@ void bubble_sort(int arr[], const int size) {
       break;
     }
   }
+}
+
+void printa(const int arr[], size_t size) {
+  printf("[");
+  for (size_t i = 0; i < size; ++i) {
+    if (i == size - 1) {
+      printf("%d", arr[i]);
+    } else {
+      printf("%d, ", arr[i]);
+    }
+  }
+  printf("]\n");
 }
