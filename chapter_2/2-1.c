@@ -13,6 +13,9 @@ int main() {
   // 0 to 2^N - 1 -> Unsigned
   // 10000000 -> Minimum negative
   // 01111111 -> Maximum positive
+  // In two's complement representation, zero is considered part of the
+  // positive range, which is why it is subtracted from the upper limit but not
+  // from the lower limit.
   printf("On this machine:\n");
   printf("int: %ld bits\n", (sizeof(int) * 8));
   printf("INT_MIN: %ld\n", INT_MIN);
