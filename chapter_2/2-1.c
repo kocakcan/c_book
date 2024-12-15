@@ -11,8 +11,12 @@
 int main() {
   // -2^(N - 1) to 2^(N - 1) - 1 -> Signed
   // 0 to 2^N - 1 -> Unsigned
+  // 10000000 -> Minimum negative
+  // 01111111 -> Maximum positive
   printf("On this machine:\n");
   printf("int: %ld bits\n", (sizeof(int) * 8));
+  printf("INT_MIN: %ld\n", INT_MIN);
+  printf("INT_MAX: %ld\n", INT_MAX);
   printf("signed int: %ld bits\n", (sizeof(signed int) * 8));
   printf("unsigned int: %ld bits\n", (sizeof(unsigned int) * 8));
   printf("short: %ld bits\n", (sizeof(short) * 8));
