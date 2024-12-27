@@ -18,15 +18,16 @@ int main() {
   // from the lower limit.
   printf("On this machine:\n");
   printf("int: %ld bits\n", (sizeof(int) * 8));
-  printf("INT_MIN: %ld\n", INT_MIN);
-  printf("INT_MAX: %ld\n", INT_MAX);
+  printf("INT_MIN: %d\n", INT_MIN);
+  printf("INT_MAX: %d\n", INT_MAX);
   printf("signed int: %ld bits\n", (sizeof(signed int) * 8));
   printf("unsigned int: %ld bits\n", (sizeof(unsigned int) * 8));
+  printf("UINT_MAX: %d\n", UINT_MAX);
   printf("short: %ld bits\n", (sizeof(short) * 8));
+  printf("USHRT_MAX: %d\n", USHRT_MAX);
   printf("long: %ld bits\n", (sizeof(long) * 8));
-
-  printf("unsigned int max: %ld bits\n", UINT_MAX);
-  printf("signed int max: %d bits\n", INT_MAX);
+  printf("unsigned long: %ld bits\n", (sizeof(unsigned long) * 8));
+  printf("ULONG_MAX: %ld\n", ULONG_MAX);
 
   int nchars = printf("Today I've learned that printf returns the numbers of "
                       "characters successfully read. Wow!\n");
