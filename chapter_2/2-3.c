@@ -26,4 +26,7 @@ int main(void) {
   printf("My first hex number is: %d\n", hex_const);
   printf("My first hex number is: %hx\n", another_hex_const);
   printf("My first hex number is: %d\n", another_hex_const);
+
+  const int thirty_one = 0x1F; // 31
+  printf("This should be equal to 31: %d\n", thirty_one);
 }
