@@ -44,12 +44,25 @@ int main(void) {
   People *can = malloc(sizeof(People));
   can->name = "Can";
   can->age = 27;
+  can->occupation = NULL;
 
   printf("My age is: %d\n", get_age(can));
   printf("My name is: %s\n", get_name(can));
   alter_age(can, 19);
   printf("My new age is: %d\n", get_age(can));
+  int *ptr = malloc(sizeof(int));
 
+  // if (ptr != (void *)0) {
+  //   *ptr = 19;
+  // }
+
+  if (ptr != 0) {
+    *ptr = 19;
+  }
+
+  printf("My pointer points to: %d\n", *ptr);
+
+  free(ptr);
   free(can);
 }
 
