@@ -1,4 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
+
+typedef struct {
+  const char *name;
+  int age;
+  const char *occupation;
+} People;
+
+const char *get_name(const People *ppl);
+void alter_age(People *ppl, const int new_age);
+const int get_age(const People *ppl);
 
 int main(void) {
   const int int_constant = 19;
@@ -29,4 +40,19 @@ int main(void) {
 
   const int thirty_one = 0x1F; // 31
   printf("This should be equal to 31: %d\n", thirty_one);
+
+  People *can = malloc(sizeof(People));
+  can->name = "Can";
+  can->age = 27;
+
+  printf("My age is: %d\n", get_age(can));
+  printf("My name is: %s\n", get_name(can));
+  alter_age(can, 19);
+  printf("My new age is: %d\n", get_age(can));
+
+  free(can);
 }
+
+const char *get_name(const People *ppl) { return ppl->name; }
+void alter_age(People *ppl, const int new_age) { ppl->age = new_age; }
+const int get_age(const People *ppl) { return ppl->age; }
