@@ -1,5 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define VTAB '\013' // 11
+#define BELL '\007' // 7
+#define _VTAB '\xb' // 11
+#define _BELL '\x7' // 7
+#define MAXLINE 1000
+#define LEAP 1 /* in leap years */
+
+int days[31 + 28 + LEAP + 31 + 30 + 31 + 30 + 31 + 31 + 30 + 31 + 30 + 31];
+char line[MAXLINE + 1];
 
 typedef struct {
   const char *name;
@@ -61,6 +70,35 @@ int main(void) {
   }
 
   printf("My pointer points to: %d\n", *ptr);
+
+  // Character constants are integers written as one character between single
+  // quotes.
+  // The value of a character constant is the numeric value of the character in
+  // the machine's character set.
+  const char x = '0';
+  const char y = 48;
+  const char z = 65;
+
+  printf("%c has the numeric value of %d\n", x, x);
+  printf("%c has the numeric value of %d\n", y, y);
+  printf("%c has the numeric value of %d\n", z, z);
+
+  // Certain characters can be represented in character and string constants by
+  // escape sequences like \n (newline).
+  const char newline = '\n';
+
+  printf("Where is my newline?%c", newline);
+  printf("Here is my newline\n");
+  printf("Here is my bell%c", _BELL);
+  char name[4];
+
+  name[0] = 'C';
+  name[1] = 'a';
+  name[2] = 'n';
+  // name[3] = 0;
+  name[3] = '\0';
+
+  printf("%s", name);
 
   free(ptr);
   free(can);
