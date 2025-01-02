@@ -31,10 +31,10 @@ int main(void) {
 
   // Search for a key
   int age;
-  if (search(table, "Leyli", &age)) {
-    printf("Leyli's age is: %d\n", age);
+  if (search(table, "Can", &age)) {
+    printf("Can's age is: %d\n", age);
   } else {
-    printf("Leyli was not found");
+    printf("Can was not found");
   }
 
   print_table(table);

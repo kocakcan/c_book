@@ -94,6 +94,15 @@ int main(void) {
   eng->people.age = 27;
   eng->plang = "C";
 
+  Engineer *const me = malloc(sizeof(Engineer));
+
+  me->people.age = 27;
+  me->people.name = "Can";
+  me->people.occupation = "Lead Guitarist";
+
+  printf("My name is %s, I am %d years old and I do %s for living\n",
+         me->people.name, me->people.age, me->people.occupation);
+
   Rectangle *rect = malloc(sizeof(Rectangle));
   rect->x = 5.0;
   rect->y = 4.0;
@@ -107,10 +116,13 @@ int main(void) {
 
   printf("My buffer is: %s\n", str->buffer);
   printf("Its length is: %ld\n", str->len);
+  printf("hello, "
+         "world");
   free(yo);
   free(eng);
   free(rect);
   free(str);
+  free(me);
 }
 
 double get_circumference(Rectangle *rect) { return 2 * (rect->x + rect->y); }
