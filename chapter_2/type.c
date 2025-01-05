@@ -19,6 +19,12 @@
 /* atoi: convert s to integer */
 int atoi_(char s[]);
 
+// This function has no prototype so any float will become double
+double double_it(double value) { return value * 2.0; }
+
+// This function too has no prototype so any short and char will become double
+int triple_it(int value) { return value * 3; }
+
 /* lower: convert c to lower case; ASCII only */
 int lower_(int c);
 
@@ -78,6 +84,10 @@ int main(void) {
   c = i;
 
   printf("%d\n", c);
+
+  char value = 50;
+  printf("My new value is: %f\n", double_it(5.0f));
+  printf("Tripled value is: %d\n", triple_it(value));
 }
 
 int atoi_(char s[]) {
