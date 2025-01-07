@@ -8,7 +8,6 @@
 int htoi(char s[]);
 
 int main() {
-  printf("Disturbed is such a nice band actually\n");
   char s[MAXLINE] = "12abc";
   char t[MAXLINE] = "12abcff";
 
@@ -16,6 +15,8 @@ int main() {
   printf("Integer equivalent of t is: %d\n", htoi(t));
 
   char x = '6' - '5';
+  // Since chars are just integers that are numeric values of the character in machine's character set
+  // They can be used freely in arithmetic expressions.
   char y = 'F' - 55;
 
   printf("Result: %d\n", x);
@@ -28,6 +29,7 @@ int htoi(char s[]) {
   // 0xF, 0XF, 0xA
   int i = 0, n = 0;
 
+  // TODO: Add 0x/0X support
   // while (i < 2) {
   //   if (s[i] == 0) {
   //     ++i;
