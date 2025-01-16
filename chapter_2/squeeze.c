@@ -25,7 +25,7 @@ int main() {
   squeeze(name, 'a');
   printf("Here's my name after: %s\n", name);
 
-  char s[10];
+  char s[50] = "Can ";
   char t[] = "Kocak";
 
   strcat_(s, t);
