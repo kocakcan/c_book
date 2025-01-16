@@ -25,6 +25,11 @@ int main() {
   squeeze(name, 'a');
   printf("Here's my name after: %s\n", name);
 
+  // We can define arrays larger than our original string
+  // Rest of the characters would be initialized to null character
+  // But that doesn't mean that our string is also larger than it should be
+  // as only the first null character matter when it comes to finding the
+  // length of the string
   char s[50] = "Can ";
   char t[] = "Kocak";
 
