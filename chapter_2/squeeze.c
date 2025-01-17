@@ -30,11 +30,13 @@ int main() {
   // But that doesn't mean that our string is also larger than it should be
   // as only the first null character matter when it comes to finding the
   // length of the string
-  char s[50] = "Can ";
+  // char s[] = {'\0', '\0', '\0', '\0', '\0', '\0'};
+  // char s[6] is different though as it has no initializer it contains garbage
+  // values.
+  char s[6] = {};
   char t[] = "Kocak";
 
   strcat_(s, t);
-
   printf("Here's my surname: %s\n", s);
 
   return 0;
