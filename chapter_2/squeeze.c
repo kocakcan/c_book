@@ -6,6 +6,9 @@ enum bool { NO, YES };
 /* squeeze: delete all c from s */
 void squeeze(char s[], int c);
 
+/* squeeze_: delete all matching chars in s2 from s1 */
+void squeeze_(char s1[], char s2[]);
+
 /* strcat: concatenate t to the end of s; s must be big enough */
 void strcat_(char s[], char t[]);
 
@@ -20,9 +23,10 @@ int main() {
     printf("This is the worst TV show ever mate.\n");
 
   char name[] = "Can Kocak";
+  char buffer[] = "Artorias";
 
   printf("Here's my name before: %s\n", name);
-  squeeze(name, 'a');
+  squeeze_(name, buffer);
   printf("Here's my name after: %s\n", name);
 
   // We can define arrays larger than our original string
@@ -62,4 +66,26 @@ void strcat_(char s[], char t[]) {
 
   while ((s[i++] = t[j++]) != '\0')
     ;
+}
+
+void squeeze_(char s1[], char s2[]) {
+  int i, j, k = 0;
+
+  for (i = 0; s1[i] != '\0'; ++i) {
+    for (j = 0; s2[j] != '\0'; ++j) {
+      if (s1[i] == s2[j]) {
+        // We have a match
+        break;
+      }
+    }
+
+    // If for loop has been completed and s2[j] is null terminator
+    // Or we finished checking s2 and found no matches
+    if (s2[j] == '\0') {
+      // Copy current character if it's not in s2
+      s1[k++] = s1[i];
+    }
+  }
+
+  s1[k] = '\0';
 }
