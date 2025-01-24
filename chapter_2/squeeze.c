@@ -12,6 +12,9 @@ void squeeze_(char s1[], char s2[]);
 /* strcat: concatenate t to the end of s; s must be big enough */
 void strcat_(char s[], char t[]);
 
+/* any: find first location in s1 where s2 occurs */
+int any(char s1[], char s2[]);
+
 int main() {
   int my_bool = NO;
   enum bool bool_var = 5;
@@ -22,12 +25,16 @@ int main() {
   if (!flag)
     printf("This is the worst TV show ever mate.\n");
 
-  char name[] = "Can Kocak";
-  char buffer[] = "Artorias";
+  char name[] = "can";
+  char buffer[] = "ali";
 
   printf("Here's my name before: %s\n", name);
   squeeze_(name, buffer);
   printf("Here's my name after: %s\n", name);
+
+  char boss[] = "Merbcbn";
+  char mini_boss[] = "bbx";
+  printf("This should be equal to 5 = %d\n", any(boss, mini_boss));
 
   // We can define arrays larger than our original string
   // Rest of the characters would be initialized to null character
@@ -88,4 +95,26 @@ void squeeze_(char s1[], char s2[]) {
   }
 
   s1[k] = '\0';
+}
+
+int any(char s1[], char s2[]) {
+  int i, j;
+
+  for (i = 0; s1[i] != '\0'; ++i) {
+    for (j = 0; s2[j] != '\0'; ++j) {
+      if (s1[i] == s2[j]) {
+        return i;
+      }
+    }
+
+    // if (s2[j] == '\0') {
+    //   return -1;
+    // }
+  }
+
+  if (s1[i] != '\0') {
+    return -1;
+  }
+
+  return -1;
 }
