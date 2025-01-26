@@ -32,8 +32,8 @@ int main() {
   squeeze_(name, buffer);
   printf("Here's my name after: %s\n", name);
 
-  char boss[] = "Merbcbn";
-  char mini_boss[] = "bbx";
+  char boss[] = "Mert Can";
+  char mini_boss[] = "Can";
   printf("This should be equal to 5 = %d\n", any(boss, mini_boss));
 
   // We can define arrays larger than our original string
