@@ -12,7 +12,7 @@ void squeeze_(char s1[], char s2[]);
 /* strcat: concatenate t to the end of s; s must be big enough */
 void strcat_(char s[], char t[]);
 
-/* any: find first location in s1 where s2 occurs */
+/* any: find first location in s1 where s2 occurs; return -1 if not found */
 int any(char s1[], char s2[]);
 
 int main() {
