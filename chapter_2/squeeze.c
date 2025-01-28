@@ -22,6 +22,46 @@ int main() {
   printf("Sekiro is an amazing game mate\n");
   int flag = nil;
 
+  // The bitwise AND operator & is often used to mask off some set of bits
+  // Below sets to zero but the low-order 7 bits of n.
+  // (7 * 1) + (7 * 8) + (1 * 64) = 7 + 56 + 64 = 127
+  // 01111111 = 0177 (octal) = 127 (decimal)
+
+  int n = 255;
+
+  printf("n is %d\n", n);
+  n = n & 0177;
+  printf("n is %d after masking\n", n);
+
+  // The bitwise inclusive OR operator | is used to turn bits on
+  // Turning on = Making it 1
+  // Makes it 1 if at least one of the operand is 1
+  // If both is 0 then it's 0
+  int x = 304 >> 2;
+  // 00001000
+  int z = 8;
+
+  // 00001111
+  int q = 15;
+
+  // 00001000
+  // 00001010
+  int y = 10 | z;
+
+  // 00001111
+  // 00001010
+  // 00000101 -> 5
+  // The bitwise exclusive OR ^ sets a one in each bit position where its
+  // operands have different bits, and zero where they are the same.
+  int u = 10 ^ q;
+  // 00000001
+  // 00000010
+  // 00000000
+  printf("n is %d\n", n);
+  printf("x is %d\n", x);
+  printf("y is %d\n", y); // 10
+  printf("u is %d\n", u); // 5
+
   if (!flag)
     printf("This is the worst TV show ever mate.\n");
 
@@ -49,6 +89,9 @@ int main() {
 
   strcat_(s, t);
   printf("Here's my surname: %s\n", s);
+
+  int bit = 16 << 2;
+  printf("bit is: %d\n", bit);
 
   return 0;
 }
