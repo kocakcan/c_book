@@ -17,5 +17,13 @@ int main() {
   }
   printf("\n");
 
+  // The unary operator ~ yields the one's complement of an integer; that is,
+  // it converts each 1-bit into a 0-bit and vice versa.
+  // Below example sets the last six bits of x to zero.
+  int x = 50;
+  x = x & ~077;
+
+  printf("x is %d\n", x);
+
   return 0;
 }
