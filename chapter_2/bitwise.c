@@ -1,5 +1,8 @@
 #include <stdio.h>
 
+/* getbits: get n bits from position p */
+unsigned getbits(unsigned x, int p, int n);
+
 int main() {
   int n = 255; // 11111111 (binary)
 
@@ -25,5 +28,11 @@ int main() {
 
   printf("x is %d\n", x);
 
+  unsigned y = -5;
+  printf("y is %d\n", y);
   return 0;
+}
+
+unsigned getbits(unsigned x, int p, int n) {
+  return (x >> (p + 1 - n)) & ~(~0 << n);
 }
