@@ -28,8 +28,6 @@ int main() {
 
   printf("x is %d\n", x);
 
-  unsigned y = -5;
-  printf("y is %d\n", y);
   return 0;
 }
 
