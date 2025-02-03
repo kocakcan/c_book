@@ -3,8 +3,6 @@
 /* getbits: get n bits from position p */
 unsigned getbits(unsigned x, int p, int n);
 
-void sth(char s[], const int size);
-
 int main() {
   int n = 255; // 11111111 (binary)
 
@@ -28,40 +26,13 @@ int main() {
   int x = 50;
   x = x & ~077;
 
-  // 01111110
-  // 01000000 = ~077 (octal) = -64 (decimal)
-  // Below sets the last six bits of x to zero
-  // ~077 is independent of word length and is thus preferable to
-  int c = ~077;
-  // ~0 flips all the bits thus making every bit 1 which is the binary
-  // representation of -1
-  int d = ~0;
-
   printf("x is %d\n", x);
-  printf("c is %d\n", c);
-  printf("d is %d\n", d);
 
-  if (d == -1) {
-    printf("That's where you are right kiddo");
-  }
-
-  char s[] = "Antepli Seyfi";
-  const int size = sizeof(s) / sizeof(s[0]);
-
-  sth(s, size);
+  unsigned y = -5;
+  printf("y is %d\n", y);
+  return 0;
 }
 
 unsigned getbits(unsigned x, int p, int n) {
   return (x >> (p + 1 - n)) & ~(~0 << n);
-}
-
-void sth(char s[], const int size) {
-  for (int i = 0; i < size; ++i) {
-    if (s[i] == ' ') {
-      putchar(s[i]);
-    } else {
-      putchar(s[i]);
-      putchar(' ');
-    }
-  }
 }
