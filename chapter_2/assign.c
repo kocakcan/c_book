@@ -1,14 +1,13 @@
 #include <stdio.h>
 
-/*  - Statements are instructions or actions (e.g., declarations, assignments)
-*    that do not return a value but control the flow of execution.
-*  - Statements end with a semicolon and may comprise one or more expressions.
-*  - Expressions are combinations of variables, constants, operators, and
-*    function calls that are evaluated to produce a value.
-*  - Expressions do not necessarily end with a semicolon, but they can be part of a statement.
-*  - Declaring a function is a statement but calling a function can be either a
-*    statement or an expression depending on whether the function returns a value
-* /
+- Statements are instructions or actions (e.g., declarations, assignments)
+  that do not return a value but control the flow of execution.
+- Statements end with a semicolon and may comprise one or more expressions.
+- Expressions are combinations of variables, constants, operators, and
+  function calls that are evaluated to produce a value.
+- Expressions do not necessarily end with a semicolon, but they can be part of a statement.
+- Declaring a function is a statement but calling a function can be either a
+  statement or an expression depending on whether the function returns a value
 
 int main(void) {
   int x = 5;
