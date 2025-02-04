@@ -1,3 +1,4 @@
+#include <limits.h>
 #include <stdio.h>
 
 /* getbits: get n bits from position p */
@@ -27,6 +28,16 @@ int main() {
   x = x & ~077;
 
   printf("x is %d\n", x);
+
+  // When a negative signed value is assigned to an unsigned variable, it leads
+  // to an implicit conversion as follows:
+  // The signed integer is interpreted using its binary representation as an
+  // unsigned integer. This effectively transforms the negative value into a
+  // large positive integer due to the two's complement representation used for
+  // storing negative numbers.
+  unsigned z = -5;
+
+  printf("z is %u\n", z);
 
   return 0;
 }
