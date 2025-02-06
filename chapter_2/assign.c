@@ -59,9 +59,10 @@ int main(void) {
     printf("z is greater than 5\n");
   }
 
-  unsigned t = 255;
+  // 00000011
+  unsigned t = 3;
 
-  if (bitcount(t) == 8) {
+  if (bitcount(t) == 2) {
     printf("That's where you're right kiddo!\n");
   }
   // Since this is a signed int, it will have its leftmost bit 1
@@ -88,10 +89,8 @@ int main(void) {
 int bitcount(unsigned x) {
   int b;
 
-  for (b = 0; x != 0; x >>= 1) {
-    if (x & 01) {
-      b++;
-    }
+  for (b = 0; x != 0; x &= (x - 1)) {
+    b++;
   }
 
   return b;
