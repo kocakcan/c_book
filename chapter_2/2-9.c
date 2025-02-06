@@ -30,7 +30,7 @@ int old_bitcount(unsigned x) {
   int b;
 
   for (b = 0; x != 0; x >>= 1) {
-    // In order for this if block to execute b must be 1
+    // In order for this if block to execute x must be 1
     // 01 is octal for 00000001
     if (x & 01) {
       b++;
