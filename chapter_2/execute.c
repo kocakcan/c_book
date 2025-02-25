@@ -25,6 +25,10 @@ int main() {
 
   free(leeroy);
 
+  const int x = -19;
+
+  printf("x is %d\n", x);
+
   return 0;
 }
 
