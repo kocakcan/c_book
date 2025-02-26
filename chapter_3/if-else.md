@@ -3,9 +3,9 @@
     ```
     {
       if (expression)
-        statement~1
+        statement~1~
       else
-        statement~2
+        statement~2~
     }
     ```
 *   where the else part is optional.
