@@ -17,6 +17,7 @@ int main() {
 
   buffer[i] = '\0';
 
+  // Checking only i here as it would be 0 (false) if buffer was empty
   if (i)
     printf("The first word in the given sentence is: %s\n", buffer);
   return 0;
