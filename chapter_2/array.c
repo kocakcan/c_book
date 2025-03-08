@@ -1,16 +1,18 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 void printa(const int arr[], size_t size);
 void bubble_sort(int arr[], const int size);
 void selection_sort(int arr[], int n);
+int *gen_rand_arr(int size, int max);
 
 int main() {
-  int numbers[100];
+  int size = 1000;
+  int max = 10000;
 
-  for (int i = 0; i < 100; ++i)
-    numbers[i] = i + (i % 2);
-
-  const int size = sizeof(numbers) / sizeof(numbers[0]);
+  // Generate an array of random integers
+  int *numbers = gen_rand_arr(size, max);
 
   printf("Unsorted array:\n");
   printa(numbers, size);
@@ -19,6 +21,9 @@ int main() {
 
   printf("Sorted array:\n");
   printa(numbers, size);
+
+  // Free the allocated memory
+  free(numbers);
 
   return 0;
 }
@@ -50,7 +55,7 @@ void bubble_sort(int arr[], const int size) {
 }
 
 void selection_sort(int arr[], int n) {
-  // Outer loop to track # of passes 
+  // Outer loop to track # of passes
   for (int i = 0; i < n - 1; i++) {
     // Assume that the first element is the minimum element initally
     int min_idx = i;
@@ -83,4 +88,25 @@ void printa(const int arr[], size_t size) {
     }
   }
   printf("]\n");
+}
+
+int *gen_rand_arr(int size, int max) {
+  // Dynamically allocate memory for the array
+  int *arr = malloc(size * sizeof(int));
+
+  if (arr == NULL) {
+    printf("Memory allocation failed!\n");
+    exit(1);
+  }
+
+  // Seed the random number generator with the current time
+  srand(time(NULL));
+
+  // Generate random numbers and fill the array
+  for (int i = 0; i < size; i++) {
+    arr[i] = rand() % max;
+  }
+
+  // Return the pointer to the newly allocated array
+  return arr;
 }
