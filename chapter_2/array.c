@@ -2,11 +2,12 @@
 
 void printa(const int arr[], size_t size);
 void bubble_sort(int arr[], const int size);
+void selection_sort(int arr[], int n);
 
 int main() {
-  int numbers[1000];
+  int numbers[100];
 
-  for (int i = 0; i < 1000; ++i)
+  for (int i = 0; i < 100; ++i)
     numbers[i] = i + (i % 2);
 
   const int size = sizeof(numbers) / sizeof(numbers[0]);
@@ -14,7 +15,7 @@ int main() {
   printf("Unsorted array:\n");
   printa(numbers, size);
 
-  bubble_sort(numbers, size);
+  selection_sort(numbers, size);
 
   printf("Sorted array:\n");
   printa(numbers, size);
@@ -45,6 +46,30 @@ void bubble_sort(int arr[], const int size) {
     if (swapped == 0) {
       break;
     }
+  }
+}
+
+void selection_sort(int arr[], int n) {
+  // Outer loop to track # of passes 
+  for (int i = 0; i < n - 1; i++) {
+    // Assume that the first element is the minimum element initally
+    int min_idx = i;
+    // Inner loop to locate the next minimum element
+    for (int j = i + 1; j < n; j++) {
+      // Check if the current element is smaller than the current minimum
+      if (arr[j] < arr[min_idx]) {
+        // Update the minimum element index
+        min_idx = j;
+      }
+    }
+    // Store the current minimum element into a temporary variable
+    int temp = arr[min_idx];
+
+    // Swap current element with element with current minimum index
+    arr[min_idx] = arr[i];
+
+    // Store the current minimum element into the current element
+    arr[i] = temp;
   }
 }
 
