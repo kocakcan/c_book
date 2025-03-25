@@ -1,14 +1,17 @@
 #include <stdio.h>
 
 void escape(char s[], char t[]);
+void rescape(char s[], char t[]);
 
 int main() {
   char s[100] = "";
   char t[] = "This\tis\ta\ttest\n";
 
   escape(s, t);
-
   printf("%s\n", s);
+
+  rescape(t, s);
+  printf("%s\n", t);
   return 0;
 }
 
@@ -28,6 +31,33 @@ void escape(char s[], char t[]) {
     default:
       s[j++] = t[i];
       break;
+    }
+    i++;
+  }
+
+  s[j] = '\0';
+}
+
+void rescape(char s[], char t[]) {
+  int i = 0, j = 0;
+
+  while (t[i] != '\0') {
+    if (t[i] == '\\') {
+      i++;
+      switch (t[i]) {
+      case 't':
+        s[j++] = '\t';
+        break;
+      case 'n':
+        s[j++] = '\n';
+        break;
+      default:
+        s[j++] = '\\';
+        s[j++] = t[i];
+        break;
+      }
+    } else {
+      s[j++] = t[i];
     }
     i++;
   }
