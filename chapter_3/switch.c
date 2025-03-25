@@ -20,6 +20,26 @@
  *   - Cases and the default clause can occur in any order.
  */
 
+/***
+ * - The break statement causes an immediate exit from the switch. Because cases
+ *   serve just as labels, after the code for one case is done, execution falls
+ *   through to the next unless you take explicit action to excape.
+ * - break and return are the most common ways to leave a switch.
+ * - A break statement can also be used to force an immediate exit from while,
+ *   for, and do loops.
+ * - Falling through cases is a mixed blessing. On the positive side, it allows
+ *   several cases to be attached to a single action, as with the digits in this
+ *   example. But it also implies that normally each case must end with a break
+ *   to prevent falling through to the next.
+ * - Falling through from one case to another is not robust, being prone to
+ *   disintegration when the program is modified. With the exception of multiple
+ *   labels for a single computation, fall-throughs should be used sparingly,
+ *   and commented.
+ * - As a matter of good form, put a break after the last case (the default
+ *   here) even though it's logically unnecessary. Some day when another case
+ *   gets added at the end, this bit of defensive programming will save you.
+ */
+
 #include <stdio.h>
 
 int main() {
