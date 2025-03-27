@@ -7,9 +7,8 @@
 //   function calls that are evaluated to produce a value.
 // - Expressions do not necessarily end with a semicolon, but they can be part
 //   of a statement.
-// - Declaring a function is a statement but calling a function can be either a
-//   statement or an expression depending on whether the function returns a
-//   value
+// - Declaring a function is a statement but calling a function is an
+// expression
 
 /* bitcount: count 1 bits in x */
 int bitcount(unsigned x);
