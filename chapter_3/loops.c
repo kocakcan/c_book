@@ -121,6 +121,13 @@ void shellsort(int v[], int n) {
  * - Thus in a for statement, it is possible to place multiple expressions in the various parts, for example to process two indices in parallel.
  */
 
+/***
+ * - The commas that seperate function arguments, variables in declarations, etc., are not comma operators, and do not guarantee left to right evaluation.
+ * - Comma operators should be used sparingly. The most suitable uses are for constructs strongly related to each other, as in the for loop in reverse, and in macros where a multistep computation has to be a single expression.
+ * - A comma expression might also be appropriate for the exchange of elements in reverse, where the exchange can be brought of a single operation:
+ *   for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
+ *   	c = s[i], s[i] = s[j], s[j] = c;
+
 int main() {
 	char s[] = "1997";
 	int arr[] = {1, 3, 5, 2, -10, 7, 9, 4};
