@@ -127,6 +127,7 @@ void shellsort(int v[], int n) {
  * - A comma expression might also be appropriate for the exchange of elements in reverse, where the exchange can be brought of a single operation:
  *   for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
  *   	c = s[i], s[i] = s[j], s[j] = c;
+ */
 
 int main() {
 	char s[] = "1997";
@@ -146,6 +147,15 @@ int main() {
 	printf("\n");
 	
 	printf("%d\n", atoi(s));
+	// TODO: I'm onto something here
+	char buffer[50];
+
+	for (int i = 60; i < 100; i++)
+		buffer[60 - i] = i;
+
+	for (int i = 60; i < 100; i++)
+		printf("%c ", buffer[60 - i]);
+	printf("\n");
 
 	return 0;
 }
