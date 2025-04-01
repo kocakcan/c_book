@@ -75,24 +75,70 @@
 #include <stdio.h>
 
 /* atoi: convert s to integer; version 2 */
-int atoi_(char s[]) {
+int atoi(char s[]) {
 	int i, n, sign;
 
 	for (i = 0; isspace(s[i]); i++)	// skip white spaces
 		;
 
-	sign = (s[i] == '+') ? 1 : -1;	// get sign
+	sign = (s[i] == '-') ? -1 : 1;	// get sign
+
+	if (s[i] == '+' || s[i] == '-')	// skip sign
+		i++;
 
 	for (n = 0; isdigit(s[i]); i++)
-		n = n * 10 + (s[i] - '0');
+		n = 10 * n + (s[i] - '0');
 
 	return n * sign;
 }
 
-int main() {
-	char s[] = "Can Kocak";
+/***
+ * - The advantages of keeping loop control centralized are even more obvious when there are several nested loops.
+ * - The following function is a Shell sort for sorting an array of integers.
+ * - The basic idea of this sorting algorithm, which was invented in 1959 by D. L. Shell, is that in early stages, far-apart elements are compared, rather than adjacent ones as in simpler interchange sorts.
+ * - This tends to eliminate large amounts of disorder quickly. so later stages have less work to do. The interval between compared elements is gradually decreased to one, at which point the sort effectively becomes an adjacent interchange method.
+ */
 
-	printf("%d\n", atoi_(s));
+/* shellsort: sort v[0]...v[n-1] into increasing order */
+void shellsort(int v[], int n) {
+	int gap, i, j, temp;
+
+	for (gap = n / 2; gap > 0; gap /= 2)
+		for (i = gap; i < n; i++)
+			for (j = i - gap; j >= 0 && v[j] > v[j + gap]; j -= gap) {
+				temp = v[j];
+				v[j] = v[j + gap];
+				v[j + gap] = temp;
+			}
+}
+
+/***
+- There are three nested loops. The outermost controls the gap between compared elements, shrinking it from n/2 by a factor of two each pass until it becomes zero. The middle loop steps along the elements. The innermost loop compares each pair of elements that is seperated by gap and reverses any that are out of order.
+- Since gap is eventually reduced to one, all elements are eventually ordered correctly.
+- Notice how the generally of the for makes the outer loop fit in the same form as the others, even though it is not an arithmetic progression.
+- One final C operator is the comma ",", which most often finds use in the for statement.
+- A pair of expressions seperated by a comma is evaluated left to right, and the type and value of the result are the type and value of the right operand.
+- Thus in a for statement, it is possible to place multiple expressions in the various parts, for example to process two indices in parallel.
+/
+
+int main() {
+	char s[] = "1997";
+	int arr[] = {1, 3, 5, 2, -10, 7, 9, 4};
+	int size = sizeof(arr) / sizeof(arr[0]);
+
+	for (int i = 0; i < size; i++)
+		printf("%d ", arr[i]);
+
+	printf("\n");
+
+	shellsort(arr, size);
+
+	for (int i = 0; i < size; i++)
+		printf("%d ", arr[i]);
+
+	printf("\n");
+	
+	printf("%d\n", atoi(s));
 
 	return 0;
 }
