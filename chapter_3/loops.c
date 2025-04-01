@@ -75,7 +75,24 @@
 #include <stdio.h>
 
 /* atoi: convert s to integer; version 2 */
-// TODO: Continue from here
-int atoi(char s[]);
+int atoi_(char s[]) {
+	int i, n, sign;
 
-int main(int argc, char *argv[]) { return 0; }
+	for (i = 0; isspace(s[i]); i++)	// skip white spaces
+		;
+
+	sign = (s[i] == '+') ? 1 : -1;	// get sign
+
+	for (n = 0; isdigit(s[i]); i++)
+		n = n * 10 + (s[i] - '0');
+
+	return n * sign;
+}
+
+int main() {
+	char s[] = "Can Kocak";
+
+	printf("%d\n", atoi_(s));
+
+	return 0;
+}
