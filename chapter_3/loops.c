@@ -113,13 +113,13 @@ void shellsort(int v[], int n) {
 }
 
 /***
-- There are three nested loops. The outermost controls the gap between compared elements, shrinking it from n/2 by a factor of two each pass until it becomes zero. The middle loop steps along the elements. The innermost loop compares each pair of elements that is seperated by gap and reverses any that are out of order.
-- Since gap is eventually reduced to one, all elements are eventually ordered correctly.
-- Notice how the generally of the for makes the outer loop fit in the same form as the others, even though it is not an arithmetic progression.
-- One final C operator is the comma ",", which most often finds use in the for statement.
-- A pair of expressions seperated by a comma is evaluated left to right, and the type and value of the result are the type and value of the right operand.
-- Thus in a for statement, it is possible to place multiple expressions in the various parts, for example to process two indices in parallel.
-/
+ * - There are three nested loops. The outermost controls the gap between compared elements, shrinking it from n/2 by a factor of two each pass until it becomes zero. The middle loop steps along the elements. The innermost loop compares each pair of elements that is seperated by gap and reverses any that are out of order.
+ * - Since gap is eventually reduced to one, all elements are eventually ordered correctly.
+ * - Notice how the generally of the for makes the outer loop fit in the same form as the others, even though it is not an arithmetic progression.
+ * - One final C operator is the comma ",", which most often finds use in the for statement.
+ * - A pair of expressions seperated by a comma is evaluated left to right, and the type and value of the result are the type and value of the right operand.
+ * - Thus in a for statement, it is possible to place multiple expressions in the various parts, for example to process two indices in parallel.
+ */
 
 int main() {
 	char s[] = "1997";
