@@ -130,7 +130,7 @@ void shellsort(int v[], int n) {
  */
 
 int main() {
-	char s[] = "1997";
+	char s[] = "-1997";
 	int arr[] = {1, 3, 5, 2, -10, 7, 9, 4};
 	int size = sizeof(arr) / sizeof(arr[0]);
 
@@ -150,11 +150,11 @@ int main() {
 	// TODO: I'm onto something here
 	char buffer[50];
 
-	for (int i = 60; i < 100; i++)
-		buffer[60 - i] = i;
+	for (int i = 65; i < 91; i++)
+		buffer[65 - i] = i;
 
-	for (int i = 60; i < 100; i++)
-		printf("%c ", buffer[60 - i]);
+	for (int i = 65; i < 91; i++)
+		printf("%c", buffer[65 - i]);
 	printf("\n");
 
 	return 0;
