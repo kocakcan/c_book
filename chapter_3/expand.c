@@ -25,16 +25,10 @@ int main() {
 	for (int i = x[0]; i < x[2] + 1; i++)
 		y[i - x[0]] = i;
 
-	for (int i = x[0]; i < x[2] + 1; i++)
-		printf("%c", y[i - x[0]]);
-
-	printf("In the night\n");
-	for (int i = 65; i < 91; i++)
-		s[i - 65] = i;
-
-	for (int i = 65; i < 91; i++)
-		printf("%c", s[i - 65]);
-	printf("\n");
+	// for (int i = x[0]; i < x[2] + 1; i++)
+		// printf("%c", y[i - x[0]]);
+		
+	printf("%s\n", y);
 
 	return 0;
 }
