@@ -4,23 +4,21 @@
 #include <stdio.h>
 
 int main() {
-	char s[50];
-
 	// Given a-z,
 	// a would be 97 and z would be 122
 	char x[] = "a-z";
 	char y[100];
 
-	int c = 33;
+	// int c = 33;
 
-	printf("%d\n", 'a' - '2');
-	printf("%c\n", c);
+	// printf("%d\n", 'a' - '2');
+	// printf("%c\n", c);
 
 	// should print out a
 	// printf("%d\n", x[0]);
 
 	// 97
-	printf("%d\n", x[0]);
+	// printf("%d\n", x[0]);
 	
 	for (int i = x[0]; i < x[2] + 1; i++)
 		y[i - x[0]] = i;
