@@ -45,7 +45,7 @@ void itoa(int n, char s[]) {
     s[i++] = n % 10 + '0'; /* get next digit */
   } while ((n /= 10) > 0); /* delete it */
 
-  if (sign > 0) {
+  if (sign < 0) {
     s[i++] = '-';
   }
 
