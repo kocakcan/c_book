@@ -54,8 +54,8 @@ void itoa(int n, char s[]) {
 }
 
 int main() {
-  int n = 123;
-  char s[] = "1997";
+  int n = -123;
+  char s[100];
 
   itoa(n, s);
 
