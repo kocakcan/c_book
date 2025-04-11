@@ -10,8 +10,7 @@ int main() {
     if (c == ' ' || c == '\t' || c == '\n') {
       break;
     } else {
-      buffer[i] = c;
-      i++;
+      buffer[i++] = c;
     }
   }
 
