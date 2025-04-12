@@ -38,14 +38,14 @@ void itoa(int n, char s[]) {
   int i, sign;
   unsigned long num;
 
-  if ((sign = n) < 0)                 /* record sign */
-    num = (unsigned long)(~n + 1);    /* make it unsigned to avoid UB edge case */
+  if ((sign = n) < 0)                 	/* record sign */
+    num = (unsigned int)(~n + 1);    	/* make it unsigned to avoid UB edge case */
 
   i = 0;
 
-  do {                                /* generate digits in reverse order */
-    s[i++] = num % 10 + '0';          /* get next digit */
-  } while ((num /= 10) > 0);          /* delete it */
+  do {                                	/* generate digits in reverse order */
+    s[i++] = num % 10 + '0';          	/* get next digit */
+  } while ((num /= 10) > 0);          	/* delete it */
 
   if (sign < 0) {
     s[i++] = '-';
