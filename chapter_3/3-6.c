@@ -28,7 +28,6 @@ void itoa(int n, char s[], int j) {
 
   do {
     s[i++] = n % 10 + '0';
-    j++;
   } while ((n /= 10) > 0);
 
   printf("i is %d\n", i);
@@ -36,7 +35,7 @@ void itoa(int n, char s[], int j) {
   if (sign < 0)
     s[i++] = '-';
 
-  while (j >= i)
+  while (j > i)
     s[i++] = ' ';
 
   s[i] = '\0';
