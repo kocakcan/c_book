@@ -27,10 +27,10 @@ int trim(char s[]) {
  */
 
 /***
- * - The continue statement is related to break, but less of then used; it
+ * - The continue statement is related to break, but less often used; it
  *   causes the next iteration of the enclosing for, while, or do loop to
  *   begin. In the while and do, this means that the test part is executed
- *   immeaditely; in the for, control passes to the increment step. The
+ *   immeadiately; in the for, control passes to the increment step. The
  *   continue statement only applies to loops. A continue inside a switch
  *   inside a loop causes the next loop iteration.
  *
