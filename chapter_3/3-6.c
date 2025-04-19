@@ -10,7 +10,7 @@ void reverse(char s[]);
 int main() {
   int n = 155;
   char s[100];
-  int j = 5;
+  int j = 10;
 
   itoa(n, s, j);
   printf("%s\n", s);
@@ -29,8 +29,6 @@ void itoa(int n, char s[], int j) {
   do {
     s[i++] = n % 10 + '0';
   } while ((n /= 10) > 0);
-
-  printf("i is %d\n", i);
 
   if (sign < 0)
     s[i++] = '-';
