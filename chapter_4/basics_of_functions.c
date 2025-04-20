@@ -120,3 +120,46 @@ int strindex(char s[], char t[]) {
 
 	return -1;
 }
+
+/***
+ * - Each function definition has the form
+ *
+ *   return-type function-name(argument declarations)
+ *   {
+ *   	declarations and statements
+ *   }
+ *
+ *   Various part may be absent, a minimal function is
+ *   	dummy() { }
+ *
+ *   which does nothing and returns nothing. A do-nothing function like this is
+ *   sometimes useful as a placeholder during program development. If the
+ *   return type is omitted, int is assumed.
+ *
+ * - A program is just a set of definitions of variables and functions.
+ *   Communication between the function is by arguments and values returned by
+ *   the functions, and through external variables. The functions can occur in
+ *   any order in the source file, and the source program can be split into
+ *   multiple files, so long as no function is split.
+ *
+ * - The return statement is the mechanism for returning a value from the
+ *   called function to its caller. Any expression can follow return:
+ *
+ *   	return expression;
+ *
+ *   The expression will be converted to the return type if necessary.
+ *   Parantheses are often used around the expression, but they are optional.
+ *
+ * - The calling function is free to ignore the returned value. Furthermore,
+ *   there need to be no expression after return; in that case, no value is
+ *   returned to the caller. Control also returns to the caller with no value
+ *   when execution "falls off the end" of the function by reaching the closing
+ *   right brace. It is not illegal, but probably a sign of trouble, if a
+ *   function returns a value from one place and no value from another. In any
+ *   case, if a function fails to return a value, its "value" is certain to be
+ *   garbage.
+ *
+ * - The pattern-searching program returns a status from main, the number of
+ *   matches found. This value is available for use by the environment that
+ *   called the program.
+ */
