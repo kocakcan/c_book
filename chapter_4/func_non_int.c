@@ -6,7 +6,7 @@
  *   floating-point equivalent. atof is an extension of atoi. It handles an
  *   optional sign and decimal point, and the presence or absence of either
  *   part or fractional part. The standard library includes an atof; the header
- *   <stdlib.n> declares it. */
+ *   <stdlib.h> declares it. */
 
 // First, atof itself must declare the type of value it returns, since it is
 // not int. The type name precedes the function name:
