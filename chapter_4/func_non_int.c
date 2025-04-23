@@ -18,7 +18,7 @@ double atof(char s[]) {
 	double val, power;
 	int i, sign;
 
-	for (i = 0; isspace(i); i++)
+	for (i = 0; isspace(s[i]); i++)
 		;			/* skip white space */
 
 	sign = (s[i] == '-') ? -1 : 1;	/* record sign */
@@ -123,8 +123,8 @@ int atoi(char s[]) {
 int main() {
 	double atof(char[]);
 
-	char s[] = "3.14";
-	char z[] = "-14.69";
+	char s[] = " 	3.14";
+	char z[] = "	-14.69";
 
 	printf("%.2f\n", atof(s));
 	printf("%d\n", atoi(z));
