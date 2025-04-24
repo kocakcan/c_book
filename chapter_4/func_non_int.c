@@ -10,33 +10,33 @@
 
 // First, atof itself must declare the type of value it returns, since it is
 // not int. The type name precedes the function name:
-#include <stdio.h>
 #include <ctype.h>
+#include <stdio.h>
 
 /* atof: convert string s to double */
 double atof(char s[]) {
-	double val, power;
-	int i, sign;
+  double val, power;
+  int i, sign;
 
-	for (i = 0; isspace(s[i]); i++)
-		;			/* skip white space */
+  for (i = 0; isspace(s[i]); i++)
+    ; /* skip white space */
 
-	sign = (s[i] == '-') ? -1 : 1;	/* record sign */
-	if (s[i] == '+' || s[i] == '-')
-		i++;			/* skip sign */
+  sign = (s[i] == '-') ? -1 : 1; /* record sign */
+  if (s[i] == '+' || s[i] == '-')
+    i++; /* skip sign */
 
-	for (val = 0.0; isdigit(s[i]); i++)
-		val = 10.0 * val + (s[i] - '0');
+  for (val = 0.0; isdigit(s[i]); i++)
+    val = 10.0 * val + (s[i] - '0');
 
-	if (s[i] == '.')
-		i++;			/* skip dot sign */
+  if (s[i] == '.')
+    i++; /* skip dot sign */
 
-	for (power = 1.0; isdigit(s[i]); i++) {
-		val = 10.0 * val + (s[i] -'0');
-		power *= 10;
-	}
+  for (power = 1.0; isdigit(s[i]); i++) {
+    val = 10.0 * val + (s[i] - '0');
+    power *= 10;
+  }
 
-	return sign * val / power;	/* perform some magic */
+  return sign * val / power; /* perform some magic */
 }
 
 /***
@@ -64,7 +64,7 @@ double atof(char s[]) {
  *   }
  *
  *   The declaration
- * 	double sum, atof(char []);
+ * 	    double sum, atof(char []);
  *   says that sum is a double variable, and that atof is a function that takes
  *   one char[] argument and returns a double.
  *
@@ -80,14 +80,14 @@ double atof(char s[]) {
  *   is that if there is no function prototype, a function is implicitly
  *   declared by its first appearance in an expression, such as
  *
- *   	sum += atof(line)
+ *   	  sum += atof(line)
  *   If a name that has not been previously declared occurs in an expression
  *   and is followed by a left parantheses, it is declared by context to be a
  *   function name, the function is assumed to return an int, and nothing is
  *   assumed about its arguments. Furthermore, if a function declaration does
  *   not include arguments, as in
- *   	
- *   	double atof();
+ *
+ *   	  double atof();
  *   that too is taken to mean that nothing is to be assumed about the
  *   arguments of atof; all parameter checking is turned off. This special
  *   meaning of the empty argument list is intended to permit older C programs
@@ -112,22 +112,29 @@ double atof(char s[]) {
  *   This operation potentionally discard information, however, so some
  *   compilers warn of it. The cast states explicitly that the operation is
  *   intended, and suppresses any warning.
-*/
+ */
 
 int atoi(char s[]) {
-	double atof(char s[]);
+  double atof(char s[]);
 
-	return (int) atof(s);
+  return (int)atof(s);
+}
+
+// This is how functions with no arguments must be declared
+// Otherwise, the parameter checking is turned off
+void func_with_no_args(void) {
+  printf("Since this function takes in no parameters void is used in the "
+         "arguments list.\n");
 }
 
 int main() {
-	double atof(char[]);
+  double atof(char[]);
 
-	char s[] = " 	3.14";
-	char z[] = "	-14.69";
+  char s[] = " 	3.14";
+  char z[] = "	-14.69";
 
-	printf("%.2f\n", atof(s));
-	printf("%d\n", atoi(z));
-	
-	return 0;
+  printf("%.2f\n", atof(s));
+  printf("%d\n", atoi(z));
+
+  return 0;
 }
