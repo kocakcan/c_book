@@ -29,12 +29,25 @@ double atof(char s[]) {
 		power *= 10;
 	}
 
+	if (s[i] == 'e' || s[i] == 'E') {
+		i++;
+		int exp_sign = (s[i] == '-') ? -1 : 1;
+		i++;
+		// subtracting s[i] from '0' is essential here otherwise
+		// s[i] would be the numeric value of the current character
+		for (int j = 1; j <= (s[i] - '0'); j++)
+			power *= 10;
+		// power *= exp_sign;
+	}
 	return sign * val / power;
 }
 
 int main(void) {
-	double x = 123.456e-6;
+	char x[] = "123.456e-6";
+	char y[] = " -123.45";
+	double scientific = 123.456e-6;
 	char s[] = " -14.532";
-	printf("%e\n", x);
-	printf("%.3f\n", atof(s));
+	printf("%e\n", atof(x));
+	printf("%.2f\n", atof(y));
+	printf("%e\n", scientific);
 }
