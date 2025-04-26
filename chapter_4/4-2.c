@@ -35,17 +35,20 @@ double atof(char s[]) {
 		i++;
 		// subtracting s[i] from '0' is essential here otherwise
 		// s[i] would be the numeric value of the current character
-		for (int j = 1; j <= (s[i] - '0'); j++)
-			power *= 10;
-		// power *= exp_sign;
+		for (int j = 1; j <= (s[i] - '0'); j++) {
+			if (exp_sign == -1)
+				power *= 10;
+			else
+				power /= 10;
+		}
 	}
 	return sign * val / power;
 }
 
 int main(void) {
-	char x[] = "123.456e-6";
+	char x[] = "123.456e+6";
 	char y[] = " -123.45";
-	double scientific = 123.456e-6;
+	double scientific = 123.456e+6;
 	char s[] = " -14.532";
 	printf("%e\n", atof(x));
 	printf("%.2f\n", atof(y));
