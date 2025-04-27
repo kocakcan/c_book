@@ -103,4 +103,166 @@
 *   The function main is a loop containing a big switch on the type of operator
 *   or operand; this is a more typical use of switch.
 */
-*
+#include <stdio.h>
+#include <stdlib.h>	/* for atof() */
+#define MAXOP	100	/* max size of operand or operator */
+#define NUMBER	'0'	/* signal that a number was found */
+
+int getop(char []);
+void push(double);
+double pop(void);
+
+/* reverse Polish calculator */
+int main() {
+	int type;
+	double op2;
+	char s[MAXOP];
+
+	while ((type = getop(s)) != EOF) {
+		switch (type) {
+		case NUMBER:
+			push(atof(s));
+			break;
+		case '+':
+			push(pop() + pop());
+			break;
+		case '*':
+			push(pop() * pop());
+			break;
+		case '-':
+			op2 = pop();
+			push(pop() - op2);
+			break;
+		case '/':
+			op2 = pop();
+			if (op2 != 0.0)
+				push(pop() / op2);
+			else
+				printf("error: zero divisor\n");
+			break;
+		case '\n':
+			printf("\t%.8g\n", pop());
+			break;
+		default:
+			printf("error: unknown command %s\n", s);
+			break;
+		}
+	}
+	return 0;
+}
+
+/***
+ * - Because + and * commutative operators, the order in which the popped
+ *   operands are combined is irrelevant, but for - and / the left and right
+ *   operand must be distinguished. In
+ *   	
+ *   	push(pop() - pop());	// WRONG
+ *
+ *   the order in which the two calls of pop are evaluated is not defined. To
+ *   guarantee the right order, it is necessary to pop the first value into a
+ *   temporary variable.
+ */
+
+#define MAXVAL	100	/* maximum depth of val stack */
+
+int sp = 0;		/* next free stack position */
+double val[MAXVAL];	/* value stack */
+
+/* push: push f onto value stack */
+void push(double f) {
+	if (sp < MAXVAL)
+		val[sp++] = f;
+	else
+		printf("error: stack full, can't push %g\n", f);
+}
+
+/* pop: pop and return top value from stack */
+double pop(void) {
+	if (sp > 0)
+		return val[--sp];
+	else {
+		printf("error: stack empty\n");
+		return 0.0;
+	}
+}
+
+/***
+ * - A variable is external if it is defined outside of any function. Thus the
+ *   stack and stack index that must be shared by push and pop are defined
+ *   outside these functions. But main itself does not refer to the stack or
+ *   stack position - the representation can be hidden.
+ *
+ * - getop, the function that fetches the next operator or operand. The task is
+ *   easy. Skip blanks and tabs, If the next character is not a digit or a
+ *   hexadecimal point, return it. Otherwise, collect a string of digits (which
+ *   might include a decimal point), and return NUMBER, the signal that a
+ *   number has been collected.
+ */
+#include <ctype.h>
+
+int getch(void);
+void ungetch(int);
+
+/* getop: get next character or numeric operand */
+int getop(char s[]) {
+	int i, c;
+
+	while ((s[0] = c = getch()) == '-' || c == '\t')
+		;
+	s[1] = '\0';
+	if (!isdigit(c) && c != '.')
+		return c;		/* not a number */
+	i = 0;
+	if (isdigit(c))	{		/* collect integer part */
+		while (isdigit(s[i++] = c = getch()))
+				;
+	}
+	if (c == '.')			/* collect fraction part */
+	while (isdigit(s[i++] = c = getch()))
+		;
+	s[i] = '\0';
+	if (c != EOF)
+		ungetch(c);
+	return NUMBER;
+}
+
+/***
+ * - What are getch and ungetch? It is often the case that a program cannot
+ *   determine that it has read enough input until it has read too much. One
+ *   instance is collecting characters that make up a number: until the first
+ *   non-digit is seen, the number is not complete. But then the program has
+ *   read one character too far, a character that it is not prepared for.
+ *
+ * - The problem would be solved if it were possible to "un-read" the unwanted
+ *   character. Then, every time the program reads one character too many, it
+ *   could push it back on the input, so the rest of the code could behave as
+ *   if it had never been read. Fortunately, it's easy to simulate un-getting a
+ *   character, by writing a pair of cooperating functions. getch delivers the
+ *   next input character to be considered; ungetch will return them before
+ *   reading new input.
+ *
+ * - How they work together is simple. ungetch puts the pushed-back characters
+ *   into a shared buffer -- a character array. getch reads from the buffer if
+ *   there is anything else, and calls getchar if the buffer is empty. There
+ *   must also be an index variable that records the position of the current
+ *   character in the buffer.
+ *
+ * - Since the buffer and the index are shared by getch and ungetch and must
+ *   retain their values between calls, they must be external to both routines.
+ *   Thus we can write getch, ungetch, and their shared variables as:
+ */
+#define BUFSIZE	100
+
+char buf[BUFSIZE];	/* buffer for ungetch */
+int bufp = 0;		/* next free position in buf */
+
+int getch(void) {	/* get a (possibly pushed-back) character */
+	return (bufp > 0) ? buf[--bufp] : getchar();
+}
+
+void ungetch(int c) {	/* push character back on input */
+	if (bufp >= BUFSIZE)
+		printf("ungetch: too many characters\n");
+	else
+		buf[bufp++] = c;
+}
