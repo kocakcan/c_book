@@ -1,4 +1,6 @@
 /***
+ * 4.2 Functions Returning Non-integers
+ *
  * - Many numerical functions like sqrt, sin, and cos return double; other
  *   specialized functions return other types.
  * - To illustrate how to deal with this, let's write and use the function
