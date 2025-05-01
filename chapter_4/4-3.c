@@ -39,8 +39,9 @@ int main() {
 			break;
 		case '%':
 			op2 = pop();
+			double op1 = pop();
 			if ((int)op2 != 0) 
-				push((int)pop() % (int)op2);
+				push((int)op1 % (int)op2);
 			else
 				printf("error: zero divisor for modulus\n");
 			break;
