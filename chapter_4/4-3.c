@@ -39,11 +39,10 @@ int main() {
 			break;
 		case '%':
 			op2 = pop();
-			if ((int)op2 == 0) {
-				printf("error: zero divisor for modulus\n");
-			} else {
+			if ((int)op2 != 0) 
 				push((int)pop() % (int)op2);
-			}
+			else
+				printf("error: zero divisor for modulus\n");
 			break;
 		case '\n':
 			printf("\t%.8g\n", pop());
