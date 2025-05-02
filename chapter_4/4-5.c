@@ -1,6 +1,5 @@
-/* Add the commands to print the top elements of the stack without popping, to
- * duplicate it, and to swap the top two elements. Add a command to clear the
- * stack. */
+/* Add access to library functions like sin, exp, and pow. */
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -64,6 +63,20 @@ int main() {
       break;
     case 'c':
       clear();
+      break;
+    case '$':
+      push(sin(pop()));
+      break;
+    case '&':
+      push(exp(pop()));
+      break;
+    case '^':
+      op1 = pop();
+      op2 = pop();
+      if (op1 == 0 && op2 == 0)
+        printf("0 to the power of 0 is undefined\n");
+      else
+        push(pow(op2, op1));
       break;
     default:
       printf("error: unknown command %s\n", s);
@@ -145,7 +158,7 @@ void ungetch(int c) {
 
 void peek(void) {
   if (sp) {
-    printf("top of the stack: %g\n", val[sp - 1]);
+    printf("top of the stack: %g\n", val[--sp]);
   } else {
     printf("error: stack empty yo!\n");
   }
