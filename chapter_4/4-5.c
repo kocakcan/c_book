@@ -71,12 +71,8 @@ int main() {
       push(exp(pop()));
       break;
     case '^':
-      op1 = pop();
       op2 = pop();
-      if (op1 == 0 && op2 == 0)
-        printf("0 to the power of 0 is undefined\n");
-      else
-        push(pow(op2, op1));
+      push(pow(pop(), op2));
       break;
     default:
       printf("error: unknown command %s\n", s);
