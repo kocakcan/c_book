@@ -7,7 +7,7 @@
  *   that don't need to know about them, thus clarifying the whole, and easing
  *   the pain of making changes.
  *
- * - C has been designed to make functions efficient and easy to used; C
+ * - C has been designed to make functions efficient and easy to be used; C
  *   programs generally consist of many small functions rather than a few big
  *   ones. A program may reside in one or more source files. Source files may
  *   be compiled seperately and loaded together, along with previously compiled
