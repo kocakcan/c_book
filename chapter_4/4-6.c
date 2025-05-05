@@ -7,8 +7,15 @@
 
 #define MAXOP 100
 #define NUMBER '0'
+#define VARSET '_'
+#define VARGET 'a'
+#define VARNUM 26
+char var = '0';
+
+enum boolean { FALSE, TRUE };
 
 int getop(char[]);
+int isempty(void);
 void push(double);
 double pop(void);
 void peek(void);
@@ -52,7 +59,8 @@ int main() {
         printf("error: zero divisor for modulus\n");
       break;
     case '\n':
-      printf("\t%.8g\n", pop());
+      if (!isempty())
+        printf("\t%.8g\n", pop());
       break;
     case 'p':
       peek();
@@ -180,3 +188,5 @@ void clear(void) {
   while (sp > 0)
     val[--sp] = 0.0;
 }
+
+int isempty(void) { return (sp > 0) ? FALSE : TRUE; }
