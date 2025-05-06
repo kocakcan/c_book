@@ -28,6 +28,9 @@ int main() {
   double op2;
   char s[MAXOP];
 
+  int varindex = 0;
+  double var_buff[VARNUM];
+
   while ((type = getop(s)) != EOF) {
     switch (type) {
     case NUMBER:
@@ -73,6 +76,17 @@ int main() {
       break;
     case 'c':
       clear();
+      break;
+    case VARSET:
+      var_buff[varindex++] = pop();
+      printf("variable %c: %.3f\n", 'a' + varindex - 1, var_buff[varindex - 1]);
+      break;
+    case VARGET:
+      // Check if the variable has been assigned previously
+      if (var - 'a' <= (varindex - 1))
+        push(var_buff[var - 'a']);
+      else
+        printf("error: undefined variable\n");
       break;
     case '$':
       push(sin(pop()));
