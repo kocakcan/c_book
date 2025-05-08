@@ -57,5 +57,5 @@ void ungetch(int c) {
   else
     buf[bufp++] = c;
 }
-/* ungets functions doesn't need access to buf and bufp. It is enough for it to
-* use the ungetch() */
+/* ungets function doesn't need access to buf and bufp. Accessing ungetch would
+ * suffice. */
