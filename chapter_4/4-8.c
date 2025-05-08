@@ -11,13 +11,13 @@ int getch(void) {
   int temp = c;
   c = 0;
 
-  return (temp) ? temp : getchar();
+  return (temp != 0) ? temp : getchar();
 }
 
 /* ungetch: push character back on input */
 void ungetch(int ch) {
   // Ensure no more than one character is pushed back
-  if (!c)
+  if (c != 0)
     printf("ungetch: already have a pushed character\n");
   else
     // Push back the character
