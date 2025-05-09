@@ -9,7 +9,6 @@ int getch(void) {
   int temp = c;
   c = 0;
 
-  // return (temp) ? temp : getchar();
   return (temp) ? temp : getchar();
 }
 
@@ -26,15 +25,14 @@ int main(void) {
 
   printf("Enter a character: ");
   ch = getch();
-  printf("You've entered: '%c' (ASCII: %d)\n", (char)ch, ch);
+  printf("You've entered: %c (ASCII: %d)\n", ch, ch);
 
   ungetch(ch);
   ch = getch();
-  printf("After ungetch: '%c' (ASCII: %d)\n", (char)ch, ch);
+  printf("After ungetch: %c (ASCII: %d)\n", ch, ch);
 
   ungetch(EOF);
-  ch = getch();
-  if (ch == EOF) {
+  if (getch() == EOF) {
     printf("After pushing back EOF, received EOF again.\n");
   }
 }
