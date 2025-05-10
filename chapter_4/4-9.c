@@ -3,7 +3,8 @@
  * design. */
 #include <stdio.h>
 
-char c = 0;
+// Declared as int to accommodate EOF
+int c = 0;
 
 int getch(void) {
   int temp = c;
