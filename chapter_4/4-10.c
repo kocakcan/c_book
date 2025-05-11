@@ -11,7 +11,7 @@
 #define MAXVAL  100    // Maximum depth of val stack
 
 char buf[BUFSIZE];     // Input line buffer
-int buf_index = 0;     // Current position in buf
+int bufp = 0;     // Current position in buf
 
 // Stack
 int sp = 0;             // Next free stack position
@@ -29,7 +29,7 @@ int main(void) {
     char s[MAXOP];
 
     while (getline_() > 0) {
-        buf_index = 0;  // Reset input buffer position at start of line
+        bufp = 0;  // Reset input buffer position at start of line
 
         while ((type = getop(s)) != '\0') {
             switch (type) {
@@ -96,7 +96,7 @@ int getop(char s[]) {
     int c;
 
     // Skip whitespace
-    while ((c = buf[buf_index++]) == ' ' || c == '\t')
+    while ((c = buf[bufp++]) == ' ' || c == '\t')
         ;
 
     if (c == '\0')
@@ -111,29 +111,29 @@ int getop(char s[]) {
 
     // Handle negative numbers
     if (c == '-') {
-        int next = buf[buf_index];
+        int next = buf[bufp];
         if (!isdigit(next) && next != '.') {
             return '-';  // Minus operator
         }
-        c = buf[buf_index++];
+        c = buf[bufp++];
         s[++i] = c;
     }
 
     // Integer part
-    while (isdigit(c = buf[buf_index++]))
+    while (isdigit(c = buf[bufp++]))
         s[++i] = c;
 
     // Fractional part
     if (c == '.') {
         s[++i] = c;
-        while (isdigit(c = buf[buf_index++]))
+        while (isdigit(c = buf[bufp++]))
             s[++i] = c;
     }
 
     s[++i] = '\0';
 
     if (c != '\0')
-        buf_index--;  // Unread one character
+        bufp--;  // Unread one character
 
     return NUMBER;
 }
