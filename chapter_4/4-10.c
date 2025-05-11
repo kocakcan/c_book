@@ -127,19 +127,19 @@ int getop(char s[]) {
 // char buf[BUFSIZE];
 // int bufp = 0;
 
-int getch(void) {
-	int temp = (bufp > 0) ? buf[--bufp] : getchar();
-	buf[--bufp] = 0;
-
-	return temp;
-}
-
-void ungetch(int ch) {
-	if (buf[--bufp])
-		printf("ungetch: too many characters\n");
-	else
-		buf[bufp++] = c;
-}	
+// int getch(void) {
+// 	int temp = (bufp > 0) ? buf[--bufp] : getchar();
+// 	buf[--bufp] = 0;
+//
+// 	return temp;
+// }
+//
+// void ungetch(int ch) {
+// 	if (buf[--bufp])
+// 		printf("ungetch: too many characters\n");
+// 	else
+// 		buf[bufp++] = c;
+// }	
 // int getch(void) {
 // 	return (bufp > 0) ? buf[--bufp] : getchar();
 // }
