@@ -9,5 +9,18 @@
  * seperate them from the others because they would come from a
  * seperately-compiled library in a realistic program.
  *
- * TODO: Continue from this point
+ * There is one more thing to worry about - the definitions and declarations
+ * shared among files. As much as possible, we want to centralize this, so that
+ * there is only one copy to get and keep right as the program evolves.
+ * Accordingly, we will place this common material in a header file, calc.h,
+ * which will be included as necessary.
+ *
+ * There is a tradeoff between the desire that each file have access only to
+ * the information it needs for its job and the practical reality that it is
+ * harder to maintain more header files. Up to some moderate program size, it
+ * is probably best to have one header file that contains everything that is to
+ * be shared between any two parts of the program; that is the decision we made
+ * here. For a much larger program, more organization and more headers would be
+ * needed.
+ */
  */
