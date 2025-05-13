@@ -1,17 +1,15 @@
 #include <stdio.h>
-#define BUFSIZE	100
+#define BUFSIZE 100
 
 // External variables
-char buf[BUFSIZE];
-int bufp = 0;
+static char buf[BUFSIZE];
+static int bufp = 0;
 
-int getch(void) {
-	return (bufp > 0) ? buf[--bufp] : getchar();
-}
+int getch(void) { return (bufp > 0) ? buf[--bufp] : getchar(); }
 
 void ungetch(int c) {
-	if (bufp >= BUFSIZE)
-		printf("ungetch: too many characters\n");
-	else
-		buf[bufp++] = c;
+  if (bufp >= BUFSIZE)
+    printf("ungetch: too many characters\n");
+  else
+    buf[bufp++] = c;
 }
