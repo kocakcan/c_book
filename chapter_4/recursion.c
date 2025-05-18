@@ -11,9 +11,11 @@
  * array as they are generated, then print them in the reverse order. The
  * alternative is a recursive solution, in which printd calls itself to cope
  * with any leading digits, then prints the trailing digit. Again, this version
- * can fail on the largest negative number.
+ * can fail on the largest negative number because it would cause an overflow.
  */
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 /* printd: print n in decimal */
 void printd(int n) {
@@ -45,7 +47,7 @@ void printd(int n) {
 // Here's an example of this quicksort using middle element of each subarray for partitioning
 
 /* qsort: sort v[left]...v[right] into increasing order */
-void qsort(int v[], int left, int right) {
+void qsort_(int v[], int left, int right) {
 	int i, last;
 	void swap(int v[], int i, int j);
 
@@ -58,8 +60,8 @@ void qsort(int v[], int left, int right) {
 		if (v[i] < v[left])
 			swap(v, ++last, i);
 	swap(v, left, last);			/* restore partition elem */
-	qsort(v, left, last - 1);
-	qsort(v, last + 1, right);
+	qsort_(v, left, last - 1);
+	qsort_(v, last + 1, right);
 }
 
 /***
@@ -82,13 +84,34 @@ void swap(int v[], int i, int j) {
  * convenient for recursively defined data structures like trees.
  */
 
+void printa(int arr[], size_t size) {
+	putchar('[');
+	for (size_t i = 0; i < size; i++) {
+		if (i == size - 1)
+			printf("%d", arr[i]);
+		else
+			printf("%d, ", arr[i]);
+	}
+	printf("]\n");
+}
+
 int main(void) {
-	int nums[] = {1, -5, 3, 11, -32, 40, 21};
+	size_t size = 1000;
+	int numbers[size];
 
-	qsort(nums, 2, 5);
+	srand(time(NULL));
 
-	for (int i = 0; i < 7; i++)
-		printf("%d\n", nums[i]);
+	for (int i = 0; i < size; i++)
+		numbers[i] = rand() % 1000;
+
+	qsort_(numbers, 0, 999);
+
+	// for (int i = 0; i < 1000; i++)
+		// printf("%d\n", numbers[i]);
+
+	printa(numbers, size);
+
+	// printd(19);
 
 	return 0;
 }
