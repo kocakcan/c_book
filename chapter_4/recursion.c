@@ -71,14 +71,12 @@ void qsort(int v[], int left, int right) {
 void swap(int v[], int i, int j) {
 	int temp;
 
-	temp = v[i];
-	v[i] = v[j];
-	v[j] = temp;
+	temp = v[i], v[i] = v[j], v[j] = temp;
 }
 
 /***
- * Recursion may provide no saving in storage, since somewhere in a stack of
- * the values being processed must be terminated. Nor will it be faster. But
+ * Recursion may provide no saving in storage, since somewhere a stack of
+ * the values being processed must be maintained. Nor will it be faster. But
  * recursive code is more compact, and often much easier to write and
  * understand than the non-recursive equivalent. Recursion is especially
  * convenient for recursively defined data structures like trees.
