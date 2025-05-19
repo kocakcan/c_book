@@ -2,12 +2,16 @@
 #include <stdio.h>
 
 void itoa(int n, char s[]) {
-	static int i, sign;
+	// Need not initialize i as it is static
+	// it will be initialized to zero by default
+	static int i;
+	int sign;
 
 	if ((sign = n) < 0)
 		n = -n;
 
-	i = 0;
+	if (sign < 0)
+		s[i++] = '-';
 
 	// do {
 		// s[i++] = n % 10 + '0';
@@ -17,16 +21,13 @@ void itoa(int n, char s[]) {
 		itoa(n / 10, s);
 	s[i++] = n % 10 + '0';
 
-	// TODO: sign is not processed properly
-	if (sign < 0)
-		s[i++] = '-';
 	s[i] = '\0';
 	// reverse(s);
 }
 
 int main(void) {
 	char s[10];
-	int n = -1923;
+	int n = -1965;
 	itoa(n, s);
 	printf("%s\n", s);
 
