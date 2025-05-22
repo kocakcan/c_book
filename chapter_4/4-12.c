@@ -2,6 +2,17 @@
 #include <stdio.h>
 #include <limits.h>
 
+/*** Actual flow for the call itoa(123, s, 0):
+ *
+ * itoa(1, s, 0) writes '1' at s[0], returning 1
+ * itoa(12, s, 0) receives i = 1, writes '2' at s[1], returning 2
+ * itoa(123, s, 0) receives i = 2, writes '3' at s[2], returning 3
+ *
+ * Each recursive call waits at this line:
+ *
+ * if (n / 10)
+ * 	i = itoa(n / 10, s, i);
+ */
 int utoa(unsigned int n, char s[], int i) {
 	if (n / 10)
 		i = utoa(n / 10, s, i);
