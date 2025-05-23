@@ -3,19 +3,18 @@
 #include <stdio.h>
 #include <string.h>
 
-void reverse(char s[]) {
-  int i, j, c;
-  void swap(char s[], char i, char j);
-
-  for (i = 0, j = strlen(s) - 1; i < j; i++, j--)
-    swap(s, i, j);
-  // c = s[i], s[i] = s[j], s[j] = c;
-}
-
 void swap(char s[], char i, char j) {
+  if (i >= j)
+	  return;
+
   int temp;
 
   temp = s[i], s[i] = s[j], s[j] = temp;
+  swap(s, ++i, --j);
+}
+
+void reverse(char s[]) {
+	swap(s, 0, strlen(s) - 1);
 }
 
 int main(void) {
