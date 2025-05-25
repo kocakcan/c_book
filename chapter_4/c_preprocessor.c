@@ -83,22 +83,61 @@
  * 	#define square(x)	x * x -> WRONG
  * is invoked as square(z + 1).
  *
- * TODO: Continue from this point
- * Nonetheless, macros are valuable.
+ * Nonetheless, macros are valuable. One practical example comes from
+ * <stdio.h>, in which getchar and putchar are ofthen defined as macros to
+ * avoid the run-time overhead of a function call per character processed. The
+ * functions in <ctype.h> are also usually implemented as macros.
+ *
+ * Names may be undefined with #undef, usually to ensure that a routine is
+ * really a function, not a macro:
+ *
+ * 	#undef getchar
+ *
+ * 	int getchar(void) { ... }
+ * Formal parameters are not replaced with quoted strings. If, however, a
+ * parameter name is preceeded by a # in the replacement text, the combination
+ * will be expanded into a quoted string with the parameter replaced by the
+ * actual argument. This can be combined with string concatenation to make, for
+ * example, a debugging print macro:
+ *
+ * 	#define dprint(expr)	printf(#expr " = %g\n", expr)
+ * When this is invoked, as in
+ *
+ * 	dprint(x/y)
+ * the macro is expanded into
+ *
+ *  	printf("x/y" " = %g\n", x/y);
+ * and the string are concatenated, so the effect is
+ *
+ * 	printf("x/y = &g\n", x/y);
+ * Within the actual argument, each " is replaced by \" and each \ by \\. so
+ * the result is a legal string constant.
+ *
+ * The preprocessor operator ## provides a way to concatenate actual arguments
+ * during macro expansion. If a parameter in the replacement text is adjacent
+ * to a ##, the parameter is replaced by the actual argument, the ## and
+ * surrounding white space are removed, and the result is re-scanned. For
+ * example, the macro paster concatenates its two arguments.
+ *
+ * 	#define paste(front, back)	front ## back
+ * so paste(name, l) creates the token namel.
  */
 #include <stdio.h>
-#define NAME	"Can"
-#define SURNAME	" Kocak"
-#define FULLNAME	NAME SURNAME
-#define forever	for (;;)
-#define square(x)	(x) * (x)
+#define NAME			"Can"
+#define SURNAME			"Kocak"
+#define paste(front, back)	front ## back
+#define NAMESURNAME		"Can Kocak"
+#define forever			for (;;)
+#define square(x)		(x) * (x)
+#define dprint(expr)		printf(#expr " = %g\n", expr)
 
 int main(void) {
-	printf("My full name is %s\n", FULLNAME);
 	int x = 19;
 	// forever
 	// 	printf("What's going on?\n");
 	printf("20 squared is: %d\n", square(19 + 1));
+	printf("My full name is %s\n", paste(NAME, SURNAME));
+	dprint(3.14 + 4.20);
 
 	return 0;
 }
