@@ -85,7 +85,7 @@
  * is invoked as square(z + 1).
  *
  * Nonetheless, macros are valuable. One practical example comes from
- * <stdio.h>, in which getchar and putchar are ofthen defined as macros to
+ * <stdio.h>, in which getchar and putchar are often defined as macros to
  * avoid the run-time overhead of a function call per character processed. The
  * functions in <ctype.h> are also usually implemented as macros.
  *
