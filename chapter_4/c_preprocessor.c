@@ -122,6 +122,58 @@
  *
  * 	#define paste(front, back)	front ## back
  * so paste(name, l) creates the token namel.
+ *
+ * 4.11.3 Conditional Inclusion
+ *
+ * It is possible to control preprocessing itself with conditional statements
+ * that are evaluated during preprocessing. This provides a way to include code
+ * selectively, depending on the value of conditions evaluated during
+ * compilation.
+ *
+ * The #if line evaluates a constant integer expression (which may not include
+		 * sizeof, casts, or enum constants). If the expression is
+ * non-zero, subsequent lines until an #endif or #elif or #else are included.
+ * (The preprocessor statement #elif is like else-if.) The expression
+ * defined(name) in a #if is 1 if the name has been defined, and 0 otherwise.
+ *
+ * For example, to make sure that the contents of a file hdr.h are included
+ * only once, the contents of the file are surrounded with a conditional like
+ * this:
+ *
+ * 	#if !defined(HDR)
+ *      #define HDR
+ *
+ *      -> contents of hdr.h goes here
+ *
+ *      #endif
+ * The first inclusion of hdr.h defines the name HDR; subsequent inclusions
+ * will find the same defined and skip down to the #endif. A similar style can
+ * be used to avoid including files multiple times. If this style is used
+ * consistently, then each header can itself include any other headers on which
+ * it depends, without the user of the header having to deal with the
+ * interdependence.
+ *
+ * This sequence tests the name SYSTEM to decide which version of a header to
+ * include:
+ *
+ * 	#if SYSTEM == SYSV
+ * 		#define HDR "sysv.h"
+ * 	#elif SYSTEM == BSD
+ * 		#define HDR "bsd.h"
+ * 	#elif SYSTEM == MSDOS
+ * 		#define HDR "msdos.h"
+ * 	#else
+ * 		#define HDR "default.h"
+ * 	#endif
+ * 	#include HDR
+ * The #ifdef and #ifndef lines are specialized forms that test whether a name
+ * is defined. The first example of #if above could have been written
+ * 	
+ * 	#ifndef HDR
+ * 	#define HDR
+ *
+ * 	-> contents of hdr.h goes here
+ * 	#endif
  */
 #include <stdio.h>
 #define NAME			"Can"
@@ -134,6 +186,9 @@
 #define max(A, B)		((A) > (B) ? (A) : (B))
 #define nil			0
 #define LOG(expr)		printf(#expr)
+#ifndef ALIAS
+#define ALIAS			"Knight Artorias"
+#endif
 
 int main(void) {
 	int x = 19;
@@ -147,6 +202,7 @@ int main(void) {
 	if (nil)
 		printf("This won't execute\n");
 	LOG(This is so cool!\n);
+	printf("My alias is %s\n", ALIAS);
 
 	return 0;
 }
