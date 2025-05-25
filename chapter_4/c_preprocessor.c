@@ -72,7 +72,8 @@
  * any data type; there is no need for different kinds of max for different
  * data types, as there would be with functions. If you examine the expansion
  * of max, you will notice some pitfalls. The expressions are evaluated twice;
- * this is bad if the involve side effects like increment operators or input
+ * this is bad if they involve side effects like increment operators or input
+ *
  * and ouput. For instance
  *
  * 	max(i++, j++) -> WRONG
@@ -130,6 +131,9 @@
 #define forever			for (;;)
 #define square(x)		(x) * (x)
 #define dprint(expr)		printf(#expr " = %g\n", expr)
+#define max(A, B)		((A) > (B) ? (A) : (B))
+#define nil			0
+#define LOG(expr)		printf(#expr)
 
 int main(void) {
 	int x = 19;
@@ -138,6 +142,11 @@ int main(void) {
 	printf("20 squared is: %d\n", square(19 + 1));
 	printf("My full name is %s\n", paste(NAME, SURNAME));
 	dprint(3.14 + 4.20);
+	printf("Between 3 and 5 the max is %d\n", max(3, 5));
+
+	if (nil)
+		printf("This won't execute\n");
+	LOG(This is so cool!\n);
 
 	return 0;
 }
