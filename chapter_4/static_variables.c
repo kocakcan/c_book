@@ -17,7 +17,7 @@
  *   static char buf[BUFSIZE]; -> buffer for ungetch
  *   static int bufp = 0;      -> next free position in buf
  *
- *   int getch(void) { .. }
+ *   int getch(void) { ... }
  *
  *   void ungetch(int c) { ... }
  *

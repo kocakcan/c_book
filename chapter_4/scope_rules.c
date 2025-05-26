@@ -80,6 +80,6 @@
  *    double val[MAXVAL];
  *  Because the extern declarations in file1 lie ahead of and outside the
  *  function definitions, they apply to all functions; one set of declarations
- *  suffices for all of file1. This same organization would also be needed if
+ *  suffice for all of file1. This same organization would also be needed if
  *  the definition of sp an val followed their use in one file.
  */

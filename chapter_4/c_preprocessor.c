@@ -51,7 +51,7 @@
  * in YESMAN.
  *
  * Any name may be defined with any replacement text. For example
- * 	
+ *
  * 	#define forever	for (;;) -> infinite loop
  * defines a new word, forever, for an infinite loop.
  *
@@ -73,7 +73,6 @@
  * data types, as there would be with functions. If you examine the expansion
  * of max, you will notice some pitfalls. The expressions are evaluated twice;
  * this is bad if they involve side effects like increment operators or input
- *
  * and ouput. For instance
  *
  * 	max(i++, j++) -> WRONG
@@ -118,7 +117,7 @@
  * during macro expansion. If a parameter in the replacement text is adjacent
  * to a ##, the parameter is replaced by the actual argument, the ## and
  * surrounding white space are removed, and the result is re-scanned. For
- * example, the macro paster concatenates its two arguments.
+ * example, the macro paste concatenates its two arguments.
  *
  * 	#define paste(front, back)	front ## back
  * so paste(name, l) creates the token namel.
@@ -131,7 +130,7 @@
  * compilation.
  *
  * The #if line evaluates a constant integer expression (which may not include
-		 * sizeof, casts, or enum constants). If the expression is
+ * sizeof, casts, or enum constants). If the expression is
  * non-zero, subsequent lines until an #endif or #elif or #else are included.
  * (The preprocessor statement #elif is like else-if.) The expression
  * defined(name) in a #if is 1 if the name has been defined, and 0 otherwise.
@@ -145,7 +144,7 @@
  *
  *      -> contents of hdr.h goes here
  *
- *      #endif
+ *  #endif
  * The first inclusion of hdr.h defines the name HDR; subsequent inclusions
  * will find the same defined and skip down to the #endif. A similar style can
  * be used to avoid including files multiple times. If this style is used
@@ -168,7 +167,7 @@
  * 	#include HDR
  * The #ifdef and #ifndef lines are specialized forms that test whether a name
  * is defined. The first example of #if above could have been written
- * 	
+ *
  * 	#ifndef HDR
  * 	#define HDR
  *
@@ -176,33 +175,33 @@
  * 	#endif
  */
 #include <stdio.h>
-#define NAME			"Can"
-#define SURNAME			"Kocak"
-#define paste(front, back)	front ## back
-#define NAMESURNAME		"Can Kocak"
-#define forever			for (;;)
-#define square(x)		(x) * (x)
-#define dprint(expr)		printf(#expr " = %g\n", expr)
-#define max(A, B)		((A) > (B) ? (A) : (B))
-#define nil			0
-#define LOG(expr)		printf(#expr)
+#define NAME "Can"
+#define SURNAME "Kocak"
+#define paste(front, back) front##back
+#define NAMESURNAME "Can Kocak"
+#define forever for (;;)
+#define square(x) (x) * (x)
+#define dprint(expr) printf(#expr " = %g\n", expr)
+#define max(A, B) ((A) > (B) ? (A) : (B))
+#define nil 0
+#define LOG(expr) printf(#expr)
 #ifndef ALIAS
-#define ALIAS			"Knight Artorias"
+#define ALIAS "Knight Artorias"
 #endif
 
 int main(void) {
-	int x = 19;
-	// forever
-	// 	printf("What's going on?\n");
-	printf("20 squared is: %d\n", square(19 + 1));
-	printf("My full name is %s\n", paste(NAME, SURNAME));
-	dprint(3.14 + 4.20);
-	printf("Between 3 and 5 the max is %d\n", max(3, 5));
+  int x = 19;
+  // forever
+  // 	printf("What's going on?\n");
+  printf("20 squared is: %d\n", square(19 + 1));
+  printf("My full name is %s\n", paste(NAME, SURNAME));
+  dprint(3.14 + 4.20);
+  printf("Between 3 and 5 the max is %d\n", max(3, 5));
 
-	if (nil)
-		printf("This won't execute\n");
-	LOG(This is so cool!\n);
-	printf("My alias is %s\n", ALIAS);
+  if (nil)
+    printf("This won't execute\n");
+  LOG(This is so cool !\n);
+  printf("My favourite Dark Souls boss is %s\n", ALIAS);
 
-	return 0;
+  return 0;
 }
