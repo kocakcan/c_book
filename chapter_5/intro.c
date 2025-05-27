@@ -91,3 +91,18 @@
  * copies the contents of ip into iq, thus making iq point to whatever ip
  * pointed to.
  */
+#include <stdio.h>
+
+int main(void) {
+  int x = 19;
+  int *px = &x;
+
+  printf("x is: %d\n", *px);
+  ++*px;
+  // *px++;
+  printf("x is: %d\n", *px);
+  (*px)++;
+  printf("x is: %d\n", *px);
+
+  return 0;
+}
