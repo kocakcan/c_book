@@ -17,12 +17,32 @@ int getint(int *pn) {
     return 0;
   }
   sign = (c == '-') ? -1 : 1;
-  if (c == '+' || c == '-')
-    c = getch();
+  if (c == '+' || c == '-') {
+    int next = getch();
+    if (isdigit(next))
+	    c = next;
+    else
+	    ungetch(c);
+  }
   for (*pn = 0; isdigit(c); c = getch())
     *pn = 10 * *pn + (c - '0');
   *pn *= sign;
   if (c != EOF)
     ungetch(c);
   return c;
+}
+
+int main(void) {
+	int n, array[10];
+
+	for (n = 0; n < 10 && getint(&array[n]) != EOF; n++)
+		;
+
+	printf("Here's your array\n");
+
+	for (n = 0; n < 10; n++)
+		printf("%d\n", array[n]);
+	putchar('\n');
+
+	return 0;
 }
