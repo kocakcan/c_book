@@ -10,19 +10,20 @@ extern void ungetch(int);
 int getint(int *pn) {
   int c, sign;
 
-  while (isspace(c = getch())) /* skip white space */
+  while (isspace(c = getch()))	/* skip white space */
     ;
   if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
-    ungetch(c); /* it is not a number */
+    ungetch(c); 		/* it is not a number */
     return 0;
   }
   sign = (c == '-') ? -1 : 1;
   if (c == '+' || c == '-') {
-    int next = getch();
-    if (isdigit(next))
-	    c = next;
-    else
-	    ungetch(c);
+	  // take a peek at the next character
+	  if (!isdigit(c = getch())) {
+	    ungetch(c);		/* it is not a number */
+	    ungetch(sign);	/* push back the sign as well */
+	    return 0;
+	  }
   }
   for (*pn = 0; isdigit(c); c = getch())
     *pn = 10 * *pn + (c - '0');
