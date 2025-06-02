@@ -40,6 +40,11 @@ float getfloat(float *pf) {
 
   while (isspace(c = getch()))
     ;
+
+  if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
+    ungetch(c);
+    return 0;
+  }
   sign = (c == '-') ? -1 : 1;
   if (c == '+' || c == '-') {
     if (!isdigit(c = getch())) {
