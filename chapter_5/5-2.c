@@ -35,10 +35,32 @@ int getint(int *pn) {
 
 /* getfloat: get next float from input into *pf */
 float getfloat(float *pf) {
-  // TODO: Implement this function
-  float val, power;
+  float power;
   int c, sign;
 
   while (isspace(c = getch()))
     ;
+  sign = (c == '-') ? -1 : 1;
+  if (c == '+' || c == '-') {
+    if (!isdigit(c = getch())) {
+      ungetch(c);
+      ungetch(sign);
+      return 0;
+    }
+  }
+
+  for (*pf = 0.0; isdigit(c); c = getch())
+    *pf = 10.0 * *pf + (c - '0');
+
+  if (c == '.')
+    ungetch('.');
+
+  for (*pf = 0.0; isdigit(c); c = getch()) {
+    *pf = 10.0 * *pf + (c - '0');
+    power *= 10;
+  }
+
+  if (c != EOF)
+    ungetch(c);
+  return sign * *pf / power;
 }
