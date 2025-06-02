@@ -64,3 +64,19 @@ float getfloat(float *pf) {
     ungetch(c);
   return sign * *pf / power;
 }
+
+int main(void) {
+  int n;
+  float array[10];
+
+  for (n = 0; n < 10 && getfloat(&array[n]) != EOF; n++)
+    ;
+
+  printf("Here's your array\n");
+
+  for (n = 0; n < 10; n++)
+    printf("%.1f\n", array[n]);
+  putchar('\n');
+
+  return 0;
+}
