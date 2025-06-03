@@ -58,7 +58,7 @@ float getfloat(float *pf) {
     *pf = 10.0 * *pf + (c - '0');
 
   if (c == '.')
-    ungetch('.');
+    ungetch(c);
 
   for (power = 1.0; isdigit(c); c = getch()) {
     *pf = 10.0 * *pf + (c - '0');
