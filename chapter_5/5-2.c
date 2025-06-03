@@ -6,68 +6,53 @@
 extern int getch(void);
 extern void ungetch(int);
 
-/* getint: get next integer from input into *pn */
-int getint(int *pn) {
-  int c, sign;
-
-  while (isspace(c = getch())) /* skip white space */
-    ;
-  if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
-    ungetch(c); /* it is not a number */
-    return 0;
-  }
-  sign = (c == '-') ? -1 : 1;
-  if (c == '+' || c == '-') {
-    // take a peek at the next character
-    if (!isdigit(c = getch())) {
-      ungetch(c);    /* it is not a number */
-      ungetch(sign); /* push back the sign as well */
-      return 0;
-    }
-  }
-  for (*pn = 0; isdigit(c); c = getch())
-    *pn = 10 * *pn + (c - '0');
-  *pn *= sign;
-  if (c != EOF)
-    ungetch(c);
-  return c;
-}
-
 /* getfloat: get next float from input into *pf */
-float getfloat(float *pf) {
-  float power;
-  int c, sign;
+int getfloat(float *pf) {
+	int c, sign;
+	float power;
+	
+	while (isspace(c = getch()))
+		;
 
-  while (isspace(c = getch()))
-    ;
+	if (!isdigit(c) && c != '+' && c != '-' && c != '.' && c != EOF) {
+		ungetch(c);
+		return 0;
+	}
 
-  if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
-    ungetch(c);
-    return 0;
-  }
-  sign = (c == '-') ? -1 : 1;
-  if (c == '+' || c == '-') {
-    if (!isdigit(c = getch())) {
-      ungetch(c);
-      ungetch(sign);
-      return 0;
-    }
-  }
+	sign = 1;
+	if (c == '+' || c == '-') {
+		int next = getch();
+		if (!isdigit(next) && next != '.') {
+			ungetch(next);
+			ungetch(c);
+			return 0;
+		}
+		sign = (c == '-') ? -1 : 1;
+		c = next;
+	}
 
-  for (*pf = 0.0; isdigit(c); c = getch())
-    *pf = 10.0 * *pf + (c - '0');
+	*pf = 0.0;
+	while (isdigit(c)) {
+		*pf = 10.0 * *pf + (c - '0');
+		c = getch();
+	}
 
-  if (c == '.')
-    ungetch(c);
+	power = 1.0;
+	if (c == '.') {
+		c = getch();
+		while (isdigit(c)) {
+			*pf = 10.0 * *pf + (c - '0');
+			power *= 10;
+			c = getch();
+		}
+	}
 
-  for (power = 1.0; isdigit(c); c = getch()) {
-    *pf = 10.0 * *pf + (c - '0');
-    power *= 10;
-  }
+	*pf = sign * *pf / power;
 
-  if (c != EOF)
-    ungetch(c);
-  return sign * *pf / power;
+	if (c != EOF)
+		ungetch(c);
+
+	return 1;
 }
 
 int main(void) {
