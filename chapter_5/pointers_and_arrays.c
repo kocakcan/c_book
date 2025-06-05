@@ -10,7 +10,7 @@
  * The declaration,
  *
  *   int a[10];
- * defines an array of size 10, that is, a block of 10 consecutive objects names
+ * defines an array of size 10, that is, a block of 10 consecutive objects named
  * a[0], a[1], ..., a[9].
  * The notation a[i] refers to the i-th element of the array. If pa is a
  * pointer to an integer, declared as
@@ -35,7 +35,7 @@
  * the contents of a[i].
  *
  * These remarks are true regardless of the type or size of the variables in
- * array a. The meaning of "adding 1 to a pointer" and by extension, all
+ * array a. The meaning of "adding 1 to a pointer," and by extension, all
  * pointer arithmetic, is that pa+1 points to the next object, and pa+i points
  * to the i-th object beyond pa.
  *
@@ -65,11 +65,11 @@
  * of the initial element. Within the called function, this argument is a local
  * variable, and so an array name parameter is a pointer, that is, a variable
  * containing address. We can use this fact to write another version of strlen,
- * which computers the length of a string.
+ * which computes the length of a string.
  *
  * Since s is a pointer, incrementing it is perfectly legal; s++ has no effect
  * on the character string in the function that called strlen, but merely
-* increments strlen'ss private copy of the pointer. That means that calls like
+* increments strlen's private copy of the pointer. That means that calls like
 *
 * 	strlen("hello, world");	-> string constant
 * 	strlen(array);		-> char array[100];
