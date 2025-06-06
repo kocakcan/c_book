@@ -110,6 +110,20 @@
 */
 #include <stdio.h>
 
+/* alter: alter the value at given index */
+void alter(int *p, int i) {
+	*p = i;
+}
+
+/* printa: my take on Python's list representation */
+void printa(int *arr, size_t size) {
+	printf("[");
+	for (size_t i = 0; i < size; i++) {
+		(i == size - 1) ? printf("%d", *(arr + i)) : printf("%d, ", *(i + arr));
+	}
+	printf("]\n");
+}
+
 int strlen_(char *s) {
 	int i;
 
@@ -122,6 +136,16 @@ int strlen_(char *s) {
 int main(void) {
 	char *s = "Seyfi Kocak";
 	printf("%s is %d characters long\n", s, strlen_(s));
+
+	int arr[] = {1, 3, 5, 7, 9, 11};
+	size_t size = sizeof(arr) / sizeof(arr[0]);
+
+	printf("Array before:	");
+	printa(arr, size);
+	// alter(arr + 2, 19);
+	alter(&arr[2], 19);
+	printf("Array after:	");
+	printa(arr, size);
 
 	return 0;
 }
