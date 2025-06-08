@@ -106,7 +106,7 @@
  * characters in the string is large enough to hold the signed difference of
  * two pointer values. If we were being cautious, however, we would use size_t
  * for the return type of strlen, to match the standard library version, size_t
- * is the unsinged integer type returned by the sizeof operator.
+ * is the unsigned integer type returned by the sizeof operator.
  *
  * Pointer arithmetic is consistent: if we had been dealing with floats, which
  * occupy more storage than chars, and if p were a pointer to float, p++ would
@@ -126,10 +126,10 @@
 #include <stdio.h>
 #define ALLOCSIZE	10000		/* size of available space */
 
-static char allocbuf(ALLOCSIZE);	/* storage for alloc */
+static char allocbuf[ALLOCSIZE];	/* storage for alloc */
 static char *allocp = allocbuf;		/* next free position */
 
-char *alloc(int n)			/* return pointer to n characters */{
+char *alloc(int n) {			/* return pointer to n characters */
 	if (allocbuf + ALLOCSIZE - allocp >= n) {	/* if it fits */
 		allocp += n;
 		return allocp - n;			/* old p */
@@ -138,9 +138,8 @@ char *alloc(int n)			/* return pointer to n characters */{
 	}
 }
 
-void afree(char *p)			/* free storage pointed to by p */
-{
-	if (p >= allocbuf && p < allocbuc + ALLOCSIZE)
+void afree(char *p) {			/* free storage pointed to by p */
+	if (p >= allocbuf && p < allocbuf + ALLOCSIZE)
 		allocp = p;
 }
 
@@ -156,10 +155,14 @@ int strlen_(char *s) {
 
 int main(void) {
 	int arr[] = {1, 3, 5, 7, 9, 11, 13, 15};
+	int other_arr[] = {0, 2, 4, 6};
 	size_t size = sizeof(arr) / sizeof(arr[0]);
 	printf("First element of arr: %d\n", *(arr + 0));
 	printf("Second element of arr: %d\n", *(arr + 1));
 	printf("Last element of arr: %d\n", *(arr + size - 1));
+	int *p = arr + 3;
+	int *q = arr + 5;
+	printf("There are %ld character between p and q\n", q - p);
 
 	return 0;
 }
