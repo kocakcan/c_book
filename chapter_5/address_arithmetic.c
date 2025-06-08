@@ -163,6 +163,13 @@ int main(void) {
 	int *p = arr + 3;
 	int *q = arr + 5;
 	printf("There are %ld character between p and q\n", q - p);
+	char *s = alloc(4);
+	*(s + 0) = 'C';
+	*(s + 1) = 'a';
+	*(s + 2) = 'n';
+	*(s + 3) = '\n';
+	printf("My name is %s\n", s);
+	afree(s);
 
 	return 0;
 }
