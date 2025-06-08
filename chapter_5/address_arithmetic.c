@@ -58,6 +58,56 @@
  * itself). If not, alloc must return some signal that there is no space left.
  * C guarantees that zero is never a valid address for data, so a return value
  * of zero can be used to signal an abnormal event, in this case no space.
+ *
+ * Pointers and integers are not interchangeable. Zero is the sole exception:
+ * the constant zero may be assigned to a pointer, and a pointer may be
+ * compared with the constant zero. The symbolic constant NULL is often used in
+ * place of zero, as a mnemonic to indicate more clearly that this is a special
+ * value for a pointer. NULL is defined in <stdio.h>.
+ *
+ * Tests like
+ *
+ * 	if (allocbuf + ALLOCSIZE - allocp >= n)
+ * and
+ *
+ * 	if (p >= allocbuf && p < allocbuf + ALLOCSIZE)
+ * show several important facets of pointer arithmetic. First, pointers may be
+ * compared under certain circumstances. If p and q point to members of the
+ * same array, then relations like ==, !=, <, >=, etc., work properly. For
+ * example,
+ *
+ * 	p < q
+ * is true if p points to an earlier element of the array than q does. Any
+ * pointer can be meaningfully compared for equality or inequality with zero.
+ * But the behaviour is undefined for arithmetic or comparisons with pointers
+ * that do not point to members of the same array. (There is one exception: the
+ * address of the first element past the end of an array can be used in pointer
+ * arithmetic.)
+ *
+ * Second, we have already observed that a pointer and an integer may be added
+ * or subtracted. The construction
+ *
+ * 	p + n
+ * means the address of the n-th object beyond the one p currently points to.
+ * This is true regardless of the kind of object p points to; n is scaled
+ * according to the size of the objects p points to, which is determined by
+ * the declaration of p. If an int is four bytes, for example, the int will be
+ * scaled by four.
+ *
+ * Pointer subtraction is also valid: if p and q point to elements of the same
+ * array, and p < q, then q-p+1 is the number of elements from p to q
+ * inclusive. This fact can be used to write yet another version of strlen.
+ *
+ * In its declaration, p is initialized to s, that is, to point to the first
+ * character of the string. In the while loop, each character in turn is
+ * examined until the '\0' at the end is seen. Because p points to characters,
+ * p++ advances p to the next character each time, and p-s gives the number of
+ * character advanced over, that is, the string length. (The number of
+ * characters in the string is large enough to hold the signed difference of
+ * two pointer values. If we were being cautious, however, we would use size_t
+ * for the return type of strlen, to match the standard library version, size_t
+ * is the unsinged integer type returned by the sizeof operator.
+ *
  */
 #include <stdio.h>
 #define ALLOCSIZE	10000		/* size of available space */
@@ -78,6 +128,16 @@ void afree(char *p)			/* free storage pointed to by p */
 {
 	if (p >= allocbuf && p < allocbuc + ALLOCSIZE)
 		allocp = p;
+}
+
+/* strlen: return length of string s */
+int strlen_(char *s) {
+	char *p = s;
+
+	while (*p != '\0')
+		p++;
+
+	return p - s;
 }
 
 int main(void) {
