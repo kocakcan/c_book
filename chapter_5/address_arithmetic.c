@@ -108,6 +108,20 @@
  * for the return type of strlen, to match the standard library version, size_t
  * is the unsinged integer type returned by the sizeof operator.
  *
+ * Pointer arithmetic is consistent: if we had been dealing with floats, which
+ * occupy more storage than chars, and if p were a pointer to float, p++ would
+ * advance to the next float. Thus we could write another version of that
+ * maintains floats instead of chars, merely by changing char to float
+ * throughout alloc and afree. All the pointer manipulations automatically take
+ * into account the size of the objects pointed to.
+ *
+ * The valid operations are assignment of pointers of the same type, adding or
+ * subtracting a pointer and an integer or comparing two pointers to members of
+ * the same array, and assigning or comparing to zero. All other pointer
+ * arithmetic is illegal. It is not legal to add two pointers, or to multiply
+ * or divide or shift or mask them, or to add float or double to them, or even,
+ * except for void *, to assign a pointer of one type to a pointer of another
+ * type without a cast.
  */
 #include <stdio.h>
 #define ALLOCSIZE	10000		/* size of available space */
