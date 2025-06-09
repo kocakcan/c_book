@@ -124,6 +124,7 @@
  * type without a cast.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #define ALLOCSIZE	10000		/* size of available space */
 
 static char allocbuf[ALLOCSIZE];	/* storage for alloc */
@@ -154,15 +155,28 @@ int strlen_(char *s) {
 }
 
 int main(void) {
+	/* Valid pointers operations
+	 * - Assignment of pointers of the same type,
+	 * - Adding, or, subtracting a pointer and an integer,
+	 * - Subtracting or comparing two pointers to members of the same array
+	 * - Assigning or comparing to zero
+	 */
+
 	int arr[] = {1, 3, 5, 7, 9, 11, 13, 15};
 	int other_arr[] = {0, 2, 4, 6};
 	size_t size = sizeof(arr) / sizeof(arr[0]);
 	printf("First element of arr: %d\n", *(arr + 0));
 	printf("Second element of arr: %d\n", *(arr + 1));
 	printf("Last element of arr: %d\n", *(arr + size - 1));
+
+	// Assingment of pointers of the same type
+	// Adding, or, subtracting a pointer and an integer
 	int *p = arr + 3;
 	int *q = arr + 5;
+
+	// Subtracting two pointers to members of the same array
 	printf("There are %ld character between p and q\n", q - p);
+	
 	char *s = alloc(4);
 	*(s + 0) = 'C';
 	*(s + 1) = 'a';
@@ -170,6 +184,14 @@ int main(void) {
 	*(s + 3) = '\n';
 	printf("My name is %s\n", s);
 	afree(s);
+
+	// Assigning zero to a pointer
+	char *t = NULL;
+
+	// Comparing with zero
+	// (to check if pointer points to a valid memory location)
+	if (t == NULL)
+		printf("t points to an invalid memory location\n");
 
 	return 0;
 }
