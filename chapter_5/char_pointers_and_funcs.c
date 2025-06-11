@@ -72,6 +72,12 @@
  *
  * The strcpy in the standard library (<string.h>) returns the target string as
  * its function value.
+ *
+ * The second routine that we will examine is strcmp(s, t), which compares the
+ * character strings s and t, and returns negative, zero or positive if s is
+ * lexicographically less than, equal to, or greater than t. The value is
+ * obtained by subtracting the characters at the first position where s and t
+ * disagree.
  */
 #include <stdio.h>
 
@@ -101,6 +107,37 @@ void strcpy___(char *s, char *t) {
   while ((*s++ = *t++) != '\0')
     ;
 }
+
+/* strcmp_: return < 0 if s < t, 0 if s == t, > 0 if s > t */
+int strcmp_(char *s, char *t) {
+  int i;
+
+  for (i = 0; s[i] == t[i]; i++)
+    if (s[i] == '\0')
+      return 0;
+  return s[i] - t[i];
+}
+
+// The pointer version of strcmp
+int strcmp__(char *s, char *t) {
+  for (; *s == *t; s++, t++)
+    if (*s == '\0')
+      return 0;
+  return *s - *t;
+}
+
+/***
+ * Since ++ and -- are either prefix or postfix operators, other combinations
+ * of * and ++ and -- occur, although less frequently. For example,
+ *
+ *   *--p
+ * decrements p before fetching the character p points to. In fact, the pair of
+ * expressions
+ *
+ *   *p++ = val; -> push val onto stack
+ *   val = *--p; -> pop top of stack into val
+ * are the standard idiom for pushing and popping s back.
+ */
 
 int main(void) {
   char s[50];
