@@ -1,7 +1,7 @@
 /***
  * 5.5 Character Pointers and Functions
  *
- * A string contans, written as
+ * A string constant, written as
  *
  *  "I am a string"
  * is an array of characters. In the internal representation, the array is
@@ -9,7 +9,7 @@
  * The length in storage thus one more than the number of characters between
  * the double quotes.
  *
- * Perhaps the most common occurrence of string contants is an arguments to
+ * Perhaps the most common occurrence of string constants is an arguments to
  * functions, as in
  *
  *  printf("hello, world\n");
@@ -18,7 +18,7 @@
  * the character array. That is, a string constant is accessed by a pointer to
  * its first element.
  *
- * String contants need not be function arguments. If pmessage is declared as
+ * String constants need not be function arguments. If pmessage is declared as
  *
  *  char *pmessage;
  * then the statement
@@ -142,6 +142,9 @@ int strcmp__(char *s, char *t) {
 int main(void) {
   char s[50];
   char *t = "Knight Artorias";
+  int stack[] = {1, 3, 5};
+  int *pstack = stack + 2;
+  printf("The middle element of the arr is %d\n", *--pstack);
   strcpy___(s, t);
   printf("%s\n", s);
 
