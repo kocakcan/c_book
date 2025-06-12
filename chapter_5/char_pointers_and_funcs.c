@@ -140,7 +140,12 @@ int strcmp__(char *s, char *t) {
  */
 
 int main(void) {
+  // This string is stored in stack and is mutable
+  // s will always refer to the same storage
   char s[50];
+  // t points to a string constant that is stored in read-only memory, which is
+  // immutable
+  // unlike s, t can be made to point to somewhere else
   char *t = "Knight Artorias";
   int stack[] = {1, 3, 5};
   int *pstack = stack + 2;
