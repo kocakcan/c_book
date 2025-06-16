@@ -10,7 +10,7 @@ void strcpy_(char *s, char *t) {
     ;
 }
 
-void strncpy_(char *s, char *t, int n) {
+void strncat_(char *s, char *t, int n) {
   while (*s)
     s++;
   for (int i = 0; i < n; i++)
@@ -20,7 +20,7 @@ void strncpy_(char *s, char *t, int n) {
 int main(void) {
   char s[50] = "Can";
   char t[] = " Kocak";
-  strncpy_(s, t, 3);
+  strncat_(s, t, 3);
   printf("My full name is %s\n", s);
 
   return 0;
