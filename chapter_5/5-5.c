@@ -4,17 +4,24 @@
 #include <stdio.h>
 
 void strcpy_(char *s, char *t) {
-	while (*s)
-		s++;
-	while (*s++ = *t++)
-		;
+  while (*s)
+    s++;
+  while (*s++ = *t++)
+    ;
+}
+
+void strncpy_(char *s, char *t, int n) {
+  while (*s)
+    s++;
+  for (int i = 0; i < n; i++)
+    *s++ = *t++;
 }
 
 int main(void) {
-	char s[50] = "Can";
-	char t[] = " Kocak";
-	strcpy_(s, t);
-	printf("My full name is %s\n", s);
+  char s[50] = "Can";
+  char t[] = " Kocak";
+  strncpy_(s, t, 3);
+  printf("My full name is %s\n", s);
 
-	return 0;
+  return 0;
 }
