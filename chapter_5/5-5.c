@@ -11,11 +11,25 @@ void strncat_(char *s, char *t, size_t n) {
   *s = '\0';
 }
 
+void strncpy_(char *s, char *t, size_t n) {
+  size_t i;
+
+  for (i = 0; i < n && *t; i++)
+    *s++ = *t++;
+
+  for (; i < n; i++) /* t < n */
+    *s++ = '\0';     /* pad the rest of s with null */
+}
+
 int main(void) {
   char s[50] = "Can";
   char t[] = " Kocak";
+  char u[50];
+  char v[] = "Knight Artorias, the Abysswalker";
   strncat_(s, t, 3);
+  strncpy_(u, v, 55);
   printf("My full name is %s\n", s);
+  printf("My favourite boss in Dark Souls is %s\n", u);
 
   return 0;
 }
