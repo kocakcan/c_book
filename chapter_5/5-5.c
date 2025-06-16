@@ -10,11 +10,12 @@ void strcpy_(char *s, char *t) {
     ;
 }
 
-void strncat_(char *s, char *t, int n) {
+void strncat_(char *s, char *t, size_t n) {
   while (*s)
     s++;
-  for (int i = 0; i < n; i++)
+  for (size_t i = 0; i < n && *t; i++)
     *s++ = *t++;
+  *s = '\0';
 }
 
 int main(void) {
