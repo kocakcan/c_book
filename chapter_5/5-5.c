@@ -3,13 +3,6 @@
  * For example, strncpy(s, t, n) copies at most n characters of t to s. */
 #include <stdio.h>
 
-void strcpy_(char *s, char *t) {
-  while (*s)
-    s++;
-  while (*s++ = *t++)
-    ;
-}
-
 void strncat_(char *s, char *t, size_t n) {
   while (*s)
     s++;
