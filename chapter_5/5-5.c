@@ -21,15 +21,27 @@ void strncpy_(char *s, char *t, size_t n) {
     *s++ = '\0';     /* pad the rest of s with null */
 }
 
+int strcmp__(char *s, char *t) {
+  for (; *s == *t; s++, t++)
+    if (*s == '\0')
+      return 0;
+  return *s - *t;
+}
+
 int main(void) {
   char s[50] = "Can";
   char t[] = " Kocak";
   char u[50];
   char v[] = "Knight Artorias, the Abysswalker";
+  char x[] = "Can", y[] = "Can";
+  strcmp__(s, y);
   strncat_(s, t, 3);
   strncpy_(u, v, 55);
   printf("My full name is %s\n", s);
   printf("My favourite boss in Dark Souls is %s\n", u);
+
+  if (!strcmp__(x, y))
+    printf("they are the same string\n");
 
   return 0;
 }
