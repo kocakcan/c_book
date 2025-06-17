@@ -21,7 +21,7 @@ void strncpy_(char *s, char *t, size_t n) {
     *s++ = '\0';     /* pad the rest of s with null */
 }
 
-int strncmp_(char *s, size_t n, char *t) {
+int strncmp_(char *s, char *t, size_t n) {
   size_t i;
 
   for (i = 0; i < n && (*s || *t); i++, s++, t++) {
@@ -45,7 +45,7 @@ int main(void) {
   printf("My full name is %s\n", s);
   printf("My favourite boss in Dark Souls is %s\n", u);
 
-  if (!strncmp_(x, 10, y))
+  if (!strncmp_(x, y, 10))
     printf("they are the same string\n");
 
   return 0;
