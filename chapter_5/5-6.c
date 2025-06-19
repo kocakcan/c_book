@@ -22,6 +22,23 @@ int strindex_(char *s, char *t) {
   return -1;
 }
 
+int _getline(char s[], int lim) {
+  int i, c;
+
+  for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
+    s[i] = c;
+
+  if (c == '\n') {
+    s[i] = c;
+    ++i;
+  }
+
+  // Null terminator is not taken into account when length is computed
+  // as it is only there to mark the end
+  s[i] = '\0';
+  return i;
+}
+
 int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
