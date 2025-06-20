@@ -3,6 +3,7 @@
  * itoa, and their variants, reverse, strindex and getop */
 #include <assert.h>
 #include <stdio.h>
+#define SIZE 100
 
 /* strindex: return index of t in s, -1 if none; pointer version */
 int strindex_(char *s, char *t) {
@@ -71,8 +72,8 @@ int getline_(char s[], int lim) {
 int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
-  char buffer[50];
-  getline__(buffer, 50);
+  char buffer[SIZE];
+  getline__(buffer, SIZE);
   printf("buffer: %s\n", buffer);
   printf("%s is at index %d in %s\n", t, strindex_(s, t), s);
 
