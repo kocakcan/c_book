@@ -29,6 +29,8 @@ int _getline(char s[], int lim) {
     s[i] = c;
 
   if (c == '\n') {
+    // s[i++] = c;
+    // *s++ = c;
     s[i] = c;
     ++i;
   }
@@ -36,6 +38,19 @@ int _getline(char s[], int lim) {
   // Null terminator is not taken into account when length is computed
   // as it is only there to mark the end
   s[i] = '\0';
+  return i;
+}
+
+int getline__(char *s, int lim) {
+  int i, c;
+
+  for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; i++)
+    *s++ = c;
+
+  if (c == '\n')
+    *s++ = c;
+
+  *s = '\0';
   return i;
 }
 
@@ -56,6 +71,9 @@ int getline_(char s[], int lim) {
 int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
+  char buffer[50];
+  getline__(buffer, 50);
+  printf("buffer: %s\n", buffer);
   printf("%s is at index %d in %s\n", t, strindex_(s, t), s);
 
   // Test 1: Substring present in the middle
