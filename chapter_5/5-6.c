@@ -24,25 +24,7 @@ int strindex_(char *s, char *t) {
   return -1;
 }
 
-int _getline(char s[], int lim) {
-  int i, c;
-
-  for (i = 0; i < lim - 1 && (c = getchar()) != EOF && c != '\n'; ++i)
-    s[i] = c;
-
-  if (c == '\n') {
-    // s[i++] = c;
-    // *s++ = c;
-    s[i] = c;
-    ++i;
-  }
-
-  // Null terminator is not taken into account when length is computed
-  // as it is only there to mark the end
-  s[i] = '\0';
-  return i;
-}
-
+/* getline; pointer version 1 */
 int getline__(char *s, int lim) {
   int i, c;
 
@@ -56,18 +38,17 @@ int getline__(char *s, int lim) {
   return i;
 }
 
-int getline_(char s[], int lim) {
-  int c, i;
+/* getline; pointer version 2 */
+int getline___(char *s, int lim) {
+	int c, i;
 
-  i = 0;
-  while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
-    s[i++] = c;
-
-  if (c == '\n')
-    s[i++] = c;
-
-  s[i] = '\0';
-  return i;
+	i = 0;
+	while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
+		*s++ = c;
+	if (c == '\n')
+		*s++ = c;
+	*s = '\0';
+	return i;
 }
 
 void reverse(char *s) {
@@ -88,7 +69,7 @@ int main(void) {
   char u[] = "Prince of Persia: Warrior Within";
   reverse(u);
   char buffer[SIZE];
-  getline__(buffer, SIZE);
+  getline___(buffer, SIZE);
   printf("buffer: %s\n", buffer);
   printf("%s is at index %d in %s\n", t, strindex_(s, t), s);
   printf("%s is one of my favourite games in reverse\n", u);
