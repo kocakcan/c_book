@@ -24,7 +24,7 @@ int strindex_(char *s, char *t) {
   return -1;
 }
 
-/* getline; pointer version 1 */
+/* getline__; pointer version 1 */
 int getline__(char *s, int lim) {
   int i, c;
 
@@ -38,7 +38,7 @@ int getline__(char *s, int lim) {
   return i;
 }
 
-/* getline; pointer version 2 */
+/* getline___; pointer version 2 */
 int getline___(char *s, int lim) {
   int c, i;
 
@@ -53,6 +53,7 @@ int getline___(char *s, int lim) {
   return i;
 }
 
+/* reverse: reverse the string s in place; pointer version */
 void reverse(char *s) {
   char *left = s;
   char *right = s + strlen(s) - 1;
