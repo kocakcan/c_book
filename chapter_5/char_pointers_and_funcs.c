@@ -147,6 +147,10 @@ int main(void) {
   // immutable
   // unlike s, t can be made to point to somewhere else
   char *t = "Knight Artorias";
+
+  // s in this case contains the copy of the string literal which is stored in
+  // read-only memory, since it contains the copy the string literal can be
+  // modified
   int stack[] = {1, 3, 5};
   int *pstack = stack + 2;
   printf("The middle element of the arr is %d\n", *--pstack);
