@@ -40,27 +40,29 @@ int getline__(char *s, int lim) {
 
 /* getline; pointer version 2 */
 int getline___(char *s, int lim) {
-	int c, i;
+  int c, i;
 
-	i = 0;
-	while (--lim > 0 && (c = getchar()) != EOF && c != '\n')
-		*s++ = c;
-	if (c == '\n')
-		*s++ = c;
-	*s = '\0';
-	return i;
+  i = 0;
+  while (--lim > 0 && (c = getchar()) != EOF && c != '\n') {
+    *s++ = c;
+    i++;
+  }
+  if (c == '\n')
+    *s++ = c;
+  *s = '\0';
+  return i;
 }
 
 void reverse(char *s) {
-	char *left = s;
-	char *right = s + strlen(s) - 1;
+  char *left = s;
+  char *right = s + strlen(s) - 1;
 
-	char temp;
-	while (left < right) {
-		temp = *left, *left = *right, *right = temp;
-		left++;
-		right--;
-	}
+  char temp;
+  while (left < right) {
+    temp = *left, *left = *right, *right = temp;
+    left++;
+    right--;
+  }
 }
 
 int main(void) {
