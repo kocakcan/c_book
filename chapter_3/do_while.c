@@ -9,19 +9,19 @@
  *     statement
  *   while (expression);
  *
- *   - The statement is executed, then expression is evaluated, If it is true,
+ * - The statement is executed, then expression is evaluated, If it is true,
  *   statement is evaluated again, and so on. When the expression becomes false,
  *   the loop terminates. Except for the sense of the test, do-while is
  *   equivalent to Pascal repeat-until statement.
  *
- *   - Experience shows that do-while is much less used than while and for.
- *     Nonetheless, from time to time it is valuable, as in the following
- *     function itoa, which converts a number to a character string (the inverse
- *     of atoi).
+ * - Experience shows that do-while is much less used than while and for.
+ *   Nonetheless, from time to time it is valuable, as in the following
+ *   function itoa, which converts a number to a character string (the inverse
+ *   of atoi).
  */
+#include <limits.h>
 #include <stdio.h>
 #include <string.h>
-#include <limits.h>
 
 void reverse(char s[]) {
   int i, j, c;
@@ -38,14 +38,14 @@ void itoa(int n, char s[]) {
   int i, sign;
   unsigned long num;
 
-  if ((sign = n) < 0)                 	/* record sign */
-    num = (unsigned int)(~n + 1);    	/* make it unsigned to avoid UB edge case */
+  if ((sign = n) < 0)             /* record sign */
+    num = (unsigned int)(~n + 1); /* make it unsigned to avoid UB edge case */
 
   i = 0;
 
-  do {                                	/* generate digits in reverse order */
-    s[i++] = num % 10 + '0';          	/* get next digit */
-  } while ((num /= 10) > 0);          	/* delete it */
+  do {                       /* generate digits in reverse order */
+    s[i++] = num % 10 + '0'; /* get next digit */
+  } while ((num /= 10) > 0); /* delete it */
 
   if (sign < 0) {
     s[i++] = '-';
