@@ -67,7 +67,7 @@ void reverse(char *s) {
 }
 
 /* itoa: convert n to characters in s */
-void itoa(int n, char s[]) {
+void itoa(int n, char *s) {
   int sign;
   char *t = s;
 
