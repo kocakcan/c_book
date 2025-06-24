@@ -68,23 +68,21 @@ void reverse(char *s) {
 
 /* itoa: convert n to characters in s */
 void itoa(int n, char s[]) {
-  int i, sign;
-  unsigned long num;
+  int sign;
+  char *t = s;
 
-  if ((sign = n) < 0)             /* record sign */
-    num = (unsigned int)(~n + 1); /* make it unsigned to avoid UB edge case */
+  if ((sign = n) < 0)
+    n = -n;
 
-  i = 0;
-
-  do {                       /* generate digits in reverse order */
-    s[i++] = num % 10 + '0'; /* get next digit */
-  } while ((num /= 10) > 0); /* delete it */
+  do { /* generate digits in reverse order */
+    *t++ = n % 10 + '0';
+  } while ((n /= 10) > 0); /* delete it */
 
   if (sign < 0) {
-    s[i++] = '-';
+    *t++ = '-';
   }
 
-  s[i] = '\0';
+  *t = '\0';
   reverse(s);
 }
 
@@ -112,6 +110,10 @@ int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
   char u[] = "Prince of Persia: Warrior Within";
+  int n = -1997;
+  char buf[20];
+  itoa(n, buf);
+  printf("buf is %s\n", buf);
   reverse(u);
   char buffer[SIZE];
   getline___(buffer, SIZE);

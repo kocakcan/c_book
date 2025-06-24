@@ -149,7 +149,7 @@ int main(void) {
   char *t = "Knight Artorias";
 
   // s in this case contains the copy of the string literal which is stored in
-  // read-only memory, since it contains the copy the string literal can be
+  // read-only memory, since it contains the copy the string literal it can be
   // modified
   int stack[] = {1, 3, 5};
   int *pstack = stack + 2;
