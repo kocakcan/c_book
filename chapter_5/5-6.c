@@ -86,26 +86,6 @@ void itoa(int n, char *s) {
   reverse(s);
 }
 
-int utoa(unsigned int n, char s[], int i) {
-  if (n / 10)
-    i = utoa(n / 10, s, i);
-
-  s[i++] = n % 10 + '0';
-  s[i] = '\0';
-  return i;
-}
-
-int itoa_(int n, char s[], int i) {
-  if (n < 0) {
-    s[i++] = '-';
-    return utoa((unsigned int)(~n + 1), s, i);
-  }
-
-  return utoa((unsigned int)n, s, i);
-}
-
-void itoa_wrapper(int n, char s[]) { itoa_(n, s, 0); }
-
 int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
