@@ -69,14 +69,17 @@ void reverse(char *s) {
 /* itoa: convert n to characters in s */
 void itoa(int n, char *s) {
   int sign;
+  unsigned long num;
   char *t = s;
 
   if ((sign = n) < 0)
-    n = -n;
+    num = (unsigned int)(~n + 1); /* make it unsigned to avoid UB edge case */
+  else
+    num = n;
 
   do { /* generate digits in reverse order */
-    *t++ = n % 10 + '0';
-  } while ((n /= 10) > 0); /* delete it */
+    *t++ = num % 10 + '0';
+  } while ((num /= 10) > 0); /* delete it */
 
   if (sign < 0) {
     *t++ = '-';
@@ -86,17 +89,32 @@ void itoa(int n, char *s) {
   reverse(s);
 }
 
+/* atoi: convert s to integer */
+int atoi_(char s[]) {
+  int i, n;
+
+  n = 0;
+  for (i = 0; s[i] >= '0' && s[i] <= '9'; ++i)
+    n = n * 10 + (s[i] - '0');
+
+  return n;
+}
+
 int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
   char u[] = "Prince of Persia: Warrior Within";
-  int n = -1997;
+  int n = 1997;
   char buf[20];
+
   itoa(n, buf);
   printf("buf is %s\n", buf);
+
   reverse(u);
+
   char buffer[SIZE];
   getline___(buffer, SIZE);
+
   printf("buffer: %s\n", buffer);
   printf("%s is at index %d in %s\n", t, strindex_(s, t), s);
   printf("%s is one of my favourite games in reverse\n", u);
