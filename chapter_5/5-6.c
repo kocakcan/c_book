@@ -102,8 +102,11 @@ int atoi_(char s[]) {
 
 /* atoi__: convert s to integer; pointer version */
 int atoi__(char *s) {
-  // TODO: Implement this function
-  return 19;
+  int n = 0;
+
+  for (; *s >= '0' && *s <= '9'; s++)
+    n = n * 10 + (*s - '0');
+  return n;
 }
 
 int main(void) {
@@ -112,6 +115,8 @@ int main(void) {
   char u[] = "Prince of Persia: Warrior Within";
   int n = 1997;
   char buf[20];
+  char *x = "1997";
+  printf("I was born in %d\n", atoi__(x));
 
   itoa(n, buf);
   printf("buf is %s\n", buf);
