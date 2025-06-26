@@ -102,6 +102,9 @@ int atoi_(char s[]) {
 
 /* atoi__: convert s to integer; pointer version */
 int atoi__(char *s) {
+  // TODO: Skip whitespace
+  // TODO: Parse an optional sign
+  // TODO: Then parse the digits
   int n = 0;
 
   for (; *s >= '0' && *s <= '9'; s++)
