@@ -100,6 +100,12 @@ int atoi_(char s[]) {
   return n;
 }
 
+/* atoi__: convert s to integer; pointer version */
+int atoi__(char *s) {
+  // TODO: Implement this function
+  return 19;
+}
+
 int main(void) {
   char *s = "Can Kocak";
   char *t = "Kocak";
