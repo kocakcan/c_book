@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #define SIZE 100
 
 /* strindex: return index of t in s, -1 if none; pointer version */
@@ -102,13 +103,23 @@ int atoi_(char s[]) {
 
 /* atoi__: convert s to integer; pointer version */
 int atoi__(char *s) {
-  // TODO: Skip whitespace
-  // TODO: Parse an optional sign
-  // TODO: Then parse the digits
   int n = 0;
+  int sign;
+
+  for (; isspace(*s); s++)
+    ;
+
+  sign = (*s == '-') ? -1 : 1;
+
+  if (*s == '-' || *s == '+')
+    s++;
 
   for (; *s >= '0' && *s <= '9'; s++)
     n = n * 10 + (*s - '0');
+
+  if (sign < 0)
+    n *= sign;
+
   return n;
 }
 
@@ -118,7 +129,7 @@ int main(void) {
   char u[] = "Prince of Persia: Warrior Within";
   int n = 1997;
   char buf[20];
-  char *x = "1997";
+  char *x = "   -1997";
   printf("I was born in %d\n", atoi__(x));
 
   itoa(n, buf);
