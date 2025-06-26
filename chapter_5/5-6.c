@@ -117,10 +117,7 @@ int atoi__(char *s) {
   for (; *s >= '0' && *s <= '9'; s++)
     n = n * 10 + (*s - '0');
 
-  if (sign < 0)
-    n *= sign;
-
-  return n;
+  return n * sign;
 }
 
 int main(void) {
