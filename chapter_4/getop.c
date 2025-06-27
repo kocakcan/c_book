@@ -1,7 +1,6 @@
 #include "calc.h"
 #include <ctype.h>
 
-// TODO: Write a pointer version of getop
 int getop(char *s) {
   int c;
   static int last_ch = 0;
