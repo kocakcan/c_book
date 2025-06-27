@@ -1,6 +1,7 @@
 #include "calc.h"
 #include <ctype.h>
 
+// TODO: Write a pointer version of getop
 int getop(char s[]) {
   int i = 0;
   int c;
