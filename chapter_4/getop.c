@@ -2,8 +2,7 @@
 #include <ctype.h>
 
 // TODO: Write a pointer version of getop
-int getop(char s[]) {
-  int i = 0;
+int getop(char *s) {
   int c;
   static int last_ch = 0;
 
@@ -20,23 +19,23 @@ int getop(char s[]) {
     last_ch = getch();
     if (!isdigit(last_ch) && last_ch != '.')
       return '-';
-    s[i++] = '-';
+    *s++ = '-';
     c = last_ch;
     last_ch = 0;
   }
 
-  s[i++] = c;
+  *s++ = c;
 
   if (isdigit(c)) {
-    while (isdigit(s[i++] = c = getch()))
+    while (isdigit(*s++ = c = getch()))
       ;
   }
 
   if (c == '.') {
-    while (isdigit(s[i++] = c = getch()))
+    while (isdigit(*s++ = c = getch()))
       ;
   }
 
-  s[i] = '\0';
+  *s = '\0';
   return NUMBER;
 }
