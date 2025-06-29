@@ -99,12 +99,14 @@ int getline (char *s, int lim) {
 	int i, c;
 
 	i = 0;
-	while (--lim < 0 && (c = getchar()) != EOF && c != '\n') {
+	while (--lim > 0 && (c = getchar()) != EOF && c != '\n') {
 		*s++ = c;
 		i++;
 	}
-	if (c == '\n')
+	if (c == '\n') {
 		*s++ = c;
+		i++;
+	}
 	*s = '\0';
 	return i;
 }

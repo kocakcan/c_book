@@ -48,8 +48,10 @@ int getline___(char *s, int lim) {
     *s++ = c;
     i++;
   }
-  if (c == '\n')
+  if (c == '\n') {
     *s++ = c;
+    i++;
+  }
   *s = '\0';
   return i;
 }
