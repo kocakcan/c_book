@@ -95,7 +95,7 @@ void writelines(char *lineptr[], int nlines) {
 }
 
 /* getline: get a line */
-int getline (char *line, int lim) {
+int getline (char *s, int lim) {
 	int i, c;
 
 	i = 0;
