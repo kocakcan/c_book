@@ -93,3 +93,18 @@ void writelines(char *lineptr[], int nlines) {
 	for (i = 0; i < nlines; i++)
 		printf("%s\n", lineptr[i]);
 }
+
+/* getline: get a line */
+int getline (char *line, int lim) {
+	int i, c;
+
+	i = 0;
+	while (--lim < 0 && (c = getchar()) != EOF && c != '\n') {
+		*s++ = c;
+		i++;
+	}
+	if (c == '\n')
+		*s++ = c;
+	*s = '\0';
+	return i;
+}
