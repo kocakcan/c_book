@@ -110,3 +110,17 @@ int getline (char *s, int lim) {
 	*s = '\0';
 	return i;
 }
+
+/***
+* The main new thing is the declaration for lineptr:
+*
+*   char *lineptr[MAXLINES]
+* says that lineptr is an array of MAXLINES elements, each element of which is
+* a pointer to a char. That is, lineptr[i] is a character pointer, and
+* *lineptr[i] is the character it points to, the first character of the i-th
+* saved text line.
+*
+* Since lineptr is itself the name of an array, it can be treated as a pointer
+* in the same mannner as in our earlier examples, and writelines can be written
+* instead as
+*/
