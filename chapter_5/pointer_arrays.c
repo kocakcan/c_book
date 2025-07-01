@@ -43,9 +43,9 @@
  */
 #include <stdio.h>
 #include <string.h>
-#define MAXLINES	5000	/* max #lines to be sorted */
+#define MAXLINES 5000 /* max #lines to be sorted */
 
-char *lineptr[MAXLINES];	/* pointers to text lines */
+char *lineptr[MAXLINES]; /* pointers to text lines */
 
 int readlines(char *lineptr[], int nlines);
 void writelines(char *lineptr[], int nlines);
@@ -54,88 +54,88 @@ void qsort(char *lineptr[], int left, int right);
 
 /* sort input lines */
 int main(void) {
-	int nlines;		/* number of input lines read */
+  int nlines; /* number of input lines read */
 
-	if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
-		qsort(lineptr, 0, nlines - 1);
-		writelines(lineptr, nlines);
-		return 0;
-	} else {
-		printf("error: input too big to sort\n");
-		return 1;
-	}
+  if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+    qsort(lineptr, 0, nlines - 1);
+    writelines(lineptr, nlines);
+    return 0;
+  } else {
+    printf("error: input too big to sort\n");
+    return 1;
+  }
 }
 
-#define MAXLEN		1000		/* max length of any input line */
-#define ALLOCSIZE	10000		/* size of available space */
+#define MAXLEN 1000     /* max length of any input line */
+#define ALLOCSIZE 10000 /* size of available space */
 int getline_(char *, int);
 char *alloc(int);
 
-static char allocbuf[ALLOCSIZE];	/* storage for alloc */
-static char *allocp = allocbuf;		/* next free position */
+static char allocbuf[ALLOCSIZE]; /* storage for alloc */
+static char *allocp = allocbuf;  /* next free position */
 
 /* readlines: read input lines */
 int readlines(char *lineptr[], int maxlines) {
-	int len, nlines;
-	char *p, line[MAXLEN];
+  int len, nlines;
+  char *p, line[MAXLEN];
 
-	nlines = 0;
-	while ((len = getline_(line, MAXLEN)) > 0) {
-		if (nlines >= maxlines || (p = alloc(len)) == NULL)
-			return - 1;
-		else {
-			line[len - 1] = '\0';	/*delete newline */
-			strcpy(p, line);
-			lineptr[nlines++] = p;
-		}
-	}
-	return nlines;
+  nlines = 0;
+  while ((len = getline_(line, MAXLEN)) > 0) {
+    if (nlines >= maxlines || (p = alloc(len)) == NULL)
+      return -1;
+    else {
+      line[len - 1] = '\0'; /*delete newline */
+      strcpy(p, line);
+      lineptr[nlines++] = p;
+    }
+  }
+  return nlines;
 }
 
 /* alloc: return pointer to n characters */
 char *alloc(int n) {
-	if (allocbuf + ALLOCSIZE - allocp >= n) {	/* if it fits */
-		allocp += n;
-		return allocp - n;			/* return old p */
-	} else
-		return 0;
+  if (allocbuf + ALLOCSIZE - allocp >= n) { /* if it fits */
+    allocp += n;
+    return allocp - n; /* return old p */
+  } else
+    return 0;
 }
 
 /* getline_: get a line */
-int getline_ (char *s, int lim) {
-	int i, c;
+int getline_(char *s, int lim) {
+  int i, c;
 
-	i = 0;
-	while (--lim > 0 && (c = getchar()) != EOF && c != '\n') {
-		*s++ = c;
-		i++;
-	}
-	if (c == '\n') {
-		*s++ = c;
-		i++;
-	}
-	*s = '\0';
-	return i;
+  i = 0;
+  while (--lim > 0 && (c = getchar()) != EOF && c != '\n') {
+    *s++ = c;
+    i++;
+  }
+  if (c == '\n') {
+    *s++ = c;
+    i++;
+  }
+  *s = '\0';
+  return i;
 }
 
 /***
-* The main new thing is the declaration for lineptr:
-*
-*   char *lineptr[MAXLINES]
-* says that lineptr is an array of MAXLINES elements, each element of which is
-* a pointer to a char. That is, lineptr[i] is a character pointer, and
-* *lineptr[i] is the character it points to, the first character of the i-th
-* saved text line.
-*
-* Since lineptr is itself the name of an array, it can be treated as a pointer
-* in the same mannner as in our earlier examples, and writelines can be written
-* instead as
-*/
+ * The main new thing is the declaration for lineptr:
+ *
+ *   char *lineptr[MAXLINES]
+ * says that lineptr is an array of MAXLINES elements, each element of which is
+ * a pointer to a char. That is, lineptr[i] is a character pointer, and
+ * *lineptr[i] is the character it points to, the first character of the i-th
+ * saved text line.
+ *
+ * Since lineptr is itself the name of an array, it can be treated as a pointer
+ * in the same mannner as in our earlier examples, and writelines can be written
+ * instead as
+ */
 
 /* writelines: write output lines */
 void writelines(char *lineptr[], int nlines) {
-	while (nlines-- > 0)
-		printf("%s\n", *lineptr++);
+  while (nlines-- > 0)
+    printf("%s\n", *lineptr++);
 }
 
 /***
@@ -147,19 +147,19 @@ void writelines(char *lineptr[], int nlines) {
 
 /* qsort: sort v[left]...v[right] into increasing order */
 void qsort(char *v[], int left, int right) {
-	int i, last;
-	void swap(char *v[], int i, int j);
+  int i, last;
+  void swap(char *v[], int i, int j);
 
-	if (left >= right)	/* do nothing if array contains */
-		return;		/* fewer than two elements */
-	swap(v, left, (left + right) / 2);
-	last = left;
-	for (i = left + 1; i <= right; i++)
-		if (strcmp(v[i], v[left]) < 0)
-			swap(v, ++last, i);
-	swap(v, left, last);
-	qsort(v, left, last - 1);
-	qsort(v, last + 1, right);
+  if (left >= right) /* do nothing if array contains */
+    return;          /* fewer than two elements */
+  swap(v, left, (left + right) / 2);
+  last = left;
+  for (i = left + 1; i <= right; i++)
+    if (strcmp(v[i], v[left]) < 0)
+      swap(v, ++last, i);
+  swap(v, left, last);
+  qsort(v, left, last - 1);
+  qsort(v, last + 1, right);
 }
 
 /***
@@ -168,9 +168,9 @@ void qsort(char *v[], int left, int right) {
 
 /* swap: interchange v[i] and v[j] */
 void swap(char *v[], int i, int j) {
-	char *temp;
+  char *temp;
 
-	temp = v[i], v[i] = v[j], v[j] = temp;
+  temp = v[i], v[i] = v[j], v[j] = temp;
 }
 
 /***
