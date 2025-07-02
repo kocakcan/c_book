@@ -28,10 +28,6 @@ int main(void) {
 #define MAXLEN 1000     /* max length of any input line */
 #define ALLOCSIZE 10000 /* size of available space */
 int getline_(char *, int);
-char *alloc(int);
-
-static char allocbuf[ALLOCSIZE]; /* storage for alloc */
-static char *allocp = allocbuf;  /* next free position */
 
 /* readlines: read input lines */
 int readlines(char *lineptr[], int maxlines) {
@@ -40,7 +36,7 @@ int readlines(char *lineptr[], int maxlines) {
 
   nlines = 0;
   while ((len = getline_(line, MAXLEN)) > 0) {
-    if (nlines >= maxlines || (p = alloc(len)) == NULL)
+    if (nlines >= maxlines)
       return -1;
     else {
       line[len - 1] = '\0'; /*delete newline */
@@ -49,15 +45,6 @@ int readlines(char *lineptr[], int maxlines) {
     }
   }
   return nlines;
-}
-
-/* alloc: return pointer to n characters */
-char *alloc(int n) {
-  if (allocbuf + ALLOCSIZE - allocp >= n) { /* if it fits */
-    allocp += n;
-    return allocp - n; /* return old p */
-  } else
-    return 0;
 }
 
 /* getline_: get a line */
