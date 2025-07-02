@@ -3,10 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #define MAXLINES 5000 /* max #lines to be sorted */
+#define MAXLEN 1000   /* max length of any input line */
 
 char *lineptr[MAXLINES]; /* pointers to text lines */
 
-int readlines(char *lineptr[], int nlines);
+int readlines(char *lineptr[], char *line, int nlines);
 void writelines(char *lineptr[], int nlines);
 
 void qsort(char *lineptr[], int left, int right);
@@ -14,8 +15,9 @@ void qsort(char *lineptr[], int left, int right);
 /* sort input lines */
 int main(void) {
   int nlines; /* number of input lines read */
+  char line[MAXLEN];
 
-  if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+  if ((nlines = readlines(lineptr, line, MAXLINES)) >= 0) {
     qsort(lineptr, 0, nlines - 1);
     writelines(lineptr, nlines);
     return 0;
@@ -25,14 +27,13 @@ int main(void) {
   }
 }
 
-#define MAXLEN 1000     /* max length of any input line */
-#define ALLOCSIZE 10000 /* size of available space */
 int getline_(char *, int);
 
 /* readlines: read input lines */
-int readlines(char *lineptr[], int maxlines) {
+int readlines(char *lineptr[], char *line, int maxlines) {
   int len, nlines;
-  char *p, line[MAXLEN];
+  char *p;
+  char **copy = lineptr;
 
   nlines = 0;
   while ((len = getline_(line, MAXLEN)) > 0) {
@@ -40,8 +41,10 @@ int readlines(char *lineptr[], int maxlines) {
       return -1;
     else {
       line[len - 1] = '\0'; /*delete newline */
+      printf("line: %s\n", line);
       strcpy(p, line);
       lineptr[nlines++] = p;
+      printf("lineptr contains: %s\n", *copy++);
     }
   }
   return nlines;
