@@ -4,6 +4,7 @@
 #include <string.h>
 #define MAXLINES 5000 /* max #lines to be sorted */
 #define MAXLEN 1000   /* max length of any input line */
+#define MAXSTORE 10000
 
 char *lineptr[MAXLINES]; /* pointers to text lines */
 
@@ -15,16 +16,19 @@ void qsort(char *lineptr[], int left, int right);
 /* sort input lines */
 int main(void) {
   int nlines; /* number of input lines read */
-  char line[MAXLEN];
+  char line[MAXSTORE];
 
   if ((nlines = readlines(lineptr, line, MAXLINES)) >= 0) {
     qsort(lineptr, 0, nlines - 1);
+    printf("# - Result - #\n");
     writelines(lineptr, nlines);
     return 0;
   } else {
     printf("error: input too big to sort\n");
     return 1;
   }
+
+  printf("line is: %s", line);
 }
 
 int getline_(char *, int);
@@ -32,19 +36,20 @@ int getline_(char *, int);
 /* readlines: read input lines */
 int readlines(char *lineptr[], char *line, int maxlines) {
   int len, nlines;
-  char *p;
-  char **copy = lineptr;
+
+  char *p =
+      line + strlen(line); /* p points to the first empty position in line */
+  char temp[MAXLEN];
 
   nlines = 0;
-  while ((len = getline_(line, MAXLEN)) > 0) {
-    if (nlines >= maxlines)
+  while ((len = getline_(temp, MAXLEN)) > 0) {
+    if (nlines >= maxlines || line + MAXSTORE - p < len)
       return -1;
     else {
-      line[len - 1] = '\0'; /*delete newline */
-      printf("line: %s\n", line);
-      strcpy(p, line);
+      temp[len - 1] = '\0'; /*delete newline */
+      strcpy(p, temp);
       lineptr[nlines++] = p;
-      printf("lineptr contains: %s\n", *copy++);
+      p += len; /* move p to the next empty position */
     }
   }
   return nlines;
