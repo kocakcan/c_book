@@ -39,19 +39,16 @@ int readlines(char *lineptr[], char *line, int maxlines) {
 
   char *p =
       line + strlen(line); /* p points to the first empty position in line */
-  char temp[MAXLEN];
 
   nlines = 0;
-  while ((len = getline_(temp, MAXLEN)) > 0) {
+  while ((len = getline_(p, MAXLEN)) > 0) {
     if (nlines >= maxlines || line + MAXSTORE - p < len)
       return -1;
-    else {
-      temp[len - 1] = '\0'; /*delete newline */
-      strcpy(p, temp);
-      lineptr[nlines++] = p;
-      p += len; /* move p to the next empty position */
-    }
+    p[len - 1] = '\0';
+    lineptr[nlines++] = p;
+    p += len;
   }
+
   return nlines;
 }
 
