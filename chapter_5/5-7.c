@@ -27,8 +27,6 @@ int main(void) {
     printf("error: input too big to sort\n");
     return 1;
   }
-
-  printf("line is: %s", line);
 }
 
 int getline_(char *, int);
