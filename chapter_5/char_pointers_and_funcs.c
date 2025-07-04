@@ -140,17 +140,15 @@ int strcmp__(char *s, char *t) {
  */
 
 int main(void) {
-  // This string is stored in stack and is mutable
-  // s will always refer to the same storage
+  // s copies the string literal into a mutable array on the stack
+  // Therefore the content of s can be modified but s can't be made to point
+  // any other string as it's an array not a pointer
   char s[50];
   // t points to a string constant that is stored in read-only memory, which is
   // immutable
   // unlike s, t can be made to point to somewhere else
   char *t = "Knight Artorias";
 
-  // s in this case contains the copy of the string literal which is stored in
-  // read-only memory, since it contains the copy the string literal it can be
-  // modified
   int stack[] = {1, 3, 5};
   int *pstack = stack + 2;
   printf("The middle element of the arr is %d\n", *--pstack);
