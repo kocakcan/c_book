@@ -29,11 +29,10 @@ int main(void) {
   }
 }
 
-int getline_(char *, int);
-
 /* readlines: read input lines */
 int readlines(char *lineptr[], char *line, int maxlines) {
   int len, nlines;
+  int getline_(char *, int);
 
   char *p =
       line + strlen(line); /* p points to the first empty position in line */
