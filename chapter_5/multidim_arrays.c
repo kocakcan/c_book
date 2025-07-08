@@ -108,6 +108,10 @@ int main(void) {
   char y = 31;
   char z = 29;
 
+  // Memory address of daytab[i][j] is calculated as:
+  //
+  // daytab[i][j] = daytab + (i * number_of_columns + j) * sizeof(char)
+
   printf("x: %c\n", x);
   printf("y: %c\n", y);
   printf("z: %c\n", z);
