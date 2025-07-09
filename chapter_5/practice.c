@@ -1,21 +1,38 @@
 #include <stdio.h>
+#define ROW 6
+#define COLUMN 5
 
-int matrix[6][5] = {{-1, 3, 5, 7, 9},  {2, 4, 5, -1, 3}, {9, -3, -2, 4, 1},
-                    {5, 19, 3, 4, -8}, {2, 5, 6, 7, 9},  {4, 2, -5, 1, 3}};
+int matrix[ROW][COLUMN] = {{-1, 3, 5, 7, 9},  {2, 4, 5, -1, 3},
+                           {9, -3, -2, 4, 1}, {5, 19, 3, 4, -8},
+                           {2, 5, 6, 7, 9},   {4, 2, -5, 1, 3}};
 
 /* alter: alter v[i][j] using pointer arithmetics 😎 */
 void alter(int (*matrix)[5], int i, int j, int k) {
-  if ((i >= 0 && i < 6) && (j >= 0 && j < 5))
+  if ((i >= 0 && i < ROW) && (j >= 0 && j < COLUMN))
     *(*(matrix + i) + j) = k;
 }
 
 int main(void) {
-  alter(matrix, 0, 19, 30);
+  alter(matrix, 0, 1, 300);
   for (size_t i = 0; i < 6; i++) {
     for (size_t j = 0; j < 5; j++)
       printf("%d\t", matrix[i][j]);
     printf("\n");
   }
+
+  printf("matrix points to: %p\n", (void *)matrix);
+  printf("matrix + 1 points to: %p\n", (void *)(matrix + 1));
+  printf("matrix + 2 points to: %p\n", (void *)(matrix + 2));
+
+  char *lineptr[5];
+  char **copy = lineptr;
+  char s[] = "can kocak";
+  // lineptr[0] = "can kocak";
+  lineptr[0] = s;
+
+  lineptr[0][0] = 'x';
+
+  printf("%s\n", *lineptr);
 
   return 0;
 }
