@@ -1,5 +1,6 @@
 /* There is no error checking in day_of_year and month_day. Remedy this effect.
  * */
+#include <stdio.h>
 static char daytab[2][13] = {
     {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
     {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
@@ -22,4 +23,12 @@ void month_day(int year, int yearday, int *pmonth, int *pday) {
     yearday -= daytab[leap][i];
   *pmonth = i;
   *pday = yearday;
+}
+
+int main(int argc, char *argv[]) {
+  // This should not work as February is never 30 days long
+  int x = day_of_year(2025, 2, 30);
+  printf("today is the %dth day of the year\n", x);
+
+  return 0;
 }
