@@ -7,12 +7,15 @@ static char daytab[2][13] = {
 
 /* day_of_year: set day of year from month & day */
 int day_of_year(int year, int month, int day) {
+  int i, leap;
   if (month >= 1 && month <= 12)
     printf("month looks okay\n");
-  int i, leap;
+  else
+    return -1; /* return -1 if the user provided an invalid int for the month */
   leap = year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
-  if (day > daytab[leap][month])
-    day = daytab[leap][month];
+  if (day > daytab[leap][month]) /* if the day number is bigger than the maximum
+                                    day */
+    day = daytab[leap][month];   /* make it the maximum */
   for (i = 1; i < month; i++)
     day += daytab[leap][i];
   return day;
@@ -31,7 +34,7 @@ void month_day(int year, int yearday, int *pmonth, int *pday) {
 
 int main(int argc, char *argv[]) {
   // This should not work as February is never 30 days long
-  int x = day_of_year(2025, 2, 300);
+  int x = day_of_year(2025, 12, 300);
   printf("today is the %dth day of the year\n", x);
 
   return 0;
