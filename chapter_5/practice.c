@@ -12,13 +12,18 @@ void alter(int (*matrix)[5], int i, int j, int k) {
     *(*(matrix + i) + j) = k;
 }
 
+/* printm: print matrix using pointer arithmetics 🐒 */
+void printm(int (*matrix)[COLUMN]) {
+	for (size_t i = 0; i < ROW; i++) {
+		for (size_t j = 0; j < COLUMN; j++)
+			printf("%d\t", *(*(matrix + i) + j));
+		printf("\n");
+	}
+}
+
 int main(void) {
   alter(matrix, 0, 1, 300);
-  for (size_t i = 0; i < 6; i++) {
-    for (size_t j = 0; j < 5; j++)
-      printf("%d\t", matrix[i][j]);
-    printf("\n");
-  }
+  printm(matrix);
 
   printf("matrix points to: %p\n", (void *)matrix);
   printf("matrix + 1 points to: %p\n", (void *)(matrix + 1));
