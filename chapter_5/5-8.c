@@ -21,6 +21,8 @@ int day_of_year(int year, int month, int day) {
 
 /* month_day: set month, day from day of year */
 void month_day(int year, int yearday, int *pmonth, int *pday) {
+  if (pmonth == NULL || pday == NULL)
+	return;
   int i, leap;
 
   leap = leap % 4 == 0 && year % 100 != 0 || year % 400 == 0;
@@ -33,7 +35,10 @@ void month_day(int year, int yearday, int *pmonth, int *pday) {
 int main(int argc, char *argv[]) {
   // This should not work as February is never 30 days long
   int x = day_of_year(2025, 2, 300);
+  int pmonth = 0, pday = 0;
+  month_day(2025, x, &pmonth, &pday);
   printf("today is the %dth day of the year\n", x);
+  printf("pmonth: %d | pday: %d\n", pmonth, pday);
 
   return 0;
 }
