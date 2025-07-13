@@ -54,7 +54,7 @@
  * Character arrays are a special case of initialization; a string may be used
  * instead of braces and commas notation:
  *
- * 	char pattern = "ould";
+ * 	char *pattern = "ould";
  * is a shorthand for the longer but equivalent
  * 	char pattern[] = { 'o', 'u', 'l', 'd', '\0' };
  *
