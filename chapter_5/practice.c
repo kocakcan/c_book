@@ -14,12 +14,18 @@ void alter(int (*matrix)[5], int i, int j, int k) {
 
 /* printm: print matrix using pointer arithmetics 🐒 */
 void printm(int (*matrix)[COLUMN]) {
-	for (size_t i = 0; i < ROW; i++) {
-		for (size_t j = 0; j < COLUMN; j++)
-			printf("%d\t", *(*(matrix + i) + j));
-		printf("\n");
-	}
+  for (size_t i = 0; i < ROW; i++) {
+    for (size_t j = 0; j < COLUMN; j++)
+      printf("%d\t", *(*(matrix + i) + j));
+    printf("\n");
+  }
 }
+
+// an array of character pointers
+// since you store the pointers the character strings themselves can be of
+// different lengths unlike multi-dimensional arrays 😎
+static char *kocaks[5] = {"seyfi kocak", "leyli kocak", "dilan kocak",
+                          "medet kocak", "can kocak"};
 
 int main(void) {
   alter(matrix, 0, 1, 300);
@@ -38,6 +44,11 @@ int main(void) {
   lineptr[0][0] = 'x';
 
   printf("%s\n", *lineptr);
+  int family_size = 5;
+  char **familyp = kocaks;
+
+  while (family_size--)
+    printf("%s\n", *familyp++);
 
   return 0;
 }
