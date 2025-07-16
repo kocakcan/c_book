@@ -29,11 +29,37 @@
 #include <stdio.h>
 
 /* echo command-line arguments; 1st version */
-int main(int argc, char *argv[]) {
-  int i;
+// int main(int argc, char *argv[]) {
+//   int i;
+//
+//   for (i = 1; i < argc; i++)
+//     printf("%s%s", argv[i], (i < argc - 1) ? " " : "");
+//   printf("\n");
+//   return 0;
+// }
 
-  for (i = 1; i < argc; i++)
-    printf("%s%s", argv[i], (i < argc - 1) ? " " : "");
+/***
+ * Since argv is a pointer to an array of pointers, we can manipulate the
+ * pointer rather than index the array. This next variant is based on
+ * incrementing argv, which is a pointer to a pointer to char, while argc is
+ * counted down:
+ */
+
+/* echo command-line arugments; 2nd version */
+int main(int argc, char *argv[]) {
+  while (--argc > 0)
+    // Alternatively, we could write the printf statement as
+    printf((argc > 1) ? "%s " : "%s", *++argv);
+  // This shows that the format argument of printf can be an expression too
+  // printf("%s%s", *++argv, (argc > 1) ? " " : "");
   printf("\n");
   return 0;
 }
+
+/***
+ * Since argv is a pointer to the beginning of the array of argument strings,
+ * incrementing it by 1 (++argv) makes it point at the original argv[1] instead
+ * of argv[0]. Each successive increment moves it along to the next argument;
+ * *argv is then the pointer to that argument. At the same time, argc is
+ * decremented; when it becomes zero, there are no arguments left to print.
+ */
