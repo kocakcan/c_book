@@ -25,6 +25,18 @@ int getline_(char *line, int max) {
   return i;
 }
 
+char *strindex_(char *s, char *t) {
+  char *ps, *pt;
+
+  for (; *s; s++) {
+    for (ps = s, pt = t; *pt && *ps == *pt; ps++, pt++)
+      ;
+    if (pt > t && *pt == '\0')
+      return s;
+  }
+  return NULL;
+}
+
 /* find: print lines that match pattern from 1st arg */
 int main(int argc, char *argv[]) {
   char line[MAXLINE];
@@ -34,7 +46,7 @@ int main(int argc, char *argv[]) {
     printf("Usage: find pattern\n");
   else
     while (getline_(line, MAXLINE) > 0)
-      if (strstr(line, argv[1]) != NULL) {
+      if (strindex_(line, argv[1]) != NULL) {
         printf("%s", line);
         found++;
       }
