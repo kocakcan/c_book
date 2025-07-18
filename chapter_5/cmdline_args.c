@@ -41,7 +41,7 @@
 /***
  * Since argv is a pointer to an array of pointers, we can manipulate the
  * pointer rather than index the array. This next variant is based on
- * incrementing argv, which is a pointer to a pointer to char, while argc is
+ * incrementing argv, which is a pointer to pointer to char, while argc is
  * counted down:
  */
 
@@ -55,6 +55,12 @@ int main(int argc, char *argv[]) {
   printf("\n");
   return 0;
 }
+
+/***
+ * In the second version of echo, while argc is pre-decremented, argv is
+ * pre-incremented as well to make sure that we ignore the first command-line
+ * argument, which is the name the program was invoked with.
+ */
 
 /***
  * Since argv is a pointer to the beginning of the array of argument strings,
