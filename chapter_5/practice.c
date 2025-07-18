@@ -27,6 +27,17 @@ void printm(int (*matrix)[COLUMN]) {
 static char *kocaks[5] = {"seyfi kocak", "leyli kocak", "dilan kocak",
                           "medet kocak", "can kocak"};
 
+size_t strlen_(char *s) {
+  size_t i = 0;
+
+  // when s points to the null terminator the loop exits, not incrementing i
+  // after but incrementing s one last time to point to the null terminator
+  while (*s++)
+    i++;
+
+  return i;
+}
+
 int main(void) {
   alter(matrix, 0, 1, 300);
   printm(matrix);
@@ -49,6 +60,8 @@ int main(void) {
 
   while (family_size--)
     printf("%s\n", *familyp++);
+
+  printf("my name, %s, is %zd characters long\n", s, strlen_(s));
 
   return 0;
 }

@@ -52,3 +52,11 @@ int main(int argc, char *argv[]) {
       }
   return found;
 }
+
+/***
+ * The standard library function strstr(s, t) returns a pointer to the first
+ * occurrence of the string t in the string s, or NULL if there is none. It is
+ * declared in <string.h>
+ *
+ * The model can now be elaborated to illustrate further pointer constructions.
+ */
