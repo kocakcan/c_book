@@ -24,8 +24,8 @@ void printm(int (*matrix)[COLUMN]) {
 // an array of character pointers
 // since you store the pointers the character strings themselves can be of
 // different lengths unlike multi-dimensional arrays 😎
-static char *kocaks[5] = {"seyfi kocak", "leyli kocak", "dilan kocak",
-                          "medet kocak", "can kocak"};
+static char *kocaks[5] = {"leyli kocak", "can kocak", "dilan kocak",
+                          "medet kocak", "seyfi kocak"};
 
 size_t strlen_(char *s) {
   size_t i = 0;
@@ -62,6 +62,11 @@ int main(void) {
     printf("%s\n", *familyp++);
 
   printf("my name, %s, is %zd characters long\n", s, strlen_(s));
+
+  char **ap = kocaks;
+  // printf("First character of the second character string: %c\n", (*++ap)[0]);
+  // printf("First character of the second character string: %c\n", **++ap);
+  printf("Second character of the first character string: %c\n", *++ap[0]);
 
   return 0;
 }
