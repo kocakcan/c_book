@@ -59,4 +59,16 @@ int main(int argc, char *argv[]) {
  * declared in <string.h>
  *
  * The model can now be elaborated to illustrate further pointer constructions.
+ * Suppose we want to allow two optional arguments. One says "print all lines except those that match the pattern;" the second says "precede each printed line by its line number."
+ *
+ * A common convention for C programs on UNIX systems is that an argument that begins with a minus sign introduces an optional flag or parameter. If we choose -x (for "except") to signal the inversion, and -n ("number") to request line numbering, then the command
+ *
+ * 	find -x -npattern
+ * will print each line that doesn't match the pattern, preceded by its line number.
+ *
+ * Optional arguments should be permitted in any order, and the rest of the program should be independent of the number of arguments that we present. Furthermore, it is convenient for users if option arguments can be combined, as in
+ *
+ * 	find -nx pattern
+ * Here is the program:
+ */
  */
