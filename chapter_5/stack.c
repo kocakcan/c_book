@@ -21,3 +21,6 @@ double pop(void) {
     return 0.0;
   }
 }
+
+int is_empty(void) { return sp == val; }
+void clear_stack(void) { sp = val; }
