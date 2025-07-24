@@ -5,18 +5,50 @@
  * 	expr 2 3 4 + *
  * evaluates 2 * (3 + 4).
  */
-#include "../chapter_4/calc.h"
+#include "calc.h"
 #include <stdio.h>
 #include <stdlib.h>
-#define MAXOP 100
 
 /* expr: evaluate reverse Polish expression from the command line */
 int main(int argc, char *argv[]) {
   int type;
   double op2;
-  char s[MAXOP];
-  if (argc == 1)
-    printf("expr: Reverse Polish expression evaluator 😎\n");
+
+  if (argc == 1) {
+    printf("Usage: ./main [operands] [operators]\n");
+    return 1;
+  }
+
+  while (--argc > 0) {
+    char *arg = *++argv;
+
+    if ((type = getop(arg)) == NUMBER) {
+      push(atof(arg));
+    } else {
+      switch (type) {
+      case '+':
+        push(pop() + pop());
+        break;
+      case '-':
+        op2 = pop();
+      case '*':
+        push(pop() * pop());
+        break;
+      case '/':
+        op2 = pop();
+        if (op2 != 0.0)
+          push(pop() / op2);
+        else
+          printf("error: zero divisor\n");
+        break;
+      default:
+        printf("error: unknown command %s\n", arg);
+        break;
+      }
+    }
+  }
+
+  printf("RESULT: %.8g\n", pop());
 
   return 0;
 }
