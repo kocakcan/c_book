@@ -38,11 +38,16 @@ int main(int argc, char *argv[]) {
         op2 = pop();
         if (op2 != 0.0)
           push(pop() / op2);
-        else
+        else {
           printf("error: zero divisor\n");
+          push(0.0);
+        }
         break;
       default:
-        printf("error: unknown command %s\n", arg);
+        if (*arg == '\0')
+          printf("error: empty argument\n");
+        else
+          printf("error: unknown command %s\n", arg);
         break;
       }
     }
