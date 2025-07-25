@@ -2,38 +2,42 @@
 #define TABSTOP 8
 
 int main(void) {
-  int c;
-  int pos = 1;
-  int nspaces = 0, ntabs = 0;
+  int c;           /* current char read */
+  int pos = 1;     /* initial pos */
+  int nspaces = 0; /* accumulated spaces */
 
   while ((c = getchar()) != EOF) {
     if (c == ' ') {
-      if (pos % TABSTOP != 0) {
-        ++nspaces;
-      } else {
+      ++nspaces;
+      if ((pos % TABSTOP) == 0) {
+        putchar('\t'); /* replace the spaces accumulated with a tab */
         nspaces = 0;
-        ++ntabs;
       }
+      ++pos;
     } else {
-      for (int i = 0; i < ntabs; ++i)
-        putchar('\t');
-      ntabs = 0;
-
-      if (c == '\t') {
-        nspaces = 0;
-        pos += (TABSTOP - (pos - 1) % TABSTOP) - 1;
+      while (nspaces > 0) {
+        putchar(' ');
+        --nspaces;
       }
 
-      for (int i = 0; i < nspaces; ++i)
-        putchar(' ');
-      nspaces = 0;
-
-      putchar(c);
+      putchar(c); /* print the current char */
 
       if (c == '\n') {
-        pos = 0;
+        pos = 1;
+        nspaces = 0;
+      } else if (c == '\t') {
+        pos +=
+            (TABSTOP - ((pos - 1) % TABSTOP)); /* move to the next tab stop */
+      } else {
+        ++pos;
       }
     }
-    ++pos;
   }
+
+  while (nspaces > 0) {
+    putchar(' ');
+    --nspaces;
+  }
+
+  return 0;
 }
