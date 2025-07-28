@@ -1,22 +1,25 @@
 /* Modify the program entab and detab to accept a list of tab stops as
  * arguments. Use the default tab settings if there are no arguments. */
 #include <stdio.h>
-#define TABSTOP 8
+#include <stdlib.h>
 
 int main(int argc, char *argv[]) {
   int c, nspaces = 0, pos = 1;
+  const int TABSTOP = atoi(*++argv);
 
   while ((c = getchar()) != EOF) {
     if (c == ' ') {
       ++nspaces;
       if (pos % TABSTOP == 0) {
-        putchar('\t');
+        // putchar('\t');
+        printf("[TAB]");
         nspaces = 0;
       }
       ++pos;
     } else {
       while (nspaces > 0) {
-        putchar(' ');
+        // putchar(' ');
+        printf("[SPACE]");
         nspaces--;
       }
 
@@ -33,5 +36,6 @@ int main(int argc, char *argv[]) {
   }
 
   while (nspaces--)
-    putchar(' ');
+    // putchar(' ');
+    printf("[SPACE]");
 }
