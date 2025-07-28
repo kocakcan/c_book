@@ -10,15 +10,13 @@ int main(int argc, char *argv[]) {
     if (c == ' ') {
       ++nspaces;
       if (pos % TABSTOP == 0) {
-        // putchar('\t');
-        printf("[TAB]");
+        putchar('\t');
         nspaces = 0;
       }
       ++pos;
     } else {
       while (nspaces > 0) {
-        // putchar(' ');
-        printf("[SPACE]");
+        putchar(' ');
         nspaces--;
       }
 
@@ -35,5 +33,5 @@ int main(int argc, char *argv[]) {
   }
 
   while (nspaces--)
-    printf("[SPACE]");
+    putchar(' ');
 }
