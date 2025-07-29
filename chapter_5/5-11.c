@@ -5,7 +5,12 @@
 
 int main(int argc, char *argv[]) {
   int c, nspaces = 0, pos = 1;
-  const int TABSTOP = atoi(*++argv);
+  int TABSTOP;
+
+  if (argc > 1)
+    TABSTOP = atoi(*++argv);
+  else
+    TABSTOP = 8;
 
   while ((c = getchar()) != EOF) {
     if (c == ' ') {
