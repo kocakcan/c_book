@@ -2,23 +2,31 @@
  * arguments. Use the default tab settings if there are no arguments. */
 #include <stdio.h>
 #include <stdlib.h>
+#define DEFAULT_TABSTOP 8
+#define MAX_TABS 100
 
 int main(int argc, char *argv[]) {
   int c, nspaces = 0, pos = 1;
-  int TABSTOP;
+  int ntabs = 0;
+  int tabstops[MAX_TABS];
+  int current_tabstop;
 
-  if (argc > 1)
-    TABSTOP = atoi(*++argv);
-  else
-    TABSTOP = 8;
+  if (argc > 1) {
+    while (--argc > 0 && ntabs < MAX_TABS)
+      tabstops[ntabs++] = atoi(*++argv);
+  } else
+    tabstops[ntabs++] = DEFAULT_TABSTOP;
 
   while ((c = getchar()) != EOF) {
+    current_tabstop = tabstops[ntabs - 1];
     if (c == ' ') {
       ++nspaces;
-      if (pos % TABSTOP == 0) {
-        // putchar('\t');
-        printf("[TAB]");
-        nspaces = 0;
+      for (int i = 0; i < ntabs; ++i) {
+        if (pos == tabstops[i]) {
+          printf("[TAB]");
+          nspaces = 0;
+          break;
+        }
       }
       ++pos;
     } else {
@@ -30,12 +38,9 @@ int main(int argc, char *argv[]) {
 
       putchar(c);
 
-      if (c == '\n') {
+      if (c == '\n')
         pos = 1;
-        nspaces = 0;
-      } else if (c == '\t') {
-        pos += (TABSTOP - ((pos - 1) % TABSTOP));
-      } else
+      else
         pos++;
     }
   }
@@ -43,4 +48,6 @@ int main(int argc, char *argv[]) {
   while (nspaces--)
     // putchar(' ');
     printf("[SPACE]");
+
+  return 0;
 }
