@@ -7,21 +7,26 @@
 
 int main(int argc, char *argv[]) {
   int c, nspaces = 0, pos = 1;
-  int ntabs = 0;
   int tabstops[MAX_TABS];
+  int *tp = tabstops;
   int current_tabstop;
 
   if (argc > 1) {
-    while (--argc > 0 && ntabs < MAX_TABS)
-      tabstops[ntabs++] = atoi(*++argv);
+    while (--argc > 0 && tp - tabstops < MAX_TABS)
+      // tabstops[ntabs++] = atoi(*++argv);
+      *tp++ = atoi(*++argv);
   } else
-    tabstops[ntabs++] = DEFAULT_TABSTOP;
+    *tp++ = DEFAULT_TABSTOP;
+
+  int *copy = tp;
 
   while ((c = getchar()) != EOF) {
-    current_tabstop = tabstops[ntabs - 1];
+    // current_tabstop = tabstops[ntabs - 1];
+    current_tabstop = *--tp;
     if (c == ' ') {
       ++nspaces;
-      for (int i = 0; i < ntabs; ++i) {
+      // for (int i = 0; i < ntabs; ++i) {
+      for (int i = 0; i < copy - tabstops; ++i) {
         if (pos == tabstops[i]) {
           printf("[TAB]");
           nspaces = 0;
