@@ -4,25 +4,28 @@
  *   stops, say every n columns. Should n be a variable or a symbolic parameter?
  */
 #include <stdio.h>
-#define TABSTOP 4
+#define TABSTOP 8
 
 int main(void) {
-  int c, nblanks;
-  int position = 1;
+  int c, nspaces;
+  int pos = 1;
 
   while ((c = getchar()) != EOF) {
     if (c == '\t') {
-      nblanks = TABSTOP - (position - 1) % TABSTOP;
-      for (int i = 0; i < nblanks; ++i) {
-        putchar(' ');
-        ++position;
+      nspaces = TABSTOP - (pos - 1) % TABSTOP;
+      while (nspaces--) {
+        // putchar(' ');
+        printf("[SPACE]");
+        ++pos;
       }
     } else if (c == '\n') {
       putchar(c);
-      position = 1;
+      pos = 1;
     } else {
       putchar(c);
-      ++position;
+      ++pos;
     }
   }
+
+  return 0;
 }
