@@ -13,22 +13,17 @@ int main(int argc, char *argv[]) {
 
   if (argc > 1) {
     while (--argc > 0 && tp - tabstops < MAX_TABS)
-      // tabstops[ntabs++] = atoi(*++argv);
       *tp++ = atoi(*++argv);
   } else
     *tp++ = DEFAULT_TABSTOP;
 
   while ((c = getchar()) != EOF) {
-    // current_tabstop = tabstops[ntabs - 1];
-    // current_tabstop = *--tp;
-    current_tabstop = *(tp - 1);
+    current_tabstop = (tp == tabstops) ? DEFAULT_TABSTOP : *(tp - 1);
     if (c == ' ') {
       ++nspaces;
-      // for (int i = 0; i < ntabs; ++i) {
-      // for (int i = 0; i < copy - tabstops; ++i) {
       for (int *t = tabstops; t < tp; ++t) {
         if (pos == *t) {
-          printf("[TAB]");
+          putchar('\t');
           nspaces = 0;
           break;
         }
@@ -36,8 +31,7 @@ int main(int argc, char *argv[]) {
       ++pos;
     } else {
       while (nspaces > 0) {
-        // putchar(' ');
-        printf("[SPACE]");
+        putchar(' ');
         nspaces--;
       }
 
@@ -51,8 +45,7 @@ int main(int argc, char *argv[]) {
   }
 
   while (nspaces--)
-    // putchar(' ');
-    printf("[SPACE]");
+    putchar(' ');
 
   return 0;
 }
