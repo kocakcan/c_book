@@ -14,16 +14,16 @@ int main(void) {
     if (c == '\t') {
       nspaces = TABSTOP - (pos - 1) % TABSTOP;
       while (nspaces--) {
-        // putchar(' ');
         printf("[SPACE]");
         ++pos;
       }
-    } else if (c == '\n') {
-      putchar(c);
-      pos = 1;
     } else {
       putchar(c);
-      ++pos;
+
+      if (c == '\n')
+        pos = 1;
+      else
+        ++pos;
     }
   }
 
