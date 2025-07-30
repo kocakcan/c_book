@@ -18,16 +18,16 @@ int main(int argc, char *argv[]) {
   } else
     *tp++ = DEFAULT_TABSTOP;
 
-  int *copy = tp;
-
   while ((c = getchar()) != EOF) {
     // current_tabstop = tabstops[ntabs - 1];
-    current_tabstop = *--tp;
+    // current_tabstop = *--tp;
+    current_tabstop = *(tp - 1);
     if (c == ' ') {
       ++nspaces;
       // for (int i = 0; i < ntabs; ++i) {
-      for (int i = 0; i < copy - tabstops; ++i) {
-        if (pos == tabstops[i]) {
+      // for (int i = 0; i < copy - tabstops; ++i) {
+      for (int *t = tabstops; t < tp; ++t) {
+        if (pos == *t) {
           printf("[TAB]");
           nspaces = 0;
           break;
