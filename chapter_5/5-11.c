@@ -9,7 +9,8 @@ int main(int argc, char *argv[]) {
   int c, nspaces = 0, pos = 1;
   int tabstops[MAX_TABS];
   int *tp = tabstops;
-  int current_tabstop;
+  int *index = tabstops;
+  int current_tabstop = *index;
 
   if (argc > 1) {
     while (--argc > 0 && tp - tabstops < MAX_TABS)
@@ -18,28 +19,32 @@ int main(int argc, char *argv[]) {
     *tp++ = DEFAULT_TABSTOP;
 
   while ((c = getchar()) != EOF) {
-    current_tabstop = (tp == tabstops) ? DEFAULT_TABSTOP : *(tp - 1);
     if (c == ' ') {
       ++nspaces;
-      for (int *t = tabstops; t < tp; ++t) {
-        if (pos == *t) {
-          putchar('\t');
-          nspaces = 0;
-          break;
-        }
+      if (pos == current_tabstop) {
+        // putchar('\t');
+        printf("[TAB]");
+        nspaces = 0;
+        index++;
+        current_tabstop = (index - tabstops < MAX_TABS)
+                              ? *index
+                              : current_tabstop + DEFAULT_TABSTOP;
       }
       ++pos;
     } else {
       while (nspaces > 0) {
-        putchar(' ');
+        // putchar(' ');
+        printf("[SPACE]");
         nspaces--;
       }
 
       putchar(c);
 
-      if (c == '\n')
+      if (c == '\n') {
         pos = 1;
-      else
+        index = tabstops;
+        current_tabstop = *index;
+      } else
         pos++;
     }
   }
