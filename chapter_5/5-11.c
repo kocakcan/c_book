@@ -5,52 +5,70 @@
 #define DEFAULT_TABSTOP 8
 #define MAX_TABS 100
 
+int next_tab(int pos, int *tabstops, int ntabs) {
+  for (int i = 0; i < ntabs; i++)
+    if (pos < tabstops[i])
+      return tabstops[i];
+  int last = ntabs > 0 ? tabstops[ntabs - 1] : DEFAULT_TABSTOP;
+  int offset = (pos - last) % DEFAULT_TABSTOP;
+  return pos + (DEFAULT_TABSTOP - offset);
+}
+
 int main(int argc, char *argv[]) {
-  int c, nspaces = 0, pos = 1;
   int tabstops[MAX_TABS];
-  int *tp = tabstops;
-  int *index = tabstops;
-  int current_tabstop = *index;
+  int ntabs = 0;
 
   if (argc > 1) {
-    while (--argc > 0 && tp - tabstops < MAX_TABS)
-      *tp++ = atoi(*++argv);
-  } else
-    *tp++ = DEFAULT_TABSTOP;
+    for (int i = 1; i < argc && ntabs < MAX_TABS; ++i)
+      tabstops[ntabs++] = atoi(argv[i]);
+  } else {
+    tabstops[0] = DEFAULT_TABSTOP;
+    ntabs = 1;
+  }
+
+  int pos = 1, nspaces = 0, c;
 
   while ((c = getchar()) != EOF) {
-    if (c == ' ') {
+    if (c == ' ')
       ++nspaces;
-      if (pos == current_tabstop) {
-        // putchar('\t');
-        printf("[TAB]");
-        nspaces = 0;
-        index++;
-        current_tabstop = (index - tabstops < MAX_TABS)
-                              ? *index
-                              : current_tabstop + DEFAULT_TABSTOP;
-      }
-      ++pos;
-    } else {
+    else {
       while (nspaces > 0) {
-        // putchar(' ');
-        printf("[SPACE]");
-        nspaces--;
+        int next = next_tab(pos, tabstops, ntabs);
+        if (pos + nspaces >= next) {
+          // putchar('\t');
+          printf("[TAB]");
+          nspaces -= (next - pos);
+          pos = next;
+        } else {
+          // putchar(' ');
+          printf("[SPACE]");
+          --nspaces;
+          ++pos;
+        }
       }
 
       putchar(c);
-
-      if (c == '\n') {
+      if (c == '\n')
         pos = 1;
-        index = tabstops;
-        current_tabstop = *index;
-      } else
-        pos++;
+      else
+        ++pos;
     }
   }
 
-  while (nspaces--)
-    putchar(' ');
+  while (nspaces > 0) {
+    int next = next_tab(pos, tabstops, ntabs);
+    if (pos + nspaces >= next) {
+      // putchar('\t');
+      printf("[TAB]");
+      nspaces -= (next - pos);
+      pos = next;
+    } else {
+      // putchar(' ');
+      printf("[SPACE]");
+      --nspaces;
+      ++pos;
+    }
+  }
 
   return 0;
 }
