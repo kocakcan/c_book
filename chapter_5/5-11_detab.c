@@ -29,9 +29,10 @@ int main(int argc, char *argv[]) {
   int pos = 1, nspaces = 0, c;
 
   while ((c = getchar()) != EOF) {
-    if (c == ' ')
-      ++nspaces;
-    else {
+    if (c == '\t') {
+      // ++nspaces;
+      int next = next_tab(pos, tabstops);
+    } else {
       while (nspaces > 0) {
         int next = next_tab(pos, tabstops);
         if (pos + nspaces >= next) {
