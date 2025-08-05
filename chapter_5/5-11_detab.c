@@ -26,49 +26,20 @@ int main(int argc, char *argv[]) {
     *tp++ = DEFAULT_TABSTOP;
   }
 
-  int pos = 1, nspaces = 0, c;
+  int pos = 1, c;
 
   while ((c = getchar()) != EOF) {
     if (c == '\t') {
-      // ++nspaces;
       int next = next_tab(pos, tabstops);
+      for (; pos < next; ++pos)
+        printf("[SPACE]");
     } else {
-      while (nspaces > 0) {
-        int next = next_tab(pos, tabstops);
-        if (pos + nspaces >= next) {
-          // putchar('\t');
-          printf("[TAB]");
-          nspaces -= (next - pos);
-          pos = next;
-        } else {
-          // putchar(' ');
-          printf("[SPACE]");
-          --nspaces;
-          ++pos;
-        }
-      }
 
       putchar(c);
       if (c == '\n')
         pos = 1;
       else
         ++pos;
-    }
-  }
-
-  // on EOF
-  while (nspaces > 0) {
-    int next = next_tab(pos, tabstops);
-    if (pos + nspaces >= next) {
-      // putchar('\t');
-      printf("[TAB]");
-      nspaces -= (next - pos);
-      pos = next;
-    } else {
-      // putchar(' ');
-      printf("[SPACE]");
-      --nspaces;
-      ++pos;
     }
   }
 
