@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
   int c, init_pos, every_col;
 
   while (--argc > 0 && (*++argv)[0] == '-')
-    while (c = *++argv[0])
+    while (c = *++argv[0]) {
       switch (c) {
       case 'c':
         init_pos = 1;
@@ -20,8 +20,10 @@ int main(int argc, char *argv[]) {
       default:
         printf("entab: illegal option: %c\n", c);
       }
+    }
 
   printf("init_pos: %d | every_col: %d\n", init_pos, every_col);
+  printf("\\0 is: %d\n", '\0');
 
   return 0;
 }
