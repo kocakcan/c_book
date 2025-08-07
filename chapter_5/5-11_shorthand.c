@@ -4,75 +4,24 @@
  *  to mean tab stops every n columns, starting at column m. Choose convenient
  *  (for the user) default behaviour. */
 #include <stdio.h>
-#include <stdlib.h>
-#define DEFAULT_TABSTOP 8
-#define MAX_TABS 100
-
-int tabstops[MAX_TABS];
-int *tp = tabstops;
-
-/* next_tab: returns next tabstop after (or at) current position */
-int next_tab(int pos, int *tabstops) {
-  for (int *temp = tabstops; temp < tp; ++temp)
-    if (pos < *temp)
-      return *temp;
-  int last = (tp - tabstops > 0) ? *(tp - 1) : DEFAULT_TABSTOP;
-  int offset = (pos - last) % DEFAULT_TABSTOP;
-  return pos + (DEFAULT_TABSTOP - offset);
-}
 
 int main(int argc, char *argv[]) {
-  if (argc > 1) {
-    while (--argc > 0 && tp - tabstops < MAX_TABS)
-      *tp++ = atoi(*++argv);
-  } else {
-    *tp++ = DEFAULT_TABSTOP;
-  }
+  int c, init_pos, every_col;
 
-  int pos = 1, nspaces = 0, c;
-
-  while ((c = getchar()) != EOF) {
-    if (c == ' ')
-      ++nspaces;
-    else {
-      while (nspaces > 0) {
-        int next = next_tab(pos, tabstops);
-        if (pos + nspaces >= next) {
-          // putchar('\t');
-          printf("[TAB]");
-          nspaces -= (next - pos);
-          pos = next;
-        } else {
-          // putchar(' ');
-          printf("[SPACE]");
-          --nspaces;
-          ++pos;
-        }
+  while (--argc > 0 && (*++argv)[0] == '-')
+    while (c = *++argv[0])
+      switch (c) {
+      case 'c':
+        init_pos = 1;
+        break;
+      case 's':
+        every_col = 1;
+        break;
+      default:
+        printf("entab: illegal option: %c\n", c);
       }
 
-      putchar(c);
-      if (c == '\n')
-        pos = 1;
-      else
-        ++pos;
-    }
-  }
-
-  // on EOF
-  while (nspaces > 0) {
-    int next = next_tab(pos, tabstops);
-    if (pos + nspaces >= next) {
-      // putchar('\t');
-      printf("[TAB]");
-      nspaces -= (next - pos);
-      pos = next;
-    } else {
-      // putchar(' ');
-      printf("[SPACE]");
-      --nspaces;
-      ++pos;
-    }
-  }
+  printf("init_pos: %d | every_col: %d\n", init_pos, every_col);
 
   return 0;
 }
