@@ -4,6 +4,7 @@
  *  to mean tab stops every n columns, starting at column m. Choose convenient
  *  (for the user) default behaviour. */
 #include <stdio.h>
+#include <stdlib.h>
 
 int main(int argc, char *argv[]) {
   int c, init_pos, every_col;
@@ -24,8 +25,9 @@ int main(int argc, char *argv[]) {
 
   while (--argc > 0) {
     if ((*++argv)[0] == '-')
-      if (c = *++argv[0])
-        init_pos = c - '0';
+      // if (c = *++argv[0])
+	if (c = atoi(*(argv) + 1))
+		init_pos = c;
   }
 
   printf("init_pos: %d | every_col: %d\n", init_pos, every_col);
