@@ -7,31 +7,21 @@
 #include <stdlib.h>
 
 int main(int argc, char *argv[]) {
-  int c, init_pos, every_col;
+  	int c, d, init_pos, every_col;
 
-  // while (--argc > 0 && (*++argv)[0] == '-')
-  //   while (c = *++argv[0]) {
-  //     switch (c) {
-  //     case 'c':
-  //       init_pos = 1;
-  //       break;
-  //     case 's':
-  //       every_col = 1;
-  //       break;
-  //     default:
-  //       printf("entab: illegal option: %c\n", c);
-  //     }
-  //   }
+    	if ((*++argv)[0] == '-')
+		if (c = atoi(*(argv) + 1))
+			init_pos = c;
 
-  while (--argc > 0) {
-    if ((*++argv)[0] == '-')
-      // if (c = *++argv[0])
-	if (c = atoi(*(argv) + 1))
-		init_pos = c;
-  }
+	if ((*++argv)[0] == '+')
+		if (d = atoi(*(argv) + 1))
+			every_col = d;
 
-  printf("init_pos: %d | every_col: %d\n", init_pos, every_col);
-  printf("\\0 is: %d\n", '\0');
+	// printf("1st char of 2nd arg string: %c\n", (*++argv)[0]);
+	// printf("1st char of 2nd arg string: %c\n", (*++argv)[0]);
+
+  	printf("init_pos: %d | every_col: %d\n", init_pos, every_col);
+  	printf("\\0 is: %d\n", '\0');
 
   return 0;
 }
