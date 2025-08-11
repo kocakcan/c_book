@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   int c, init_pos = DEFAULT_INIT_POS, every_col = DEFAULT_EVERY_COL;
   int nspaces = 0, pos = 1;
 
-  while (--argc > 0) {
+  for (size_t i = 0; --argc > 0 && i < 2; i++) {
     char *arg = *++argv;
     if (*arg == '-' && *(arg + 1) != '\0') {
       int val = atoi(arg + 1);
