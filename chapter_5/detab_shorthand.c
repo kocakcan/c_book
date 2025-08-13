@@ -11,6 +11,8 @@
 int main(int argc, char *argv[]) {
   int c, init_pos = DEFAULT_INIT_POS, every_col = DEFAULT_EVERY_COL, pos = 1;
 
+  // Not sure about this, this way user cannot invoke the program with no
+  // arguments
   for (size_t i = 0; i < 2; ++i) {
     char *arg = *++argv;
     if (*arg == '-' && *(arg + 1) != '\0') {
