@@ -34,8 +34,6 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  // printf("init_pos: %d | every_col: %d\n", init_pos, every_col);
-
   while ((c = getchar()) != EOF) {
     if (c == '\t') {
       int next = next_tab(pos, every_col, init_pos);
