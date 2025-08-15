@@ -126,6 +126,14 @@ int strcmp__(char *s, char *t) {
   return *s - *t;
 }
 
+// Best version of strcmp 🐒
+int strcmp___(const char *s, const char *t) {
+	while (*s && *s == *t)
+		s++, t++;
+
+	return (unsigned char)*s - (unsigned char)*t;
+}
+
 /***
  * Since ++ and -- are either prefix or postfix operators, other combinations
  * of * and ++ and -- occur, although less frequently. For example,
