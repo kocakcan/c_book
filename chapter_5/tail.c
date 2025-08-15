@@ -29,31 +29,35 @@ int getline_(char *s, int lim) {
   return i;
 }
 
+void writelines(char **input, size_t nlines) {
+  while (nlines--)
+    printf("%s\n", *input++);
+}
+
 char *input[10];
 
 int main(int argc, char *argv[]) {
   int n;
   // printf("2nd arg string: %s\n", *++argv);
-  // char *s = "can kocak";
-  // char *t = "seyfi kocak";
-  // char *u = "dilan kocak";
-  // char *v = "leyli kocak";
-  // char *z = "medet kocak";
-  //
-  // char **ip = input;
-  // *ip++ = s;
-  // *ip++ = t;
-  // *ip++ = u;
-  // *ip++ = v;
-  // *ip++ = z;
-  //
-  // for (char **copy = input; copy < input + 2; copy++)
-  //   printf("%s\n", *copy);
+  char *s = "can kocak";
+  char *t = "seyfi kocak";
+  char *u = "dilan kocak";
+  char *v = "leyli kocak";
+  char *z = "medet kocak";
 
-  if (--argc > 0 && (*++argv)[0] == '-')
-    n = atoi(*(argv) + 1);
+  char **ip = input;
+  *ip++ = s;
+  *ip++ = t;
+  *ip++ = u;
+  *ip++ = v;
+  *ip++ = z;
 
-  printf("n: %d\n", n);
+  writelines(input, 2);
+
+  // if (--argc > 0 && (*++argv)[0] == '-')
+  //   n = atoi(*(argv) + 1);
+  //
+  // printf("n: %d\n", n);
 
   return 0;
 }
