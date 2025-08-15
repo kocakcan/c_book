@@ -9,6 +9,7 @@
  * program, not in a two-dimensional array of fixed size.
  */
 #include <stdio.h>
+#include <stdlib.h>
 
 int getline_(char *s, int lim) {
   int c, i = 0;
@@ -28,8 +29,31 @@ int getline_(char *s, int lim) {
   return i;
 }
 
+char *input[10];
+
 int main(int argc, char *argv[]) {
-  printf("2nd arg string: %s\n", *++argv);
+  int n;
+  // printf("2nd arg string: %s\n", *++argv);
+  // char *s = "can kocak";
+  // char *t = "seyfi kocak";
+  // char *u = "dilan kocak";
+  // char *v = "leyli kocak";
+  // char *z = "medet kocak";
+  //
+  // char **ip = input;
+  // *ip++ = s;
+  // *ip++ = t;
+  // *ip++ = u;
+  // *ip++ = v;
+  // *ip++ = z;
+  //
+  // for (char **copy = input; copy < input + 2; copy++)
+  //   printf("%s\n", *copy);
+
+  if (--argc > 0 && (*++argv)[0] == '-')
+    n = atoi(*(argv) + 1);
+
+  printf("n: %d\n", n);
 
   return 0;
 }
