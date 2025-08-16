@@ -10,6 +10,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#define DEFAULT_NUMBER 10
 
 int getline_(char *s, int lim) {
   int c, i = 0;
@@ -35,29 +36,27 @@ void writelines(char **input, size_t nlines) {
 }
 
 char *input[10];
+char **ip = input;
 
 int main(int argc, char *argv[]) {
-  int n;
-  // printf("2nd arg string: %s\n", *++argv);
+  int n = DEFAULT_NUMBER;
+
   char *s = "can kocak";
   char *t = "seyfi kocak";
   char *u = "dilan kocak";
   char *v = "leyli kocak";
   char *z = "medet kocak";
 
-  char **ip = input;
   *ip++ = s;
   *ip++ = t;
   *ip++ = u;
   *ip++ = v;
   *ip++ = z;
 
-  writelines(input, 2);
+  if (--argc > 0 && (*++argv)[0] == '-')
+    n = atoi(*(argv) + 1);
 
-  // if (--argc > 0 && (*++argv)[0] == '-')
-  //   n = atoi(*(argv) + 1);
-  //
-  // printf("n: %d\n", n);
+writelines(input, n);
 
   return 0;
 }
