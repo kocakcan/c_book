@@ -10,7 +10,13 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #define DEFAULT_NUMBER 10
+#define MAXLINES 1000
+#define MAXLEN 1000
+
+char *input[MAXLINES];
+char **ip = input;
 
 int getline_(char *s, int lim) {
   int c, i = 0;
@@ -35,28 +41,46 @@ void writelines(char **input, size_t nlines) {
     printf("%s\n", *input++);
 }
 
-char *input[10];
-char **ip = input;
+int readlines(char **input, size_t maxlines) {
+  int len, nlines;
+  char *p, line[MAXLEN];
+
+  nlines = 0;
+  while ((len = getline_(line, MAXLEN)) > 0)
+	if (nlines >= maxlines || p = alloc(len) == NULL)
+		return -1;
+	else {
+		line[len - 1] = '\0';
+		strcpy(p, line);
+		input[nlines++] = p;
+	}
+	
+  return nlines;
+}
 
 int main(int argc, char *argv[]) {
-  int n = DEFAULT_NUMBER;
+  int n = DEFAULT_NUMBER, nlines;
 
-  char *s = "can kocak";
-  char *t = "seyfi kocak";
-  char *u = "dilan kocak";
-  char *v = "leyli kocak";
-  char *z = "medet kocak";
-
-  *ip++ = s;
-  *ip++ = t;
-  *ip++ = u;
-  *ip++ = v;
-  *ip++ = z;
+  // char *s = "can kocak";
+  // char *t = "seyfi kocak";
+  // char *u = "dilan kocak";
+  // char *v = "leyli kocak";
+  // char *z = "medet kocak";
+  //
+  // *ip++ = s;
+  // *ip++ = t;
+  // *ip++ = u;
+  // *ip++ = v;
+  // *ip++ = z;
 
   if (--argc > 0 && (*++argv)[0] == '-')
     n = atoi(*(argv) + 1);
 
-writelines(input, n);
-
-  return 0;
+  if ((nlines = readlines(input, MAXLINES)) >= 0) {
+	writelines(input, n);
+	return 0;
+  } else {
+	printf("error: input too big to sort\n");
+	return 1;
+  }
 }
