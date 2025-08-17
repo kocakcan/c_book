@@ -71,8 +71,12 @@ int main(int argc, char *argv[]) {
 	if (n > nlines) n = nlines;
 	writelines(input + (nlines - n), n);
 
-	for (size_t i = 0; i < nlines; i++)
-		free(input[i]);
+	// for (size_t i = 0; i < nlines; i++)
+		// free(input[i]);
+
+	for (char **temp = input; temp < ip; ++temp)
+		free(*(input + (temp - input)));
+		// which is equivalent to free(*temp) 😅
 
 	return 0;
   } else {
