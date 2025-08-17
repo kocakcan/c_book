@@ -32,56 +32,51 @@ int getline_(char *s, int lim) {
   }
 
   *s = '\0';
-
   return i;
 }
 
 void writelines(char **input, size_t nlines) {
   while (nlines--)
-    printf("%s\n", *input++);
+    // printf("%s", *input++);
+    fputs(*input++, stdout);
 }
 
-int readlines(char **input, char *line, int maxlines) {
-  int len, nlines;
-
-  char *p = line + strlen(line);
-
-  nlines = 0;
-  while ((len = getline_(p, MAXLEN)) > 0) {
-	if (nlines >= maxlines || line + MAXLEN - p < len)
-		return -1;
-	p[len - 1] = '\0';
-	input[nlines++] = p;
-	p += len;
-	}
-
-  return nlines;
-}
-
-int main(int argc, char *argv[]) {
-  int n = DEFAULT_NUMBER, nlines;
+int readlines(char **input, int maxlines) {
+  int len, nlines = 0;
   char line[MAXLEN];
 
-  // char *s = "can kocak";
-  // char *t = "seyfi kocak";
-  // char *u = "dilan kocak";
-  // char *v = "leyli kocak";
-  // char *z = "medet kocak";
-  //
-  // *ip++ = s;
-  // *ip++ = t;
-  // *ip++ = u;
-  // *ip++ = v;
-  // *ip++ = z;
+  while ((len = getline_(line, MAXLEN)) > 0) {
+	if (nlines >= maxlines)
+		return -1;
+
+	char *p = malloc(len + 1);
+	if (!p) return -1;
+	strcpy(p, line);
+	*ip++ = p;
+  }
+
+  return ip - input;
+}
+
+/* main: tail without circular buffer, which is fine for practice */
+int main(int argc, char *argv[]) {
+  int n = DEFAULT_NUMBER, nlines;
 
   if (--argc > 0 && (*++argv)[0] == '-')
     n = atoi(*(argv) + 1);
 
-  if ((nlines = readlines(input, line, MAXLINES)) >= 0) {
-	writelines(input, n);
+  if (n <= 0) n = DEFAULT_NUMBER;
+
+  if ((nlines = readlines(input, MAXLINES)) >= 0) {
+	if (n > nlines) n = nlines;
+	writelines(input + (nlines - n), n);
+
+	for (size_t i = 0; i < nlines; i++)
+		free(input[i]);
+
 	return 0;
   } else {
-	printf("error: input too big to sort\n");
+	printf("error: input too big to store\n");
 	return 1;
   }
 }
