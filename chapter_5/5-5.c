@@ -33,46 +33,59 @@ int strncmp_(char *s, char *t, size_t n) {
   return 0;
 }
 
+/* best implementation imo 👌 */
+int strncmp__(const char *s, const char *t, size_t n) {
+	while (n--) {
+		if (*s != *t)
+			return (unsigned char)*s - (unsigned char)*t;
+		if (*s == '\0')
+			return 0;
+		s++, t++;
+	}
+
+	return 0;
+}
+
 int main(void) {
   char s[50] = "Can";
   char t[] = " Kocak";
   char u[50];
   char v[] = "Knight Artorias, the Abysswalker";
-  strncat_(s, t, 3);
+  strncat_(s, t, 6);
   strncpy_(u, v, 55);
   printf("My full name is %s\n", s);
   printf("My favourite boss in Dark Souls is %s\n", u);
 
   // Exact match, n equals string length
-  assert(strncmp_("hello", "hello", 5) == 0);
+  assert(strncmp__("hello", "hello", 5) == 0);
 
   // Exact match, n less than string length
-  assert(strncmp_("hello", "hello", 3) == 0);
+  assert(strncmp__("hello", "hello", 3) == 0);
 
   // First string is less than second (alphabetically)
-  assert(strncmp_("abc", "abd", 3) < 0);
+  assert(strncmp__("abc", "abd", 3) < 0);
 
   // First string is greater than second (alphabetically)
-  assert(strncmp_("abe", "abd", 3) > 0);
+  assert(strncmp__("abe", "abd", 3) > 0);
 
   // n greater than strings, first string is shorter
-  assert(strncmp_("abc", "abcde", 5) < 0);
+  assert(strncmp__("abc", "abcde", 5) < 0);
 
   // n greater than strings, second string is shorter
-  assert(strncmp_("abcde", "abc", 5) > 0);
+  assert(strncmp__("abcde", "abc", 5) > 0);
 
   // Compare with n=0, should always return 0
-  assert(strncmp_("abc", "xyz", 0) == 0);
+  assert(strncmp__("abc", "xyz", 0) == 0);
 
   // First difference after n chars, so should return 0
-  assert(strncmp_("abcdef", "abcxyz", 3) == 0);
+  assert(strncmp__("abcdef", "abcxyz", 3) == 0);
 
   // One string empty
-  assert(strncmp_("", "", 1) == 0);
-  assert(strncmp_("", "a", 1) < 0);
-  assert(strncmp_("a", "", 1) > 0);
+  assert(strncmp__("", "", 1) == 0);
+  assert(strncmp__("", "a", 1) < 0);
+  assert(strncmp__("a", "", 1) > 0);
 
-  printf("All strncmp_ test cases passed!\n");
+  printf("All strncmp__ test cases passed!\n");
 
   return 0;
 }
