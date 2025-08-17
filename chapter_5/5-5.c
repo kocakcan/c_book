@@ -7,7 +7,7 @@
 void strncat_(char *s, char *t, size_t n) {
   while (*s)
     s++;
-  for (size_t i = 0; i < n && *t; i++)
+  while (n-- && *t)
     *s++ = *t++;
   *s = '\0';
 }
@@ -35,15 +35,15 @@ int strncmp_(char *s, char *t, size_t n) {
 
 /* best implementation imo 👌 */
 int strncmp__(const char *s, const char *t, size_t n) {
-	while (n--) {
-		if (*s != *t)
-			return (unsigned char)*s - (unsigned char)*t;
-		if (*s == '\0')
-			return 0;
-		s++, t++;
-	}
+  while (n--) {
+    if (*s != *t)
+      return (unsigned char)*s - (unsigned char)*t;
+    if (*s == '\0')
+      return 0;
+    s++, t++;
+  }
 
-	return 0;
+  return 0;
 }
 
 int main(void) {
