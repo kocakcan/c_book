@@ -41,25 +41,26 @@ void writelines(char **input, size_t nlines) {
     printf("%s\n", *input++);
 }
 
-int readlines(char **input, size_t maxlines) {
+int readlines(char **input, char *line, int maxlines) {
   int len, nlines;
-  char *p, line[MAXLEN];
+
+  char *p = line + strlen(line);
 
   nlines = 0;
-  while ((len = getline_(line, MAXLEN)) > 0)
-	if (nlines >= maxlines || p = alloc(len) == NULL)
+  while ((len = getline_(p, MAXLEN)) > 0) {
+	if (nlines >= maxlines || line + MAXLEN - p < len)
 		return -1;
-	else {
-		line[len - 1] = '\0';
-		strcpy(p, line);
-		input[nlines++] = p;
+	p[len - 1] = '\0';
+	input[nlines++] = p;
+	p += len;
 	}
-	
+
   return nlines;
 }
 
 int main(int argc, char *argv[]) {
   int n = DEFAULT_NUMBER, nlines;
+  char line[MAXLEN];
 
   // char *s = "can kocak";
   // char *t = "seyfi kocak";
@@ -76,7 +77,7 @@ int main(int argc, char *argv[]) {
   if (--argc > 0 && (*++argv)[0] == '-')
     n = atoi(*(argv) + 1);
 
-  if ((nlines = readlines(input, MAXLINES)) >= 0) {
+  if ((nlines = readlines(input, line, MAXLINES)) >= 0) {
 	writelines(input, n);
 	return 0;
   } else {
