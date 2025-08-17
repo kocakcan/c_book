@@ -42,11 +42,12 @@ void writelines(char **input, size_t nlines) {
 }
 
 int readlines(char **input, int maxlines) {
-  int len, nlines = 0;
+  int len;
   char line[MAXLEN];
 
   while ((len = getline_(line, MAXLEN)) > 0) {
-	if (nlines >= maxlines)
+	// if (nlines >= maxlines)
+	if (ip - input >= maxlines)
 		return -1;
 
 	char *p = malloc(len + 1);
