@@ -1,6 +1,6 @@
 /***
  *
- * 5. 11 Pointers to Functions
+ * 5.11 Pointers to Functions
  *
  * In C, a function itself is not a variable, but it is possible to define
  * pointers to functions, which can be assigned, placed in arrays, passed to
@@ -27,9 +27,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define MAXLEN 1000
+#define ALLOCSIZE 10000 /* size of available space */
+#define MAXLINES 5000   /* max #lines to be sorted */
 
-#define MAXLINES 5000    /* max #lines to be sorted */
 char *lineptr[MAXLINES]; /* pointers to text lines */
+
+static char allocbuf[ALLOCSIZE]; /* storage for alloc */
+static char *allocp = allocbuf;  /* next free position */
 
 int readlines(char *lineptr[], int nlines);
 void writelines(char *lineptr[], int nlines);
@@ -148,4 +153,53 @@ int strcmp_(char *s, char *t) {
     s++, t++;
 
   return (unsigned char)*s - (unsigned char)*t;
+}
+
+int getline_(char *s, int lim) {
+  int c, i = 0;
+
+  while (--lim > 0 && (c = getchar()) != EOF && c != '\n') {
+    *s++ = c;
+    i++;
+  }
+
+  if (c == '\n') {
+    *s++ = c;
+    i++;
+  }
+
+  *s = '\0';
+  return i;
+}
+
+/* alloc: return pointer to n characters */
+char *alloc(int n) {
+  if (allocbuf + ALLOCSIZE - allocp >= n) { /* if it fits */
+    allocp += n;
+    return allocp - n; /* return old p */
+  } else {
+    return 0;
+  }
+}
+
+int readlines(char *lineptr[], int maxlines) {
+  int len, nlines = 0;
+  char line[MAXLEN], *p;
+
+  while ((len = getline_(line, MAXLEN)) > 0) {
+    if (nlines >= maxlines || (p = alloc(len)) == NULL)
+      return -1;
+    else {
+      line[len - 1] = '\0'; /* delete newline */
+      strcpy(p, line);
+      lineptr[nlines++] = p;
+    }
+  }
+
+  return nlines;
+}
+
+void writelines(char *lineptr[], int nlines) {
+  while (nlines--)
+    printf("%s\n", *lineptr++);
 }
