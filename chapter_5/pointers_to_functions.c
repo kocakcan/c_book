@@ -25,6 +25,7 @@
  * concentrate on the main issues.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define MAXLINES 5000    /* max #lines to be sorted */
@@ -33,8 +34,9 @@ char *lineptr[MAXLINES]; /* pointers to text lines */
 int readlines(char *lineptr[], int nlines);
 void writelines(char *lineptr[], int nlines);
 
-void qsort(void *lineptr[], int left, int right, int (*comp)(void *, void *));
+void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
+int strcmp_(char *, char *);
 
 /* sort input lines */
 int main(int argc, char *argv[]) {
@@ -44,8 +46,8 @@ int main(int argc, char *argv[]) {
   if (argc > 1 && strcmp(argv[1], "-n") == 0)
     numeric = 1;
   if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
-    qsort((void **)lineptr, 0, nlines - 1,
-          (int (*)(void *, void *))(numeric ? numcmp : strcmp));
+    qsort_((void **)lineptr, 0, nlines - 1,
+           (int (*)(void *, void *))(numeric ? numcmp : strcmp_));
     writelines(lineptr, nlines);
     return 0;
   } else {
@@ -71,7 +73,7 @@ int main(int argc, char *argv[]) {
  */
 
 /* qsort: sort v[left]...v[right] into increasing order */
-void qsort(void *v[], int left, int right, int (*comp)(void *, void *)) {
+void qsort_(void *v[], int left, int right, int (*comp)(void *, void *)) {
   int i, last;
 
   void swap(void *v[], int, int);
@@ -84,6 +86,66 @@ void qsort(void *v[], int left, int right, int (*comp)(void *, void *)) {
     if ((*comp)(v[i], v[left]) < 0)
       swap(v, ++last, i);
   swap(v, left, last);
-  qsort(v, left, last - 1, comp);
-  qsort(v, last + 1, right, comp);
+  qsort_(v, left, last - 1, comp);
+  qsort_(v, last + 1, right, comp);
+}
+
+/* The declarations should be studied with some care. The fourth parameter of
+ * qsort is
+ *
+ *   int (*comp) (void *, void *)
+ * which says that comp is a pointer to a function that has two void * arguments
+ * and return an int.
+ *
+ * The use of comp in the line
+ *
+ *   if ((*comp)(v[i], v[left]) < 0)
+ * is consistent with the declaration: comp is a pointer to a function, *comp is
+ * the function, and
+ *
+ *   (*comp) (v[i], v[left])
+ * is the call to it. The parantheses are needed so the components are correctly
+ * associated; without them,
+ *
+ *   int *comp(void *, void *) -> WRONG
+ * says that comp is a function returning a pointer to an int, which is very
+ * different.
+ *
+ * We have already shown strcmp, which compares two strings. Here is numcmp,
+ * which compares two strings on a leading numeric value, computed by calling
+ * atof:
+ */
+
+/* numcmp: compare s1 and s2 numerically */
+int numcmp(char *s1, char *s2) {
+  double v1, v2;
+
+  v1 = atof(s1);
+  v2 = atof(s2);
+  if (v1 < v2)
+    return -1;
+  else if (v1 > v2)
+    return 1;
+  else
+    return 0;
+}
+
+/* The swap function, which exchanges two pointers, is identical to what we
+ * presented earlier in the chapter, except that the declarations are changed to
+ * void *.
+ */
+
+void swap(void *v[], int i, int j) {
+  void *temp;
+
+  temp = v[i];
+  v[i] = v[j];
+  v[j] = temp;
+}
+
+int strcmp_(char *s, char *t) {
+  while (*s && *s == *t)
+    s++, t++;
+
+  return (unsigned char)*s - (unsigned char)*t;
 }
