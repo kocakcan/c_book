@@ -36,7 +36,7 @@ char *lineptr[MAXLINES]; /* pointers to text lines */
 static char allocbuf[ALLOCSIZE]; /* storage for alloc */
 static char *allocp = allocbuf;  /* next free position */
 
-int readlines(char *lineptr[], int nlines);
+int readlines(char *lineptr[], int maxlines);
 void writelines(char *lineptr[], int nlines);
 
 void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
