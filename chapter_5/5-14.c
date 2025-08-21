@@ -26,6 +26,34 @@ int strcmp_(char *, char *);
 int main(int argc, char *argv[]) {
   int c, nlines, numeric = 0, reverse = 0;
 
+  char **copy = argv;
+
+  while (*copy != NULL)
+    printf("%s\n", *copy++);
+
+  printf("argc: %d\n", argc);
+
+  while (--argc > 0 && (*++argv)[0] == '-') {
+    while (c = *++argv[0])
+      switch (c) {
+      case 'n':
+        numeric = 1;
+        break;
+      case 'r':
+        reverse = 1;
+        break;
+      default:
+        printf("invalid argument %c\n", **argv);
+        argc = 0;
+        break;
+      }
+  }
+
+  printf("argc: %d | numeric: %d | reverse: %d\n", argc, numeric, reverse);
+
+  if (argc != 1)
+    printf("Usage: sort -n -r input\n");
+
   return 0;
 }
 
