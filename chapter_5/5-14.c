@@ -23,7 +23,11 @@ void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
 int strcmp_(char *, char *);
 
-int main(int argc, char *argv[]) { return 0; }
+int main(int argc, char *argv[]) {
+  int c, nlines, numeric = 0, reverse = 0;
+
+  return 0;
+}
 
 int getline_(char *s, int lim) {
   int c, i = 0;
