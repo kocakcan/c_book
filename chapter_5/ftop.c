@@ -65,5 +65,7 @@ int main(void) {
     printf("%.2f %c %.2f = %.2f\n", x, calc->operations[i], y,
            calc->afp[i](x, y));
 
+  free(calc);
+
   return 0;
 }
