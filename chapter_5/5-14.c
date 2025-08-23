@@ -23,6 +23,9 @@ void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
 int strcmp_(char *, char *);
 
+int numcmp_rev(void *a, void *b) { return -numcmp(a, b); }
+int strcmp_rev(void *a, void *b) { return -strcmp_((char *)a, (char *)b); }
+
 int main(int argc, char *argv[]) {
   int c, nlines, numeric = 0, reverse = 0;
 
@@ -51,18 +54,19 @@ int main(int argc, char *argv[]) {
 
   printf("argc: %d | numeric: %d | reverse: %d\n", argc, numeric, reverse);
 
-  if (argc != 1)
-    printf("Usage: sort -n -r input\n");
-  else {
 	if ((nlines = readlines(lineptr, MAXLINES)) > 0) {
-		qsort_((void **) lineptr, 0, nlines - 1, (int (*) (void *, void *)) (numeric > 0 ? numcmp : strcmp_));
+		int (*cmp)(void *, void *);
+		if (numeric)
+			cmp = reverse ? numcmp_rev : (int (*) (void *, void *))numcmp;
+		else
+			cmp = reverse ? strcmp_rev : (int (*) (void *, void *))strcmp_;
+	qsort_((void **) lineptr, 0, nlines - 1, cmp);
 		writelines(lineptr, nlines);
 		return 0;
 	} else {
 		printf("error: input too big to sort\n");
 		return 1;
 	}
-  }
 
   return 0;
 }
