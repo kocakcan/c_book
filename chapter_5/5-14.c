@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
 
   char **copy = argv;
 
-  while (*copy != NULL)
+  while (*copy)
     printf("%s\n", *copy++);
 
   printf("argc: %d\n", argc);
@@ -53,6 +53,16 @@ int main(int argc, char *argv[]) {
 
   if (argc != 1)
     printf("Usage: sort -n -r input\n");
+  else {
+	if ((nlines = readlines(lineptr, MAXLINES)) > 0) {
+		qsort_((void **) lineptr, 0, nlines - 1, (int (*) (void *, void *)) (numeric > 0 ? numcmp : strcmp_));
+		writelines(lineptr, nlines);
+		return 0;
+	} else {
+		printf("error: input too big to sort\n");
+		return 1;
+	}
+  }
 
   return 0;
 }
@@ -134,4 +144,21 @@ int numcmp(char *s, char *t) {
     return 1;
   else
     return 0;
+}
+
+void qsort_(void *v[], int left, int right, int (*comp) (void *, void *)) {
+	int i, last;
+	
+	if (left >= right)
+		return;
+
+	swap(v, left, (left + right) / 2);
+	last = left;
+
+	for (i = left + 1; i <= right; i++)
+		if ((*comp)(v[i], v[left]) < 0)
+			swap(v, ++last, i);
+	swap(v, left, last);
+	qsort_(v, left, last - 1, comp);
+	qsort_(v, last + 1, right, comp);
 }
