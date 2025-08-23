@@ -23,18 +23,25 @@ void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
 int strcmp_(char *, char *);
 
-int numcmp_rev(void *a, void *b) { return -numcmp(a, b); }
-int strcmp_rev(void *a, void *b) { return -strcmp_((char *)a, (char *)b); }
+int _numcmp(void *a, void *b) {
+	return numcmp((char *)a, (char *)b);
+}
+
+int _strcmp_(void *a, void *b) {
+	return strcmp_((char *)a, (char *)b);
+}
+
+int rnumcmp(void *a, void *b) {
+	return -numcmp((char *)a, (char *)b);
+} 
+
+int rstrcmp(void *a, void *b) {
+	return -strcmp_((char *)a, (char *)b);
+}
 
 int main(int argc, char *argv[]) {
   int c, nlines, numeric = 0, reverse = 0;
-
-  char **copy = argv;
-
-  while (*copy)
-    printf("%s\n", *copy++);
-
-  printf("argc: %d\n", argc);
+  int (*cmp)(void *, void *) = _strcmp_;
 
   while (--argc > 0 && (*++argv)[0] == '-') {
     while (c = *++argv[0])
@@ -52,14 +59,12 @@ int main(int argc, char *argv[]) {
       }
   }
 
-  printf("argc: %d | numeric: %d | reverse: %d\n", argc, numeric, reverse);
+  if (numeric)
+	cmp = reverse ? rnumcmp : _numcmp;
+  else
+	cmp = reverse ? rstrcmp : _strcmp_;
 
 	if ((nlines = readlines(lineptr, MAXLINES)) > 0) {
-		int (*cmp)(void *, void *);
-		if (numeric)
-			cmp = reverse ? numcmp_rev : (int (*) (void *, void *))numcmp;
-		else
-			cmp = reverse ? strcmp_rev : (int (*) (void *, void *))strcmp_;
 	qsort_((void **) lineptr, 0, nlines - 1, cmp);
 		writelines(lineptr, nlines);
 		return 0;
@@ -89,7 +94,7 @@ int getline_(char *s, int lim) {
 }
 
 void swap(void *v[], int left, int right) {
-  void *temp = v;
+  void *temp;
 
   // temp = v[left], v[left] = v[right], v[right] = temp;
   temp = *(v + left), *(v + left) = *(v + right), *(v + right) = temp;
@@ -142,9 +147,9 @@ int numcmp(char *s, char *t) {
   v1 = atof(s);
   v2 = atof(t);
 
-  if (v1 > v2)
+  if (v1 < v2)
     return -1;
-  else if (v1 < v2)
+  else if (v1 > v2)
     return 1;
   else
     return 0;
