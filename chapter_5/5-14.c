@@ -3,6 +3,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #define ALLOCSIZE 10000
 #define MAXLINES 5000
 #define MAXLEN 1000
@@ -23,20 +24,51 @@ void qsort_(void *lineptr[], int left, int right, int (*comp)(void *, void *));
 int numcmp(char *, char *);
 int strcmp_(char *, char *);
 
-int _numcmp(void *a, void *b) {
-	return numcmp((char *)a, (char *)b);
-}
-
 int _strcmp_(void *a, void *b) {
 	return strcmp_((char *)a, (char *)b);
 }
 
-int rnumcmp(void *a, void *b) {
-	return -numcmp((char *)a, (char *)b);
-} 
-
 int rstrcmp(void *a, void *b) {
 	return -strcmp_((char *)a, (char *)b);
+}
+
+int is_number(const char *s) {
+	if (*s == '-' || *s == '+') s++;
+	int has_digit = 0, has_dot = 0;
+	while (*s) {
+		if (isdigit((unsigned char)*s))
+			has_digit = 1;
+		else if (*s == '.' && !has_dot)
+			has_dot = 1;
+		else
+			return 0;
+		s++;
+	}
+
+	return has_digit;
+}
+
+int numcmp_with_fallback(char *s, char *t) {
+	if (is_number(s) && is_number(t)) {
+		double v1 = atof(s);
+		double v2 = atof(t);
+		if (v1 < v2) return -1;
+		else if (v1 > v2) return 1;
+		else return 0;
+	}
+	return strcmp_(s, t);
+}
+
+int rnumcmp_with_fallback(char *s, char *t) {
+	return -numcmp_with_fallback(s, t);
+}
+
+int cmp_numeric(void *a, void *b) {
+	return numcmp_with_fallback((char *)a, (char *)b);
+}
+
+int cmp_numeric_r(void *a, void *b) {
+	return rnumcmp_with_fallback((char *)a, (char *)b);
 }
 
 int main(int argc, char *argv[]) {
@@ -60,7 +92,7 @@ int main(int argc, char *argv[]) {
   }
 
   if (numeric)
-	cmp = reverse ? rnumcmp : _numcmp;
+	cmp = reverse ? cmp_numeric_r : cmp_numeric;
   else
 	cmp = reverse ? rstrcmp : _strcmp_;
 
