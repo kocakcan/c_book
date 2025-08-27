@@ -1,7 +1,6 @@
 /* Add the option -f to fold upper and lower case together, so that case
  * distinctions are not made during sorting; For example, a and A compare equal.
  */
-#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #define MAXLINES 5000
@@ -18,28 +17,14 @@ void strcpy_(char *, const char *);
 int readlines(char **, int);
 void writelines(char **, int);
 int strcmp_(const char *, const char *);
-int numcmp(const char *, const char *);
 void swap(void **, int, int);
 void qsort_(void **, int, int, int (*)(const void *, const void *));
 
 int main(int argc, char *argv[]) {
-  int c, nlines, numeric = 0, fold = 0;
+  int nlines, fold = 0;
 
-  while (--argc > 0 && (*++argv)[0] == '-')
-    while (c = *++argv[0])
-      switch (c) {
-      case 'n':
-        numeric = 1;
-        break;
-      case 'f':
-        fold = 1;
-        break;
-      default:
-        printf("error: unknown argument %c\n", c);
-        break;
-      }
-
-  printf("numeric: %d | fold: %d\n", numeric, fold);
+  if (argc > 1 && strcmp_(argv[1], "-n") == 0)
+    fold = 1;
 
   return 0;
 }
@@ -93,17 +78,6 @@ int strcmp_(const char *s, const char *t) {
   while (*s && *s == *t)
     s++, t++;
   return (unsigned char)*s - (unsigned char)*t;
-}
-
-int numcmp(const char *s, const char *t) {
-  double v1 = atof(s), v2 = atof(t);
-
-  if (v1 < v2)
-    return -1;
-  else if (v1 > v2)
-    return 1;
-  else
-    return 0;
 }
 
 void swap(void **v, int left, int right) {
