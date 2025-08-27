@@ -22,8 +22,25 @@ int numcmp(const char *, const char *);
 void swap(void **, int, int);
 void qsort_(void **, int, int, int (*)(const void *, const void *));
 
-int main(void) {
-  printf("aye, siwmae\n");
+int main(int argc, char *argv[]) {
+  int c, nlines, numeric = 0, fold = 0;
+
+  while (--argc > 0 && (*++argv)[0] == '-')
+    while (c = *++argv[0])
+      switch (c) {
+      case 'n':
+        numeric = 1;
+        break;
+      case 'f':
+        fold = 1;
+        break;
+      default:
+        printf("error: unknown argument %c\n", c);
+        break;
+      }
+
+  printf("numeric: %d | fold: %d\n", numeric, fold);
+
   return 0;
 }
 
