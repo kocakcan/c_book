@@ -1,6 +1,7 @@
 /* Add the option -f to fold upper and lower case together, so that case
  * distinctions are not made during sorting; For example, a and A compare equal.
  */
+#include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
 #define MAXLINES 5000
@@ -17,14 +18,20 @@ void strcpy_(char *, const char *);
 int readlines(char **, int);
 void writelines(char **, int);
 int strcmp_(const char *, const char *);
+int fstrcmp(const char *, const char *);
 void swap(void **, int, int);
 void qsort_(void **, int, int, int (*)(const void *, const void *));
 
 int main(int argc, char *argv[]) {
   int nlines, fold = 0;
 
-  if (argc > 1 && strcmp_(argv[1], "-n") == 0)
+  if (--argc > 0 && strcmp_(*++argv, "-f") == 0)
     fold = 1;
+
+  printf("fold: %d\n", fold);
+
+  const char *s = "snake", *t = "Snake";
+  printf("result: %d\n", fstrcmp(s, t));
 
   return 0;
 }
@@ -102,4 +109,10 @@ void qsort_(void **v, int left, int right,
   swap(v, left, last);
   qsort_(v, left, last - 1, comp);
   qsort_(v, last + 1, right, comp);
+}
+
+int fstrcmp(const char *s, const char *t) {
+  while (*s && tolower(*s) == tolower(*t))
+    s++, t++;
+  return (unsigned char)tolower(*s) - (unsigned char)tolower(*t);
 }
