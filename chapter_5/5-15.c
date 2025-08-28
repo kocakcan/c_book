@@ -28,10 +28,15 @@ int main(int argc, char *argv[]) {
   if (--argc > 0 && strcmp_(*++argv, "-f") == 0)
     fold = 1;
 
-  printf("fold: %d\n", fold);
-
-  const char *s = "snake", *t = "Snake";
-  printf("result: %d\n", fstrcmp(s, t));
+  if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+    qsort_((void **)lineptr, 0, nlines - 1,
+           (int (*)(const void *, const void *))(fold > 0 ? fstrcmp : strcmp_));
+    writelines(lineptr, nlines);
+    return 0;
+  } else {
+    printf("error: input too big to sort\n");
+    return 1;
+  }
 
   return 0;
 }
