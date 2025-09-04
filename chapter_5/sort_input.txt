@@ -1,0 +1,22 @@
+The!Quick!Brown
+the.quick.brown
+THE QUICK BROWN
+The-Quick-Brown
+a-b-c
+a.b.c
+a b c
+ABC
+100.file
+10.file
+2.file
+1000.file
+apple
+banana
+Apple
+Banana
+test!!!case
+TEST???CASE
+test---case
+Test   Case
+z/x/c
+y\v\w
