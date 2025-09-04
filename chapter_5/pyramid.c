@@ -22,7 +22,12 @@ int main(void) {
 
 	if ((length = getline_(s, MAXLEN)) > 0)
 		num = atoi(s);
-	
+
+	if (num == 0) {
+		printf("You haven't provided a valid number matey!\n");
+		return 1;
+	}
+
 	for (int i = 1; i <= num; i++) {
 		for (int j = i; j < num; j++)
 			printf(" ");
