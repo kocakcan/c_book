@@ -44,31 +44,48 @@ int main(int argc, char *argv[]) {
   int c, nlines, fold = 0, dir = 0;
 
   while (--argc > 0 && (*++argv)[0] == '-') {
-    while (c = **++argv)
-      switch (c) {
-      case 'f':
-        fold = 1;
-        break;
-      case 'd':
-        dir = 1;
-        break;
-      default:
-        printf("sort: illegal option %c\n", c);
-        break;
-      }
+	if (strncmp_(*argv, "-k", 2) == 0)
+		g_field_num = atoi(*argv + 2);
+	else {
+		char *opt = *argv + 1;
+		while ((c = *opt++))
+			switch (c) {
+				case 'f':
+					fold = 1;
+					break;
+				case 'd':
+					dir = 1;
+					break;
+				default:
+					printf("sort: illegal option %c\n", c);
+					break;
+			}
+	}
+
   }
 
   if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
     int (*comp)(const char *, const char *);
 
-    if (fold && dir)
-      comp = dfstrcmp;
-    else if (fold)
-      comp = fstrcmp;
-    else if (dir)
-      comp = dstrcmp;
-    else
-      comp = strcmp_;
+    if (g_field_num > 0) {
+	if (fold && dir)
+		comp = cmp_field_dfstrcmp;
+	else if (fold)
+		comp = cmp_field_fstrcmp;
+	else if (dir)
+		comp = cmp_field_dstrcmp;
+	else
+		comp = cmp_field_strcmp;
+   } else {
+	if (fold && dir)
+		comp = (int (*)(const void *, const void *))dfstrcmp;
+        else if (fold)
+		comp = (int (*)(const void *, const void *))fstrcmp;
+	else if (dir)
+		comp = (int (*)(const void *, const void *))dstrcmp;
+	else
+		comp = (int (*)(const void *, const void *))strcmp_;
+   }
 
     qsort_((void **)lineptr, 0, nlines - 1,
            (int (*)(const void *, const void *))comp);
@@ -78,8 +95,6 @@ int main(int argc, char *argv[]) {
     printf("error: input too big to sort\n");
     return 1;
   }
-
-  return 0;
 }
 
 char *alloc(int n) {
@@ -215,7 +230,7 @@ void get_field(const char *line, int field_num, char *field_buf, int bufsize) {
 				line++;
 			f++;
 		} else
-			line+;;
+			line+;
 	}
 
 	while (*line && !isspace(*line) && i < bufsize - 1)
@@ -242,7 +257,7 @@ int field_dstrcmp(const char *s, const char *t, int field_num) {
 	char fs[MAXLEN], ft[MAXLEN];
 	get_field(s, field_num, fs, MAXLEN);
 	get_field(t, field_num, ft, MAXLEN);
-	return dfstrcmp(fs, ft);
+	return dstrcmp(fs, ft);
 }
 
 int cmp_field_strcmp(const void *a, const void *b) {
