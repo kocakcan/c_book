@@ -40,30 +40,30 @@ Calculator *init_calc(double (*funcs[])(double, double), char ops[],
 
 /* basic example of an array of function pointers */
 int main(void) {
-  double (*ftop[])(double, double) = {add, subtract, multiply, divide};
+  // double (*ftop[])(double, double) = {add, subtract, multiply, divide};
   char ops[] = {'+', '-', '*', '/'};
-  double x = 45.14, y = 45.25;
+  size_t size = sizeof(ops) / sizeof(ops[0]);
+  double x = 45.14, y = 5.25;
 
-  // double (*ftop[4])(double, double);
-  //
-  // *ftop = add;
-  // *(ftop + 1) = subtract;
-  // *(ftop + 2) = multiply;
-  // *(ftop + 3) = divide;
+  double (*ftop[4])(double, double);
 
-  // double x = 30.14, y = 30.25;
-  //
-  // double (*(*last))(double, double) = ftop + 4;
-  //
-  // for (double (*(*current))(double, double) = ftop; current < last;
-  // current++)
-  //   printf("%.2f (operation) %.2f = %.2f\n", x, y, (*current)(x, y));
+  *ftop = add;
+  *(ftop + 1) = subtract;
+  *(ftop + 2) = multiply;
+  *(ftop + 3) = divide;
 
-  Calculator *calc = init_calc(ftop, ops, 4);
+  double (*(*last))(double, double) = ftop + size;
 
-  for (size_t i = 0; i < 4; i++)
-    printf("%.2f %c %.2f = %.2f\n", x, calc->operations[i], y,
-           calc->afp[i](x, y));
+  for (double (*(*current))(double, double) = ftop; current < last;
+  current++)
+    // printf("%.2f %c %.2f = %.2f\n", x, ops[current - ftop], y, (*current)(x, y));
+    printf("%.2f %c %.2f = %.2f\n", x, *(ops + (current - ftop)), y, (*current)(x, y));
+
+  Calculator *calc = init_calc(ftop, ops, size);
+
+  // for (size_t i = 0; i < 4; i++)
+  //   printf("%.2f %c %.2f = %.2f\n", x, calc->operations[i], y,
+  //          calc->afp[i](x, y));
 
   free(calc);
 
