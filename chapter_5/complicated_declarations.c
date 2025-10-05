@@ -163,3 +163,36 @@ void ungetch(int c) {
 	else
 		*bufp++ = c;
 }
+
+/***
+ * Going in the other direction is easier, if we do not worry about generating redundant parantheses. The program undcl converts a word description like "x is a function returning a pointer to an array of pointers to function returning char", which we will express as
+ *
+ * 	x () * [] * () char
+ * to
+ *
+ * 	char (*(*x())[])()
+ * The abbreviated input syntax lets us reuse the gettoken function, undcl also uses the same external variables as dcl does.
+ */
+
+/* undcl: convert word descriptions to declarations */
+// int main(void) {
+// 	int type;
+// 	char temp[MAXTOKEN];
+//
+// 	while (gettoken() != EOF) {
+// 		strcpy(out, token);
+// 		while ((type = gettoken()) != '\n')
+// 			if (type == PARENS || type == BRACKETS)
+// 				strcat(out, token);
+// 			else if (type == '*') {
+// 				sprintf(temp, "(*%s)", out);
+// 				strcpy(out, temp);
+// 			} else if (type == NAME) {
+// 				sprintf(temp, "%s %s", token, out);
+// 				strcpy(out, temp);
+// 			} else
+// 				printf("invalid input at %s\n", token);
+// 	}
+//
+// 	return 0;
+// }
