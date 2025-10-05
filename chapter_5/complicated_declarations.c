@@ -19,7 +19,7 @@
  * 	daytab: array[13] of pointer to int
  * void *comp()
  * 	comp: function returning pointer to void
- * char (*(*x())[])()
+ * char (*(*x())[])()	-> x here is a function, not a function pointer
  * 	x: function returning pointer to array[] of
  * 	pointer to function returning char
  * char (*(*x[3])())[5]
