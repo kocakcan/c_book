@@ -22,6 +22,9 @@
  * char (*(*x())[])()	-> x here is a function, not a function pointer
  * 	x: function returning pointer to array[] of
  * 	pointer to function returning char
+ * 	/
+ * 	x: function returning pointer to an array of function pointers
+ * 	to functions returning char
  * char (*(*x[3])())[5]
  * 	x: array[3] of pointer to function returning
  * 	pointer to array[5] of char
