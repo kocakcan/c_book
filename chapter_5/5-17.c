@@ -1,4 +1,7 @@
-/* Add a field-searching capability, so sorting may be done on fields within lines, each field sorted according to an independent set of options. (The index for this book was sorted with -df for the index category and -n for the page numbers.)
+/* Add a field-searching capability, so sorting may be done on fields within
+ * lines, each field sorted according to an independent set of options. (The
+ * index for this book was sorted with -df for the index category and -n for the
+ * page numbers.)
  */
 #include <ctype.h>
 #include <stdio.h>
@@ -38,54 +41,53 @@ int cmp_field_dstrcmp(const void *, const void *);
 int cmp_field_dfstrcmp(const void *, const void *);
 
 /* Global field number (used by adapter functions) */
-int g_field_num = 0; 
+int g_field_num = 0;
 
 int main(int argc, char *argv[]) {
   int c, nlines, fold = 0, dir = 0;
 
   while (--argc > 0 && (*++argv)[0] == '-') {
-	if (strncmp_(*argv, "-k", 2) == 0)
-		g_field_num = atoi(*argv + 2);
-	else {
-		char *opt = *argv + 1;
-		while ((c = *opt++))
-			switch (c) {
-				case 'f':
-					fold = 1;
-					break;
-				case 'd':
-					dir = 1;
-					break;
-				default:
-					printf("sort: illegal option %c\n", c);
-					break;
-			}
-	}
-
+    if (strncmp_(*argv, "-k", 2) == 0)
+      g_field_num = atoi(*argv + 2);
+    else {
+      char *opt = *argv + 1;
+      while ((c = *opt++))
+        switch (c) {
+        case 'f':
+          fold = 1;
+          break;
+        case 'd':
+          dir = 1;
+          break;
+        default:
+          printf("sort: illegal option %c\n", c);
+          break;
+        }
+    }
   }
 
   if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
     int (*comp)(const char *, const char *);
 
     if (g_field_num > 0) {
-	if (fold && dir)
-		comp = cmp_field_dfstrcmp;
-	else if (fold)
-		comp = cmp_field_fstrcmp;
-	else if (dir)
-		comp = cmp_field_dstrcmp;
-	else
-		comp = cmp_field_strcmp;
-   } else {
-	if (fold && dir)
-		comp = (int (*)(const void *, const void *))dfstrcmp;
-        else if (fold)
-		comp = (int (*)(const void *, const void *))fstrcmp;
-	else if (dir)
-		comp = (int (*)(const void *, const void *))dstrcmp;
-	else
-		comp = (int (*)(const void *, const void *))strcmp_;
-   }
+      if (fold && dir)
+        comp = cmp_field_dfstrcmp;
+      else if (fold)
+        comp = cmp_field_fstrcmp;
+      else if (dir)
+        comp = cmp_field_dstrcmp;
+      else
+        comp = cmp_field_strcmp;
+    } else {
+      if (fold && dir)
+        comp = (int (*)(const void *, const void *))dfstrcmp;
+      else if (fold)
+        comp = (int (*)(const void *, const void *))fstrcmp;
+      else if (dir)
+        comp = (int (*)(const void *, const void *))dstrcmp;
+      else
+        comp = (int (*)(const void *, const void *))strcmp_;
+    }
 
     qsort_((void **)lineptr, 0, nlines - 1,
            (int (*)(const void *, const void *))comp);
@@ -149,15 +151,15 @@ int strcmp_(const char *s, const char *t) {
 }
 
 int strncmp_(const char *s, const char *t, size_t n) {
-	while (n--) {
-		if (*s != *t)
-			return (unsigned char)*s - (unsigned char)*t;
-		if (*s == '\0')
-			return 0;
-		s++, t++;
-	}
+  while (n--) {
+    if (*s != *t)
+      return (unsigned char)*s - (unsigned char)*t;
+    if (*s == '\0')
+      return 0;
+    s++, t++;
+  }
 
-	return 0;
+  return 0;
 }
 
 void swap(void **v, int left, int right) {
@@ -223,55 +225,55 @@ int dfstrcmp(const char *s, const char *t) {
 
 /* get_field: extract the nth field from a line (1-based index) */
 void get_field(const char *line, int field_num, char *field_buf, int bufsize) {
-	int i = 0, f = 1;
-	while (*line && f < field_num) {
-		if (isspace(*line)) {
-			while (isspace(*line))
-				line++;
-			f++;
-		} else
-			line+;
-	}
+  int i = 0, f = 1;
+  while (*line && f < field_num) {
+    if (isspace(*line)) {
+      while (isspace(*line))
+        line++;
+      f++;
+    } else
+      line++;
+  }
 
-	while (*line && !isspace(*line) && i < bufsize - 1)
-		field_buf[i++] = *line++;
+  while (*line && !isspace(*line) && i < bufsize - 1)
+    field_buf[i++] = *line++;
 
-	field_buf[i] = '\0';
+  field_buf[i] = '\0';
 }
 
 int field_strcmp(const char *s, const char *t, int field_num) {
-	char fs[MAXLEN], ft[MAXLEN];
-	get_field(s, field_num, fs, MAXLEN);
-	get_field(t, field_num, ft, MAXLEN);
-	return strcmp_(fs, ft);
+  char fs[MAXLEN], ft[MAXLEN];
+  get_field(s, field_num, fs, MAXLEN);
+  get_field(t, field_num, ft, MAXLEN);
+  return strcmp_(fs, ft);
 }
 
 int field_fstrcmp(const char *s, const char *t, int field_num) {
-	char fs[MAXLEN], ft[MAXLEN];
-	get_field(s, field_num, fs, MAXLEN);
-	get_field(t, field_num, ft, MAXLEN);
-	return fstrcmp(fs, ft);
+  char fs[MAXLEN], ft[MAXLEN];
+  get_field(s, field_num, fs, MAXLEN);
+  get_field(t, field_num, ft, MAXLEN);
+  return fstrcmp(fs, ft);
 }
 
 int field_dstrcmp(const char *s, const char *t, int field_num) {
-	char fs[MAXLEN], ft[MAXLEN];
-	get_field(s, field_num, fs, MAXLEN);
-	get_field(t, field_num, ft, MAXLEN);
-	return dstrcmp(fs, ft);
+  char fs[MAXLEN], ft[MAXLEN];
+  get_field(s, field_num, fs, MAXLEN);
+  get_field(t, field_num, ft, MAXLEN);
+  return dstrcmp(fs, ft);
 }
 
 int cmp_field_strcmp(const void *a, const void *b) {
-	return field_strcmp(*(const char **)a, *(const char **)b, g_field_num);
+  return field_strcmp(*(const char **)a, *(const char **)b, g_field_num);
 }
 
 int cmp_field_fstrcmp(const void *a, const void *b) {
-	return field_fstrcmp(*(const char **)a, *(const char **)b, g_field_num);
+  return field_fstrcmp(*(const char **)a, *(const char **)b, g_field_num);
 }
 
 int cmp_field_dstrcmp(const void *a, const void *b) {
-	return field_dstrcmp(*(const char **)a, *(const char **)b, g_field_num);
+  return field_dstrcmp(*(const char **)a, *(const char **)b, g_field_num);
 }
 
 int cmp_field_dfstrcmp(const void *a, const void *b) {
-	return field_dfstrcmp(*(const char **)a, *(const char **)b, g_field_num);
+  return field_dfstrcmp(*(const char **)a, *(const char **)b, g_field_num);
 }
