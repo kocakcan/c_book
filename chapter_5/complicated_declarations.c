@@ -7,7 +7,7 @@
  *confusing for the harder ones, because declarations cannot be read left to
  *right, and because parantheses are over-used. The difference between
  *
- * 	int *f();	f: function returning pointer to int
+ * 	int *f();	    f:  function returning pointer to int
  *	int (*pf)();	pf: pointer to function returning int
  * illustrates the problem: * is a prefix operator and it has lower precedence
  *than (), so parantheses are necessary to force the proper association.
@@ -43,9 +43,9 @@
  *
  * dcl:		optional *'s direct-dcl
  * direct-dl name
- * 			(dcl)
- * 			direct-dcl()
- * 			direct-dlc[optional size]
+ * 			  (dcl)
+ * 			  direct-dcl()
+ * 			  direct-dlc[optional size]
  *
  * In words, a dcl is a direct-dcl, perhaps preceeded by *'s. A direct-dcl is a
  *name, or a paranthesized dcl, or a direct-dcl followed by parantheses, or a
@@ -61,7 +61,7 @@
  *
  * The heart of the dcl program is a pair of functions, dcl and dirdcl, that
  *parse a declaration according to this grammar. Because the grammar is
- *recursively defined, the functions call each other recursively as the
+ *recursively defined, the functions call each other recursively as they
  *recognize pieces of a declaration; the program is called a recursive-descent
  *parser.
  */
