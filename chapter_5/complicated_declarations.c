@@ -69,7 +69,7 @@
 /***
  * Since the program are intended to be illustrative, not bullet-proof, there
  * are significant restrictions on dcl. It can only handle a simple data type
- * line char or int. It does not handle argument types in functions, or
+ * like char or int. It does not handle argument types in functions, or
  * qualifiers like const. Spurious blanks confuse it. It doesn't do much error
  * recovery, so invalid declarations will also confuse it. These improvements
  * are left as exercises.
