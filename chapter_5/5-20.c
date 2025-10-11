@@ -95,6 +95,8 @@ int gettoken(void) { /* return next token */
     // one is a qualifier as in static int
     for (*p++ = c; isalnum(c = getch());)
       *p++ = c;
+    // when this for loop terminates, we know that c is not alphanumeric
+    // we can check again if the next character is alphanumeric or not
     *p = '\0';
     ungetch(c);
     return tokentype = NAME;
