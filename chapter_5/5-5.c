@@ -3,23 +3,36 @@
  * For example, strncpy(s, t, n) copies at most n characters of t to s. */
 #include <assert.h>
 #include <stdio.h>
+#include <string.h>
 
-void strncat_(char *s, char *t, size_t n) {
-  while (*s)
-    s++;
-  while (n-- && *t)
-    *s++ = *t++;
-  *s = '\0';
+char *strncat_(char *dest, const char *src, size_t count) {
+	char *tmp = dest;
+
+	if (count) {
+		while (*dest)
+			dest++;
+		while ((*dest++ = *src++) != 0) {
+			if (--count == 0) {
+				*dest = '\0';
+				break;
+			}
+		}
+	}
+
+	return tmp;
 }
 
-void strncpy_(char *s, char *t, size_t n) {
-  size_t i;
+char *strncpy_(char *dest, const char *src, size_t count) {
+	char *tmp = dest;
 
-  for (i = 0; i < n && *t; i++)
-    *s++ = *t++;
+	while (count--) {
+		if ((*tmp = *src) != 0)
+			src++;
+		tmp++;
+		// count--;
+ 	}
 
-  for (; i < n; i++) /* t < n */
-    *s++ = '\0';     /* pad the rest of s with null */
+	return dest;
 }
 
 int strncmp_(char *s, char *t, size_t n) {
@@ -47,13 +60,13 @@ int strncmp__(const char *s, const char *t, size_t n) {
 }
 
 int main(void) {
-  char s[50] = "Can";
-  char t[] = " Kocak";
+  char buf[50];
+  const char *name = "can kocak";
+  strncat_(buf, name, strlen(name));
   char u[50];
-  char v[] = "Knight Artorias, the Abysswalker";
-  strncat_(s, t, 6);
+  const char v[] = "Knight Artorias, the Abysswalker";
   strncpy_(u, v, 55);
-  printf("My full name is %s\n", s);
+  printf("My full name is %s\n", buf);
   printf("My favourite boss in Dark Souls is %s\n", u);
 
   // Exact match, n equals string length
@@ -86,6 +99,12 @@ int main(void) {
   assert(strncmp__("a", "", 1) > 0);
 
   printf("All strncmp__ test cases passed!\n");
+
+  char dest[100];
+  const char *temp = "Knight Artorias, the Abysswalker";
+
+  strncpy_(dest, temp, 5);
+  printf("%s\n", dest);
 
   return 0;
 }
