@@ -60,7 +60,7 @@ int strncmp__(const char *s, const char *t, size_t n) {
 }
 
 int main(void) {
-  char buf[50];
+  char buf[50] = "";
   const char *name = "can kocak";
   strncat_(buf, name, strlen(name));
   char u[50];
