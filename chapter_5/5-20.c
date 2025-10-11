@@ -90,6 +90,9 @@ int gettoken(void) { /* return next token */
     *p = '\0';
     return tokentype = BRACKETS;
   } else if (isalpha(c)) {
+    // if current character read is not alphanumeric
+    // but the next one does we can assume that the first
+    // one is a qualifier as in static int
     for (*p++ = c; isalnum(c = getch());)
       *p++ = c;
     *p = '\0';
