@@ -22,18 +22,84 @@ char datatype[MAXTOKEN];  /* data type = char, int, etc. */
 char qualifier[MAXTOKEN]; /* qualifier = const, static, etc. */
 char out[1000];
 
+/* isqualifier: simple check for qualifiers */
+int isqualifier(char *s) {
+	return strcmp(s, "const") == 0 ||
+		strcmp(s, "static") == 0 ||
+		strcmp(s, "volatile") == 0;
+}
+
 /* convert declaration to words */
 int main(void) {
+  int len;
+  qualifier[0] = '\0';
+
   while (gettoken() != EOF) { /* 1st token on line */
-    strcpy(datatype, token);  /* is the datatype */
+    qualifier[0] = '\0';
+    /* accumulate qualifiers before datatype */
+    while (tokentype == NAME && isqualifier(token)) {
+	if (qualifier[0])
+		strcat(qualifier, " ");
+	strcat(qualifier, token);
+	gettoken();
+    }
+    /* next token should be datatype */
+    if (tokentype == NAME)
+	strcpy(datatype, token);
+    else {
+	printf("error: expected data type\n");
+	continue;
+    }
     out[0] = '\0';
     dcl(); /* parse rest of line */
     if (tokentype != '\n')
       printf("syntax error\n");
-    printf("%s: %s %s\n", name, out, datatype);
+    printf("%s: %s %s %s\n", name, out, qualifier[0] ? qualifier : "", datatype);
   }
-
   return 0;
+}
+
+/* parsearg: parse a single argument, storing in out */
+void parsearg(char *argout) {
+	char argqual[MAXTOKEN], argtype[MAXTOKEN], argname[MAXTOKEN];
+	argqual[0] = argtype[0] = argname[0] = '\0';
+
+	/* accumulate qualifiers */
+	while (gettoken() == NAME && isqualifier(token)) {
+		if (argqual[0])
+			strcat(argqual, " ");
+		strcat(argqual, token);
+	}
+	/* type */
+	if (tokentype == NAME) {
+		strcpy(argtype, token);
+		gettoken();
+	}
+	/* pointer */
+	int ns = 0;
+	while (tokentype == '*') {
+		ns++;
+		gettoken();
+	}
+	/* name */
+	if (tokentype == NAME) {
+		strcpy(argname, token);
+		gettoken();
+	}
+	/*compose argument description */
+	argout[0] = '\0';
+	if (argname[0])
+		sprintf(argout, "%s%s%s %s%s",
+			argqual[0] ? argqual : "",
+			argqual[0] ? " " : "",
+			argtype,
+			ns > 0 ? "pointer to " : "",
+			argname);
+	else
+		sprintf(argout, "%s%s%s",
+			argqual[0] ? argqual : "",
+			argqual[0] ? " " : "",
+			argtype);
 }
 
 /* dirdcl: parse a direct declarator */
@@ -48,14 +114,30 @@ void dirdcl(void) {
     strcpy(name, token);
   } else
     printf("error: expected name or (dcl)\n");
-  while ((type = gettoken()) == PARENS || type == BRACKETS)
+  while ((type = gettoken()) == PARENS || type == BRACKETS || type == '(') {
     if (type == PARENS)
       strcat(out, " function returning");
-    else {
+    else if (type == BRACKETS) {
       strcat(out, " array");
       strcat(out, token);
       strcat(out, " of");
-    }
+    } else if (type == '(') {
+	strcat(out, " function expecting (");
+	int first = 1;
+	do {
+		char argdesc[300];
+		parsearg(argdesc);
+		if (!first)
+			strcat(out, ", ");
+		first = 0;
+		strcat(out, argdesc);
+	} while (tokentype == ',');
+	if (tokentype != ')')
+		printf("error: missing ) in argument list\n");
+	strcat(out, ") and returning");
+	gettoken();	/* eat next token after arg list */
+   }
+  }
 }
 
 /* dcl: parse a declarator */
@@ -90,13 +172,8 @@ int gettoken(void) { /* return next token */
     *p = '\0';
     return tokentype = BRACKETS;
   } else if (isalpha(c)) {
-    // if current character read is not alphanumeric
-    // but the next one does we can assume that the first
-    // one is a qualifier as in static int
     for (*p++ = c; isalnum(c = getch());)
       *p++ = c;
-    // when this for loop terminates, we know that c is not alphanumeric
-    // we can check again if the next character is alphanumeric or not
     *p = '\0';
     ungetch(c);
     return tokentype = NAME;
