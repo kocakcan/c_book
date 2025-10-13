@@ -57,4 +57,73 @@
  *  int x, y, z;
  * in the sense that each statement declares x, y, and z to be variables of the
  * named type and causes space to be set aside for them.
+ *
+ * A structure declaration that is not followed by a list of variables reserves
+ * no storage; it merely describes a template or shape of a structure. If the
+ * declaration is tagged, however, the tag can be used later in definitions of
+ * instances of the structure. For example, given the declaration of point
+ * above,
+ *
+ *  struct point pt;
+ * defines a variable pt which is a structure of type struct point. A structure
+ * can be initialized by following its definition with a list of initializers,
+ * each a constant expression, for the members.
+ *
+ *  struct maxpt = { 320, 200 };
+ * An automatic structure may also be initialized by assignment or by calling a
+ * function that returns a structure of the right type.
+ *
+ * A member of a particular structure is referred to in an expression by a
+ * construction of the form
+ *
+ *  structure-name.member
+ *
+ * The structure member operator "." connects the structure name and the member
+ * name. To print the coordinates of the point pt, for instance,
+ *
+ *  printf("%d, %d", pt.x, pt.y);
+ * or to compute the distance from the origin (0,0) to pt,
+ *
+ *  double dist, sqrt(double);
+ *
+ *  dist = sqrt((double)pt.x * pt.x + (double)pt.y * pt.y);
+ * Structures can be nested. One representation of a rectangle is a pair of
+ * points that denote the diagonally opposite corners:
+ *
+ *  struct rect {
+ *    struct point pt1;
+ *    struct point pt2;
+ *  };
+ * The rect structure contains two point structures. If we declare screen as
+ *
+ *  struct rect screen;
+ * then
+ *
+ *  screen.pt1.x
+ * refers to the x coordinate of the pt1 member of screen.
  */
+#include <math.h>
+#include <stdio.h>
+
+struct point {
+  int x;
+  int y;
+} x, y, z;
+
+struct rect {
+  struct point pt1;
+  struct point pt2;
+};
+
+int main(void) {
+  struct rect screen = {{200, 320}, {199, 41}};
+  struct point pt = {320, 200};
+  double dist;
+
+  dist = sqrt((double)pt.x * pt.x + (double)pt.y * pt.y);
+
+  printf("pt is %.2f distance away from the origin\n", dist);
+  printf("%d refers to the x coordinate of the pt1 member of the screen\n",
+         screen.pt1.x);
+  return 0;
+}
