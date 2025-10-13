@@ -6,33 +6,39 @@
 #include <string.h>
 
 char *strncat_(char *dest, const char *src, size_t count) {
-	char *tmp = dest;
+  char *tmp = dest;
 
-	if (count) {
-		while (*dest)
-			dest++;
-		while ((*dest++ = *src++) != 0) {
-			if (--count == 0) {
-				*dest = '\0';
-				break;
-			}
-		}
-	}
+  while (*dest)
+    dest++;
+  while (count-- && *src)
+    *dest++ = *src++;
+  *dest = '\0';
 
-	return tmp;
+  // if (count) {
+  //   while (*dest)
+  //     dest++;
+  //   while ((*dest++ = *src++) != 0) {
+  //     if (--count == 0) {
+  //       *dest = '\0';
+  //       break;
+  //     }
+  //   }
+  // }
+
+  return tmp;
 }
 
 char *strncpy_(char *dest, const char *src, size_t count) {
-	char *tmp = dest;
+  char *tmp = dest;
 
-	while (count--) {
-		if ((*tmp = *src) != 0)
-			src++;
-		tmp++;
-		// count--;
- 	}
+  while (count--) {
+    if ((*tmp = *src) != 0)
+      src++;
+    tmp++;
+    // count--;
+  }
 
-	return dest;
+  return dest;
 }
 
 int strncmp_(char *s, char *t, size_t n) {
