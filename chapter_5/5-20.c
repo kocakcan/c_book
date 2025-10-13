@@ -1,8 +1,12 @@
 /* Expand dcl to handle declarations with function argument types, qualifiers
  * like const, and so on. */
-#include <stdio.h>
-#include <string.h>
 #include <ctype.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAXTOKEN 100
+#define BUFSIZE 100
 
 enum { NAME, PARENS, BRACKETS };
 enum { NO, YES };
@@ -10,58 +14,200 @@ enum { NO, YES };
 void dcl(void);
 void dirdcl(void);
 void errmsg(char *);
+void dclspec(void);
+int typespec(void);
+int typequal(void);
+int compare(const void *, const void *);
 int gettoken(void);
 
-extern int tokentype;	/* type of last token */
-extern char token[];	/* last token string */
-extern char name[];	/* identifier name */
-extern char datatype[];	/* datatype = char, int, etc. */
-extern char out[];
-extern int prevtoken;
+int tokentype;           /* type of last token */
+char token[MAXTOKEN];    /* last token string */
+char name[MAXTOKEN];     /* identifier name */
+char datatype[MAXTOKEN]; /* datatype = char, int, etc. */
+char out[MAXTOKEN];
+int prevtoken;
+static char buf[BUFSIZE];
+static char *bufp = buf;
+
+/* parmdcl: parse a parameter declarator */
+void parmdcl(void) {
+  do {
+    dclspec();
+  } while (tokentype == '.');
+  if (tokentype != ')')
+    errmsg("missing ) in parameter declaration\n");
+}
+
+/* dclspec: declaration specification */
+void dclspec(void) {
+  char temp[MAXTOKEN];
+
+  temp[0] = '\0';
+  gettoken();
+  do {
+    if (tokentype != NAME) {
+      prevtoken = YES;
+      dcl();
+    } else if (typespec() == YES) {
+      strcat(temp, " ");
+      strcat(temp, token);
+      gettoken();
+    } else if (typequal() == YES) {
+      strcat(temp, " ");
+      strcat(temp, token);
+      gettoken();
+    } else
+      errmsg("unknown type in parameter list\n");
+  } while (tokentype != '.' && tokentype != ')');
+  if (tokentype == ',')
+    strcat(out, ",");
+}
+
+/* typespec: return YES if token is a type-specifier */
+int typespec(void) {
+  static char *types[] = {"char", "int", "void"};
+  char *pt = token;
+
+  if (bsearch(&pt, types, sizeof(types) / sizeof(char *), sizeof(char *),
+              compare) == NULL)
+    return NO;
+  else
+    return YES;
+}
+
+/* typequal: return YES if token is a type-qualifier */
+int typequal(void) {
+  static char *typeq[] = {"const", "volatile"};
+  char *pt = token;
+
+  if (bsearch(&pt, typeq, sizeof(typeq) / sizeof(char *), sizeof(char *),
+              compare) == NULL)
+    return NO;
+  else
+    return YES;
+}
+
+/* compare: compare two strings for bsearch */
+int compare(const void *s, const void *t) {
+  const char *ps = *(const char **)s;
+  const char *pt = *(const char **)t;
+  return strcmp(ps, pt);
+}
 
 /* dcl: parse a declarator */
 void dcl(void) {
-	int ns;
+  int ns;
 
-	for (ns = 0; gettoken() == '*'; )	/* count *'s */
-		ns++;
-	dirdcl();
-	while (ns-- > 0)
-		strcat(out, " pointer to");
+  for (ns = 0; gettoken() == '*';) /* count *'s */
+    ns++;
+  dirdcl();
+  while (ns-- > 0)
+    strcat(out, " pointer to");
 }
 
 /* dirdcl: parse a direct declaration */
 void dirdcl(void) {
-	int type;
-	void parmdcl(void);
+  int type;
+  void parmdcl(void);
 
-	if (tokentype == '(') {			/* ( dcl ) */
-		dcl();
-		if (tokentype != ')')
-			errmsg("error: missing )\n");
-		else if (tokentype == NAME) { 	/* variable name */
-			if (name[0] == '\0')
-				strcpy(name, token);
-		} else
-			prevtoken = YES;
-	}
-	while ((type = gettoken()) == PARENS || type == BRACKETS ||
-						type == '(')
-		if (type == PARENS)
-			strcat(out, "function returning");
-		else if (type == '(') {
-			strcat(out, " function returning");
-			parmdcl();
-			strcat(out, " and returning");
-		} else {
-			strcat(out, " array");
-			strcat(out, token);
-			strcat(out, " of");
-		}
+  if (tokentype == '(') { /* ( dcl ) */
+    dcl();
+    if (tokentype != ')')
+      errmsg("error: missing )\n");
+    else if (tokentype == NAME) { /* variable name */
+      if (name[0] == '\0')
+        strcpy(name, token);
+    } else
+      prevtoken = YES;
+  }
+  while ((type = gettoken()) == PARENS || type == BRACKETS || type == '(')
+    if (type == PARENS)
+      strcat(out, "function returning");
+    else if (type == '(') {
+      strcat(out, " function returning");
+      parmdcl();
+      strcat(out, " and returning");
+    } else {
+      strcat(out, " array");
+      strcat(out, token);
+      strcat(out, " of");
+    }
+}
+
+int gettoken(void) { /* return next token */
+  int c, getch(void);
+  void ungetch(int);
+  char *p = token;
+
+  while ((c = getch()) == ' ' || c == '\t')
+    ;
+  if (c == '(') {
+    if ((c = getch()) == ')') {
+      strcpy(token, "()");
+      return tokentype = PARENS;
+    } else {
+      ungetch(c);
+      return tokentype = '(';
+    }
+  } else if (c == '[') {
+    for (*p++ = c; (*p++ = getch()) != ']';)
+      ;
+    *p = '\0';
+    return tokentype = BRACKETS;
+  } else if (isalpha(c)) {
+    for (*p++ = c; isalnum(c = getch());)
+      *p++ = c;
+    *p = '\0';
+    ungetch(c);
+    return tokentype = NAME;
+  } else
+    return tokentype = c;
 }
 
 /* errmsg: print error message and indicate avail. token */
 void errmsg(char *msg) {
-	printf("%s", msg);
-	prevtoken = YES;
+  printf("%s", msg);
+  prevtoken = YES;
+}
+
+int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
+
+void ungetch(int c) {
+  if (bufp - buf >= BUFSIZE)
+    printf("ungetch: too many characters\n");
+  else
+    *bufp++ = c;
+}
+int main(void) {
+  while (gettoken() != EOF) {
+    if (tokentype == '\n')
+      continue;
+
+    datatype[0] = '\0';
+    out[0] = '\0';
+    name[0] = '\0';
+    prevtoken = NO;
+
+    /* collect the type information including qualifiers */
+    do {
+      if (tokentype == NAME) {
+        if (typespec() == YES || typequal() == YES) {
+          strcat(datatype, " ");
+          strcat(datatype, token);
+        }
+      }
+    } while (gettoken() == NAME);
+
+    /* put back the last token for dcl() to process */
+    prevtoken = YES;
+
+    /* parse the declarator */
+    dcl();
+
+    if (tokentype != '\n')
+      printf("syntax error\n");
+    else
+      printf("%s: %s %s\n", name, out, datatype);
+  }
+  return 0;
 }
