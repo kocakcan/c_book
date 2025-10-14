@@ -115,7 +115,24 @@ struct rect {
   struct point pt2;
 };
 
+/* Automatic structures are the structures that are declared within a function
+ * (including main) without the static keyword. They are automatically allocated
+ * and deallocated when the program enters and leaves the block in which they
+ * are defined (hence "automatic").
+ *
+ * Key characteristics of automatic structures:
+ * - Storage duration is automatic (local to the block),
+ * - Memory is typically allocated on the stack,
+ * - Values are not initialized by default (contain garbage values),
+ * - Deallocated when leaving the scope,
+ * - Can be initialized by assignment or by a function returning structure of
+ *   the right type.
+ *
+ * On the other hand, static structures exist for the entire program run.
+ */
+
 int main(void) {
+  /* screen and pt are both automatic structures */
   struct rect screen = {{200, 320}, {199, 41}};
   struct point pt = {320, 200};
   double dist;
@@ -126,4 +143,4 @@ int main(void) {
   printf("%d refers to the x coordinate of the pt1 member of the screen\n",
          screen.pt1.x);
   return 0;
-}
+} /* screen and pt are deallocated here */
