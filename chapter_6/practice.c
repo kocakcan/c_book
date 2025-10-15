@@ -12,40 +12,31 @@ struct Kocak {
   enum MARITAL_STATUS m_status;
 };
 
-char *gender_to_string(enum GENDER gender) {
+const char *gender_to_string(enum GENDER gender) {
   switch (gender) {
   case MALE:
     return "MALE";
-    break;
   case FEMALE:
     return "FEMALE";
-    break;
   case OTHER:
     return "OTHER";
-    break;
   default:
     return "UNKNOWN GENDER";
-    break;
   }
 }
 
-char *marital_status_to_string(enum MARITAL_STATUS m_status) {
+const char *marital_status_to_string(enum MARITAL_STATUS m_status) {
   switch (m_status) {
   case MARRIED:
     return "MARRIED";
-    break;
   case SINGLE:
     return "SINGLE";
-    break;
   case DIVORCED:
     return "DIVORCED";
-    break;
   case WIDOWED:
     return "WIDOWED";
-    break;
   default:
     return "UNKNOWN MARITAL_STATUS";
-    break;
   }
 }
 
@@ -74,13 +65,15 @@ int min_age(struct Kocak *kocak) {
 }
 
 double avg_age(struct Kocak *kocak) {
-  double result;
+  double result = 0.0;
 
   for (int i = 0; i < FAMILY_SIZE; i++)
     result += kocak++->age;
 
   return result / FAMILY_SIZE;
 }
+
+// TODO: implement a printk (print Kocak) function
 
 int main(void) {
   struct Kocak kocaks[] = {{"Seyfi", 60, MALE, MARRIED},
