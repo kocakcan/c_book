@@ -5,6 +5,13 @@
 enum GENDER { MALE, FEMALE, OTHER };
 enum MARITAL_STATUS { MARRIED, SINGLE, DIVORCED, WIDOWED };
 
+struct Kocak {
+  char *name;
+  int age;
+  enum GENDER gender;
+  enum MARITAL_STATUS m_status;
+};
+
 char *gender_to_string(enum GENDER gender) {
   switch (gender) {
   case MALE:
@@ -42,13 +49,6 @@ char *marital_status_to_string(enum MARITAL_STATUS m_status) {
   }
 }
 
-struct Kocak {
-  char *name;
-  int age;
-  enum GENDER gender;
-  enum MARITAL_STATUS m_status;
-};
-
 int max_age(struct Kocak *kocak) {
   int max = kocak++->age;
 
@@ -59,6 +59,27 @@ int max_age(struct Kocak *kocak) {
   }
 
   return max;
+}
+
+int min_age(struct Kocak *kocak) {
+  int min = kocak++->age;
+
+  for (int i = 1; i < FAMILY_SIZE; i++) {
+    if (kocak->age < min)
+      min = kocak->age;
+    kocak++;
+  }
+
+  return min;
+}
+
+double avg_age(struct Kocak *kocak) {
+  double result;
+
+  for (int i = 0; i < FAMILY_SIZE; i++)
+    result += kocak++->age;
+
+  return result / FAMILY_SIZE;
 }
 
 int main(void) {
@@ -79,6 +100,8 @@ int main(void) {
   }
 
   printf("Oldest family member is %d years old.\n", max_age(kocaks));
+  printf("Youngest family member is %d years old.\n", min_age(kocaks));
+  printf("Average age in the Kocak family is %.2f\n", avg_age(kocaks));
 
   return 0;
 }
