@@ -5,6 +5,8 @@
 enum GENDER { MALE, FEMALE, OTHER };
 enum MARITAL_STATUS { MARRIED, SINGLE, DIVORCED, WIDOWED };
 
+int strcmp_(const char *, const char *);
+
 struct Kocak {
   char *name;
   int age;
@@ -73,7 +75,30 @@ double avg_age(struct Kocak *kocak) {
   return result / FAMILY_SIZE;
 }
 
-// TODO: implement a printk (print Kocak) function
+struct Kocak *find_by_name(struct Kocak *kocak, const char *name) {
+  for (size_t i = 0; i < FAMILY_SIZE; i++) {
+    if (strcmp_(kocak->name, name) == 0)
+      return kocak;
+    kocak++;
+  }
+
+  return NULL;
+}
+
+void printk(const struct Kocak *kocak) {
+  for (size_t i = 0; i < FAMILY_SIZE; i++) {
+    printf("Name: %s | Age: %d | Gender: %s | Marital Status: %s\n",
+           kocak->name, kocak->age, gender_to_string(kocak->gender),
+           marital_status_to_string(kocak->m_status));
+    kocak++;
+  }
+}
+
+int strcmp_(const char *s, const char *t) {
+  while (*s && *s == *t)
+    s++, t++;
+  return (unsigned char)*s - (unsigned char)*t;
+}
 
 int main(void) {
   struct Kocak kocaks[] = {{"Seyfi", 60, MALE, MARRIED},
@@ -82,19 +107,14 @@ int main(void) {
                            {"Medet", 32, FEMALE, MARRIED},
                            {"Can", 27, MALE, WIDOWED}};
 
-  size_t family_size = FAMILY_SIZE;
   struct Kocak *kp = kocaks;
-
-  while (family_size--) {
-    printf("Name: %s | Age: %d | Gender: %s | Marital Status: %s\n", kp->name,
-           kp->age, gender_to_string(kp->gender),
-           marital_status_to_string(kp->m_status));
-    kp++;
-  }
+  printk(kocaks);
 
   printf("Oldest family member is %d years old.\n", max_age(kocaks));
   printf("Youngest family member is %d years old.\n", min_age(kocaks));
   printf("Average age in the Kocak family is %.2f\n", avg_age(kocaks));
+  struct Kocak *result = find_by_name(kocaks, "Abuzittin");
+  printf("Result: %s\n", (result != NULL) ? result->name : "NOT FOUND");
 
   return 0;
 }
