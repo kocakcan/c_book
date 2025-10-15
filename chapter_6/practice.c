@@ -52,9 +52,11 @@ struct Kocak {
 int max_age(struct Kocak *kocak) {
   int max = kocak++->age;
 
-  for (int i = 0; i < FAMILY_SIZE; i++)
+  for (int i = 1; i < FAMILY_SIZE; i++) {
     if (kocak->age > max)
       max = kocak->age;
+    kocak++;
+  }
 
   return max;
 }
