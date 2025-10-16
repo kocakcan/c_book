@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #define FAMILY_SIZE 5
 
@@ -6,6 +7,7 @@ enum GENDER { MALE, FEMALE, OTHER };
 enum MARITAL_STATUS { MARRIED, SINGLE, DIVORCED, WIDOWED };
 
 int strcmp_(const char *, const char *);
+int namecmp(const void *, const void *);
 
 struct Kocak {
   char *name;
@@ -100,6 +102,12 @@ int strcmp_(const char *s, const char *t) {
   return (unsigned char)*s - (unsigned char)*t;
 }
 
+int namecmp(const void *s, const void *t) {
+  const struct Kocak *a = (const struct Kocak *)s;
+  const struct Kocak *b = (const struct Kocak *)t;
+  return strcmp_(a->name, b->name);
+}
+
 int main(void) {
   struct Kocak kocaks[] = {{"Seyfi", 60, MALE, MARRIED},
                            {"Leyli", 55, FEMALE, MARRIED},
@@ -115,6 +123,9 @@ int main(void) {
   printf("Average age in the Kocak family is %.2f\n", avg_age(kocaks));
   struct Kocak *result = find_by_name(kocaks, "Abuzittin");
   printf("Result: %s\n", (result != NULL) ? result->name : "NOT FOUND");
+
+  qsort(kocaks, FAMILY_SIZE, sizeof(struct Kocak), namecmp);
+  printk(kocaks);
 
   return 0;
 }
