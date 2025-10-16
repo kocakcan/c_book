@@ -7,7 +7,9 @@ enum GENDER { MALE, FEMALE, OTHER };
 enum MARITAL_STATUS { MARRIED, SINGLE, DIVORCED, WIDOWED };
 
 int strcmp_(const char *, const char *);
+int numcmp(int, int);
 int namecmp(const void *, const void *);
+int agecmp(const void *, const void *);
 
 struct Kocak {
   char *name;
@@ -89,7 +91,7 @@ struct Kocak *find_by_name(struct Kocak *kocak, const char *name) {
 
 void printk(const struct Kocak *kocak) {
   for (size_t i = 0; i < FAMILY_SIZE; i++) {
-    printf("Name: %s | Age: %d | Gender: %s | Marital Status: %s\n",
+    printf("Name: %-5s | Age: %d | Gender: %-6s | Marital Status: %s\n",
            kocak->name, kocak->age, gender_to_string(kocak->gender),
            marital_status_to_string(kocak->m_status));
     kocak++;
@@ -102,10 +104,25 @@ int strcmp_(const char *s, const char *t) {
   return (unsigned char)*s - (unsigned char)*t;
 }
 
+int numcmp(int i, int j) {
+  if (i < j)
+    return -1;
+  else if (i > j)
+    return 1;
+  else
+    return 0;
+}
+
 int namecmp(const void *s, const void *t) {
   const struct Kocak *a = (const struct Kocak *)s;
   const struct Kocak *b = (const struct Kocak *)t;
   return strcmp_(a->name, b->name);
+}
+
+int agecmp(const void *s, const void *t) {
+  const struct Kocak *a = (const struct Kocak *)s;
+  const struct Kocak *b = (const struct Kocak *)t;
+  return -numcmp(a->age, b->age);
 }
 
 int main(void) {
@@ -124,8 +141,12 @@ int main(void) {
   struct Kocak *result = find_by_name(kocaks, "Abuzittin");
   printf("Result: %s\n", (result != NULL) ? result->name : "NOT FOUND");
 
+  printf("Sorting according to name\n");
   qsort(kocaks, FAMILY_SIZE, sizeof(struct Kocak), namecmp);
   printk(kocaks);
 
+  printf("Sorting according to age\n");
+  qsort(kocaks, FAMILY_SIZE, sizeof(struct Kocak), agecmp);
+  printk(kocaks);
   return 0;
 }
