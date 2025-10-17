@@ -106,7 +106,7 @@
  * 	dprint(x/y)
  * the macro is expanded into
  *
- *  	printf("x/y" " = %g\n", x/y);
+ *  	printf("x/y" " = &g\n", x/y);
  * and the string are concatenated, so the effect is
  *
  * 	printf("x/y = &g\n", x/y);
