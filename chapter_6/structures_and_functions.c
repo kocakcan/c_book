@@ -51,6 +51,33 @@
  * Here both the arguments and the return value are structures. We incremented
  * the components in p1 rather than using an explicit temporary variable to
  * emphasize that structure parameters are passed by value like any others.
+ *
+ * As another example, the function ptinrect tests whether a point is inside a
+ * rectangle, where we have adopted the convention that a rectangle includes
+ * its left and bottom sides but not its top and right sides:
+ *
+ *  ptinrect: return 1 if p in r, 0 if not
+ *  int ptinrect(struct point p, struct rect r) {
+ *    return p.x >= r.pt1.x && p.x < r.pt2.x
+ *        && p.y >= r.pt1.y && p.y < r.pt2.y;
+ *  }
+ * This assumes that the rectangle is presented in a standard form where the
+ * pt1 coordinates are less than pt2 coordinates. The following function
+ * returns a rectangle guaranteed to be in canonical form:
+ *
+ *  #define min(a, b) ((a) < (b) ? (a) : (b))
+ *  #define max(a, b) ((a) > (b) ? (a) : (b))
+ *
+ *  canonrect: canonicalize coordinates of rectangle
+ *  struct rect canonrect(struct rect r) {
+ *    struct rect temp;
+ *
+ *    temp.pt1.x = min(r.pt1.x, r.pt2.x);
+ *    temp.pt1.y = min(r.pt1.y, r.pt2.y);
+ *    temp.pt2.x = max(r.pt1.x, r.pt2.x);
+ *    temp.pt2.y = max(r.pt1.y, r.pt2.y);
+ *    return temp;
+ *  }
  */
 #include <stdio.h>
 #define XMAX 1920
@@ -75,6 +102,13 @@ struct point makepoint(int x, int y) {
   return temp;
 }
 
+/* addpoints: add two points */
+struct point addpoints(struct point p1, struct point p2) {
+  p1.x += p2.x;
+  p1.y += p2.y;
+  return p1;
+}
+
 int main(void) {
   struct rect screen;
   struct point middle;
@@ -86,5 +120,7 @@ int main(void) {
 
   printf("Middle point of the screen (x, y) = (%d, %d)\n", middle.x, middle.y);
 
+  struct point pt3 = addpoints(screen.pt1, screen.pt2);
+  printf("screen.pt1 + screen.pt2 = (%d, %d)\n", pt3.x, pt3.y);
   return 0;
 }
