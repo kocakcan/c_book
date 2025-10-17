@@ -53,6 +53,8 @@
  * emphasize that structure parameters are passed by value like any others.
  */
 #include <stdio.h>
+#define XMAX 1920
+#define YMAX 1200
 
 struct point {
   int x;
@@ -64,4 +66,25 @@ struct rect {
   struct point pt2;
 };
 
-int main(void) { return 0; }
+/* makepoint: make a component from x and y components */
+struct point makepoint(int x, int y) {
+  struct point temp;
+
+  temp.x = x;
+  temp.y = y;
+  return temp;
+}
+
+int main(void) {
+  struct rect screen;
+  struct point middle;
+
+  screen.pt1 = makepoint(0, 0);
+  screen.pt2 = makepoint(XMAX, YMAX);
+  middle = makepoint((screen.pt1.x + screen.pt2.x) / 2,
+                     (screen.pt1.y + screen.pt2.y) / 2);
+
+  printf("Middle point of the screen (x, y) = (%d, %d)\n", middle.x, middle.y);
+
+  return 0;
+}
