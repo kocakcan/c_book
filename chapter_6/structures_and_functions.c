@@ -109,6 +109,12 @@ struct point addpoints(struct point p1, struct point p2) {
   return p1;
 }
 
+/* ptinrect: return 1 if p in r, 0 if not */
+int ptinrect(struct point p, struct rect r) {
+	return p.x >= r.pt1.x && p.x < r.pt2.x
+	    && p.y >= r.pt1.y && p.y < r.pt2.y;
+}
+
 int main(void) {
   struct rect screen;
   struct point middle;
@@ -121,6 +127,9 @@ int main(void) {
   printf("Middle point of the screen (x, y) = (%d, %d)\n", middle.x, middle.y);
 
   struct point pt3 = addpoints(screen.pt1, screen.pt2);
+  struct point pt4 = makepoint(197, 42);
   printf("screen.pt1 + screen.pt2 = (%d, %d)\n", pt3.x, pt3.y);
+  printf("pt4(%d, %d) %s in screen indeed\n", pt4.x, pt4.y, (ptinrect(pt4, screen) == 1) ? "is" : "is not");
+
   return 0;
 }
