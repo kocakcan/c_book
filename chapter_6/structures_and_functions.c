@@ -128,8 +128,10 @@ int main(void) {
 
   struct point pt3 = addpoints(screen.pt1, screen.pt2);
   struct point pt4 = makepoint(197, 42);
+  struct point pt5 = makepoint(15, 1921);
   printf("screen.pt1 + screen.pt2 = (%d, %d)\n", pt3.x, pt3.y);
-  printf("pt4(%d, %d) %s in screen indeed\n", pt4.x, pt4.y, (ptinrect(pt4, screen) == 1) ? "is" : "is not");
+  printf("pt4(%d, %d) %s in screen\n", pt4.x, pt4.y, (ptinrect(pt4, screen) == 1) ? "is" : "is not");
+  printf("pt5(%d, %d) %s in screen\n", pt5.x, pt5.y, (ptinrect(pt5, screen) == 1) ? "is" : "is not");
 
   return 0;
 }
