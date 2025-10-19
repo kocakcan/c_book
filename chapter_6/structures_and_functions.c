@@ -165,6 +165,11 @@ struct rect canonrect(struct rect r) {
 	return temp;
 }
 
+struct {
+	int len;
+	char *str;
+} as, *asp;
+
 int main(void) {
   struct rect screen;
   struct point middle;
@@ -186,5 +191,42 @@ int main(void) {
   printf("canrect((%d, %d), (%d, %d))\n", canrect.pt1.x, 
 	canrect.pt1.y, canrect.pt2.x, canrect.pt2.y);
 
+
+  as.len = 19;
+  as.str = "Can";
+  asp = &as;
+
+  printf("len: %d | str: %s\n", asp->len, asp->str);
+
+  // accesses current len first, incrementing it after
+  ++asp->len;
+  printf("len: %d | str: %s\n", asp->len, asp->str);
+
+  // parentheses are used to alter binding
+  // asp pre-incremented then len is accessed
+  // (++asp)->len;
+  printf("len: %d | str: %s\n", asp->len, asp->str);
+
+  // access current len then increment asp
+  // (asp++)->len;
+  // asp++->len;	/* they are equivalent */
+  // printf("len: %d | str: %s\n", asp->len, asp->str);
+
+  // access str, fetching the current char
+  printf("current char: %c\n", *asp->str);
+
+  // *asp->str first, incrementing str after
+  // just like *s++
+  printf("current char: %c\n", *asp->str++);
+  printf("current char: %c\n", *asp->str);
+
+  // printf("current char: %c\n", (*asp->str)++);
+  // printf("current char: %c\n", *asp->str);
+
+  // increment asp after accessing the current
+  // char str points to
+  printf("current char: %c\n", *asp++->str);
+  // printf("current char: %c\n", *asp->str);
+  
   return 0;
 }
