@@ -1,12 +1,5 @@
 #include "boss.c"
-#include <limits.h>
 #include <stdio.h>
-#define PRINTB(b)                                                              \
-  printf("Name: %s | Location: %s | HP: %d | Souls: %d | Weakness: %s\n"       \
-         "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",              \
-         (b)->name, (b)->location, (b)->hp, (b)->souls,                        \
-         weak_to_string((b)->weakness), (b)->pres, (b)->fres, (b)->mres,       \
-         (b)->lres)
 
 const char *weak_to_string(enum WEAKNESS weakness) {
   switch (weakness) {
@@ -24,7 +17,6 @@ const char *weak_to_string(enum WEAKNESS weakness) {
 }
 
 int main(void) {
-  // PRINTB(&quelagg);
   struct Boss bosses[] = {asylum_demon, capra_demon,   quelagg,
                           priscilla,    gwyndolin,     super_ornstein,
                           super_smough, gaping_dragon, iron_golem,

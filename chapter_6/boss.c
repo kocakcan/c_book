@@ -151,3 +151,25 @@ static struct Boss taurus_demon = {
     LIGHTNING,
     3000,
     {"Humanity", "Homeward Bone", "Demon's Greataxe"}};
+static struct Boss sif = {
+    "Sif, the Great Grey Wolf",
+    "Darkroot Garden",
+    3432,
+    260,
+    182,
+    195,
+    195,
+    FIRE,
+    40000,
+    {"Soul of Sif", "Covenant of Artorias", "Humanity", "Homeward Bone"}};
+static struct Boss moonlight_butterfly = {
+    "Moonlight Butterfly",
+    "Darkroot Garden",
+    1506,
+    184,
+    110,
+    230,
+    148,
+    FIRE,
+    10000,
+    {"Soul of the Moonlight Butterfly", "Humanity"}};
