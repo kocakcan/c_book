@@ -1,20 +1,5 @@
-#include "boss.c"
+#include "boss.h"
 #include <stdio.h>
-
-const char *weak_to_string(enum WEAKNESS weakness) {
-  switch (weakness) {
-  case PHYSICAL:
-    return "PHYSICAL";
-  case MAGIC:
-    return "MAGIC";
-  case FIRE:
-    return "FIRE";
-  case LIGHTNING:
-    return "LIGHTNING";
-  default:
-    return "UNKNOWN WEAKNESS";
-  }
-}
 
 int main(void) {
   struct Boss bosses[] = {asylum_demon, capra_demon,   quelagg,

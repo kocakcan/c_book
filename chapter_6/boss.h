@@ -21,6 +21,21 @@ struct Boss {
   char *reward[7];
 };
 
+const char *weak_to_string(enum WEAKNESS weakness) {
+  switch (weakness) {
+  case PHYSICAL:
+    return "PHYSICAL";
+  case MAGIC:
+    return "MAGIC";
+  case FIRE:
+    return "FIRE";
+  case LIGHTNING:
+    return "LIGHTNING";
+  default:
+    return "UNKNOWN WEAKNESS";
+  }
+}
+
 static struct Boss asylum_demon = {"Asylum Demon",
                                    "Undead Asylum",
                                    800,
