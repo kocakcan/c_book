@@ -18,7 +18,7 @@ struct Boss {
   int lres; /* lightning resistance */
   enum WEAKNESS weakness;
   int souls;
-  char *reward[5];
+  char *reward[7];
 };
 
 static struct Boss asylum_demon = {"Asylum Demon",
@@ -31,9 +31,18 @@ static struct Boss asylum_demon = {"Asylum Demon",
                                    LIGHTNING,
                                    2000,
                                    {"Big Pilgrim Key", "Humanity"}};
-static struct Boss bell_gargoyles = {
-    "Bell Gargoyles", "Undead Parish", 1479, 133, 98, 103, 104, FIRE, 10000,
-    {"Gargoyle Helm"}};
+static struct Boss bell_gargoyles = {"Bell Gargoyles",
+                                     "Undead Parish",
+                                     1479,
+                                     133,
+                                     98,
+                                     103,
+                                     104,
+                                     FIRE,
+                                     10000,
+                                     {"Gargoyle Helm", "Gargoyle Halberd",
+                                      "Gargoyle's Shield",
+                                      "Gargoyle Tail Axe"}};
 static struct Boss capra_demon = {
     "Capra Demon",
     "Lower Undead Burg",
@@ -76,3 +85,69 @@ static struct Boss quelagg = {"Chaos Witch Quelagg",
                               LIGHTNING,
                               20000,
                               {"Soul of Quelagg", "Twin Humanities"}};
+static struct Boss priscilla = {"Crossbreed Priscilla",
+                                "Painted World of Ariamis",
+                                2300,
+                                324,
+                                195,
+                                291,
+                                195,
+                                LIGHTNING,
+                                30000,
+                                {"Soul of Priscilla", "Priscilla's Dagger"}};
+static struct Boss gwyndolin = {"Dark Sun Gwyndolin",
+                                "Darkmoon Tomb",
+                                2011,
+                                251,
+                                155,
+                                251,
+                                251,
+                                FIRE,
+                                40000,
+                                {"Soul of Gwyndolin"}};
+static struct Boss gaping_dragon = {"Gaping Dragon",
+                                    "Depths",
+                                    4660,
+                                    167,
+                                    108,
+                                    117,
+                                    84,
+                                    LIGHTNING,
+                                    25000,
+                                    {"Blighttown Key", "Twin Humanities",
+                                     "Homeward Bone", "Dragon King Greataxe"}};
+static struct Boss iron_golem = {
+    "Iron Golem", "Sen's Fortress",
+    2880,         408,
+    305,          326,
+    245,          LIGHTNING,
+    40000,        {"Core of an Iron Golem", "Humanity"}};
+static struct Boss pinwheel = {"Pinwheel",
+                               "The Catacombs",
+                               1326,
+                               151,
+                               121,
+                               128,
+                               99,
+                               LIGHTNING,
+                               15000,
+                               {"Mask of the Child", "Mask of the Mother",
+                                "Mask of the Father", "Rite of Kindling",
+                                "Humanity", "Homeward Bone"}};
+static struct Boss stray_demon = {
+    "Stray Demon", "Undead Asylum",
+    5250,          258,
+    195,           207,
+    168,           LIGHTNING,
+    20000,         {"Titanite Slab", "Humanity", "Homeward Bone"}};
+static struct Boss taurus_demon = {
+    "Taurus Demon",
+    "Undead Burg",
+    1215,
+    103,
+    88,
+    77,
+    67,
+    LIGHTNING,
+    3000,
+    {"Humanity", "Homeward Bone", "Demon's Greataxe"}};
