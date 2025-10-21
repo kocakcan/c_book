@@ -1,4 +1,6 @@
 #include <limits.h>
+#include <stdio.h>
+#define BOSS_COUNT 15
 #define PRINTB(b)                                                              \
   printf("Name: %s | Location: %s | HP: %d | Souls: %d | Weakness: %s\n"       \
          "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",              \
@@ -21,20 +23,9 @@ struct Boss {
   char *reward[7];
 };
 
-const char *weak_to_string(enum WEAKNESS weakness) {
-  switch (weakness) {
-  case PHYSICAL:
-    return "PHYSICAL";
-  case MAGIC:
-    return "MAGIC";
-  case FIRE:
-    return "FIRE";
-  case LIGHTNING:
-    return "LIGHTNING";
-  default:
-    return "UNKNOWN WEAKNESS";
-  }
-}
+int strcmp_(const char *, const char *);
+const char *weak_to_string(enum WEAKNESS);
+struct Boss *find_by_name(struct Boss *, const char *);
 
 static struct Boss asylum_demon = {"Asylum Demon",
                                    "Undead Asylum",
@@ -188,3 +179,9 @@ static struct Boss moonlight_butterfly = {
     FIRE,
     10000,
     {"Soul of the Moonlight Butterfly", "Humanity"}};
+static struct Boss four_kings = {
+    "Four Kings", "The Abyss",
+    9504,         299,
+    192,          205,
+    177,          LIGHTNING,
+    60000,        {"Bequeathed Lord Soul Shard", "Humanity (x4)"}};
