@@ -17,7 +17,7 @@ size_t strlen_(const char *s) {
 }
 
 size_t max_length(struct Boss *boss) {
-  size_t max = strlen_(boss->name++);
+  size_t max = strlen_(boss++->name);
 
   for (size_t i = 1; i < BOSS_COUNT; i++) {
     if (strlen_(boss->name) > max)
