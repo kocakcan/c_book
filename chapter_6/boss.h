@@ -1,10 +1,10 @@
 #include <limits.h>
 #include <stdio.h>
 #define BOSS_COUNT 15
-#define PRINTB(b)                                                              \
-  printf("Name: %s | Location: %s | HP: %d | Souls: %d | Weakness: %s\n"       \
+#define PRINTB(b, w)                                                           \
+  printf("Name: %-*s | Location: %s | HP: %d | Souls: %d | Weakness: %s\n"     \
          "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",              \
-         (b)->name, (b)->location, (b)->hp, (b)->souls,                        \
+         (int)(w), (b)->name, (b)->location, (b)->hp, (b)->souls,              \
          weak_to_string((b)->weakness), (b)->pres, (b)->fres, (b)->mres,       \
          (b)->lres)
 
@@ -24,6 +24,8 @@ struct Boss {
 };
 
 int strcmp_(const char *, const char *);
+size_t strlen_(const char *s);
+size_t max_length(struct Boss *);
 const char *weak_to_string(enum WEAKNESS);
 struct Boss *find_by_name(struct Boss *, const char *);
 
