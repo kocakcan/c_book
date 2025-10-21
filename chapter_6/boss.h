@@ -1,6 +1,6 @@
 #include <limits.h>
 #include <stdio.h>
-#define BOSS_COUNT 15
+#define BOSS_COUNT 16
 #define PRINTB(b, w)                                                           \
   printf("Name: %-*s | Location: %s | HP: %d | Souls: %d | Weakness: %s\n"     \
          "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",              \

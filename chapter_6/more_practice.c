@@ -54,11 +54,22 @@ struct Boss *find_by_name(struct Boss *boss, const char *name) {
 }
 
 int main(void) {
-  struct Boss bosses[] = {asylum_demon, capra_demon,         quelagg,
-                          priscilla,    gwyndolin,           super_ornstein,
-                          super_smough, gaping_dragon,       iron_golem,
-                          pinwheel,     stray_demon,         taurus_demon,
-                          sif,          moonlight_butterfly, four_kings};
+  struct Boss bosses[] = {asylum_demon,
+                          bell_gargoyles,
+                          capra_demon,
+                          quelagg,
+                          priscilla,
+                          gwyndolin,
+                          super_ornstein,
+                          super_smough,
+                          gaping_dragon,
+                          iron_golem,
+                          pinwheel,
+                          stray_demon,
+                          taurus_demon,
+                          sif,
+                          moonlight_butterfly,
+                          four_kings};
   struct Boss *bp = bosses;
 
   struct Boss *result = find_by_name(bosses, "Sif, the Great Grey Wolf");
