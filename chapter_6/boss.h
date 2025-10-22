@@ -1,12 +1,13 @@
 #include <limits.h>
 #include <stdio.h>
 #define BOSS_COUNT 16
-#define PRINTB(b, w)                                                           \
-  printf("Name: %-*s | Location: %s | HP: %d | Souls: %d | Weakness: %s\n"     \
-         "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",              \
-         (int)(w), (b)->name, (b)->location, (b)->hp, (b)->souls,              \
-         weak_to_string((b)->weakness), (b)->pres, (b)->fres, (b)->mres,       \
-         (b)->lres)
+#define PRINTB(b, n, l)                                                        \
+  printf(                                                                      \
+      "Name: %-*s | Location: %-*s | HP: %-4d | Souls: %-5d | Weakness: %s\n"  \
+      "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",                 \
+      (int)(n), (b)->name, (int)(l), (b)->location, (b)->hp, (b)->souls,       \
+      weak_to_string((b)->weakness), (b)->pres, (b)->fres, (b)->mres,          \
+      (b)->lres)
 
 enum WEAKNESS { PHYSICAL, MAGIC, FIRE, LIGHTNING };
 
@@ -25,7 +26,8 @@ struct Boss {
 
 int strcmp_(const char *, const char *);
 size_t strlen_(const char *s);
-size_t max_length(struct Boss *);
+size_t get_longest_name(struct Boss *);
+size_t get_longest_location(struct Boss *);
 const char *weak_to_string(enum WEAKNESS);
 struct Boss *find_by_name(struct Boss *, const char *);
 

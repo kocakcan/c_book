@@ -16,12 +16,24 @@ size_t strlen_(const char *s) {
   return i;
 }
 
-size_t max_length(struct Boss *boss) {
+size_t get_longest_name(struct Boss *boss) {
   size_t max = strlen_(boss++->name);
 
   for (size_t i = 1; i < BOSS_COUNT; i++) {
     if (strlen_(boss->name) > max)
       max = strlen_(boss->name);
+    boss++;
+  }
+
+  return max;
+}
+
+size_t get_longest_location(struct Boss *boss) {
+  size_t max = strlen_(boss++->location);
+
+  for (size_t i = 1; i < BOSS_COUNT; i++) {
+    if (strlen_(boss->location) > max)
+      max = strlen_(boss->location);
     boss++;
   }
 
@@ -74,10 +86,12 @@ int main(void) {
 
   struct Boss *result = find_by_name(bosses, "Sif, the Great Grey Wolf");
   printf("Result: %s\n", (result != NULL) ? result->name : "NOT FOUND");
-  size_t max_name = max_length(bp);
-  printf("The longest boss name is %ld character long\n", max_name);
+
+  size_t longest_name = get_longest_name(bp);
+  size_t longest_location = get_longest_location(bp);
+
   for (size_t i = 0; i < 15; i++) {
-    PRINTB(bp, max_name);
+    PRINTB(bp, longest_name, longest_location);
     bp++;
   }
 
