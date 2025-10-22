@@ -1,6 +1,6 @@
 #include <limits.h>
 #include <stdio.h>
-#define BOSS_COUNT 16
+#define BOSS_COUNT 20
 #define PRINTB(b, n, l)                                                        \
   printf(                                                                      \
       "Name: %-*s | Location: %-*s | HP: %-4d | Souls: %-5d | Weakness: %s\n"  \
@@ -189,3 +189,45 @@ static struct Boss four_kings = {
     192,          205,
     177,          LIGHTNING,
     60000,        {"Bequeathed Lord Soul Shard", "Humanity (x4)"}};
+static struct Boss ceaseless = {"Ceaseless Discharge",
+                                "Demon Ruins",
+                                4200,
+                                315,
+                                INT_MAX,
+                                220,
+                                252,
+                                MAGIC,
+                                20000,
+                                {"Humanity", "Homeward Bone"}};
+static struct Boss firesage = {"Demon Firesage",
+                               "Demon Ruins",
+                               5448,
+                               255,
+                               203,
+                               192,
+                               166,
+                               LIGHTNING,
+                               20000,
+                               {"Demon's Catalyst"}};
+static struct Boss sanctuary_guardian = {
+    "Sanctuary Guardian",
+    "Sanctuary Garden",
+    2560,
+    300,
+    480,
+    768,
+    1056,
+    FIRE,
+    30000,
+    {"Guardian Soul", "Guardian Tail (tail cut)", "Humanity"}};
+static struct Boss seath = {"Seath the Scaleless",
+                            "The Duke's Archives",
+                            5525,
+                            345,
+                            207,
+                            690,
+                            207,
+                            LIGHTNING,
+                            60000,
+                            {"Bequeathed Lord Soul Shard",
+                             "Moonlight Greatsword (tail cut)", "Humanity"}};

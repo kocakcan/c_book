@@ -81,7 +81,11 @@ int main(void) {
                           taurus_demon,
                           sif,
                           moonlight_butterfly,
-                          four_kings};
+                          four_kings,
+                          ceaseless,
+                          firesage,
+                          sanctuary_guardian,
+                          seath};
   struct Boss *bp = bosses;
 
   struct Boss *result = find_by_name(bosses, "Sif, the Great Grey Wolf");
@@ -90,7 +94,7 @@ int main(void) {
   size_t longest_name = get_longest_name(bp);
   size_t longest_location = get_longest_location(bp);
 
-  for (size_t i = 0; i < 15; i++) {
+  for (size_t i = 0; i < BOSS_COUNT; i++) {
     PRINTB(bp, longest_name, longest_location);
     bp++;
   }
