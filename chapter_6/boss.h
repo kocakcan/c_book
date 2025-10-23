@@ -30,6 +30,8 @@ size_t get_longest_name(struct Boss *);
 size_t get_longest_location(struct Boss *);
 const char *weak_to_string(enum WEAKNESS);
 struct Boss *find_by_name(struct Boss *, const char *);
+int most_common_weakness(struct Boss *);
+int get_max_weakness_count(int *);
 
 static struct Boss asylum_demon = {"Asylum Demon",
                                    "Undead Asylum",
