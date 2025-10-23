@@ -85,7 +85,11 @@ int main(void) {
                           ceaseless,
                           firesage,
                           sanctuary_guardian,
-                          seath};
+                          seath,
+                          nito,
+                          centipede_demon,
+                          bed_of_chaos,
+                          artorias};
   struct Boss *bp = bosses;
 
   struct Boss *result = find_by_name(bosses, "Sif, the Great Grey Wolf");

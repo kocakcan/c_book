@@ -1,6 +1,6 @@
 #include <limits.h>
 #include <stdio.h>
-#define BOSS_COUNT 20
+#define BOSS_COUNT 24
 #define PRINTB(b, n, l)                                                        \
   printf(                                                                      \
       "Name: %-*s | Location: %-*s | HP: %-4d | Souls: %-5d | Weakness: %s\n"  \
@@ -231,3 +231,44 @@ static struct Boss seath = {"Seath the Scaleless",
                             60000,
                             {"Bequeathed Lord Soul Shard",
                              "Moonlight Greatsword (tail cut)", "Humanity"}};
+static struct Boss nito = {"Gravelord Nito",
+                           "Tomb of the Giants",
+                           4317,
+                           317,
+                           221,
+                           238,
+                           317,
+                           FIRE,
+                           60000,
+                           {"Lord Soul (Gravelord Nito)", "Humanity"}};
+static struct Boss centipede_demon = {"Centipede Demon",
+                                      "Demon Ruins",
+                                      3432,
+                                      269,
+                                      INT_MAX,
+                                      174,
+                                      215,
+                                      MAGIC,
+                                      40000,
+                                      {"Orange Charred Ring"}};
+static struct Boss bed_of_chaos = {
+    "The Bed of Chaos",
+    "Lost Izalith",
+    1,
+    0,
+    0,
+    0,
+    0,
+    PHYSICAL,
+    60000,
+    {"Lord Soul (The Bed of Chaos)", "Humanity"}};
+static struct Boss artorias = {"Knight Artorias",
+                               "Royal Wood",
+                               3750,
+                               429,
+                               636,
+                               687,
+                               591,
+                               LIGHTNING,
+                               50000,
+                               {"Soul of Artorias", "Humanity"}};
