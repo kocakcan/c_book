@@ -110,7 +110,10 @@ int main(void) {
                           nito,
                           centipede_demon,
                           bed_of_chaos,
-                          artorias};
+                          artorias,
+                          manus,
+                          kalameet,
+                          gwyn};
   struct Boss *bp = bosses;
 
   struct Boss *result = find_by_name(bosses, "Sif, the Great Grey Wolf");

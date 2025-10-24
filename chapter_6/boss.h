@@ -1,6 +1,6 @@
 #include <limits.h>
 #include <stdio.h>
-#define BOSS_COUNT 24
+#define BOSS_COUNT 27
 #define PRINTB(b, n, l)                                                        \
   printf(                                                                      \
       "Name: %-*s | Location: %-*s | HP: %-4d | Souls: %-5d | Weakness: %s\n"  \
@@ -273,3 +273,34 @@ static struct Boss artorias = {"Knight Artorias",
                                LIGHTNING,
                                50000,
                                {"Soul of Artorias", "Humanity"}};
+static struct Boss manus = {"Manus, Father of the Abyss",
+                            "Chasm of the Abyss",
+                            6665,
+                            324,
+                            624,
+                            768,
+                            720,
+                            FIRE,
+                            60000,
+                            {"Soul of Manus", "Humanity (x10)"}};
+static struct Boss kalameet = {
+    "Black Dragon Kalameet",
+    "Royal Wood",
+    5400,
+    468,
+    900,
+    900,
+    762,
+    LIGHTNING,
+    60000,
+    {"Calamity Ring", "Obsidian Greatsword (tail cut)"}};
+static struct Boss gwyn = {"Gwyn, Lord of Cinder",
+                           "Kiln of the First Flame",
+                           4185,
+                           354,
+                           249,
+                           267,
+                           1170,
+                           FIRE,
+                           70000,
+                           {"Soul of Gywn, Lord of Cinder"}};
