@@ -65,43 +65,25 @@ struct Boss *find_by_name(struct Boss *boss, const char *name) {
   return NULL;
 }
 
-int most_common_weakness(struct Boss *boss) {
-  int physical = 0, magic = 0, fire = 0, lightning = 0;
-  int weaknesses[4], *wp = weaknesses;
-  int get_max_weakness_count(int *);
+enum WEAKNESS most_common_weakness(struct Boss *boss, int *out_count) {
+  int counts[4] = {0};
 
   for (size_t i = 0; i < BOSS_COUNT; i++) {
-    switch (boss++->weakness) {
-    case PHYSICAL:
-      physical++;
-      break;
-    case MAGIC:
-      magic++;
-      break;
-    case FIRE:
-      fire++;
-      break;
-    case LIGHTNING:
-      lightning++;
-      break;
-    }
+    enum WEAKNESS w = boss[i].weakness;
+    if ((int)w >= 0 && (int)w < 4)
+      counts[(int)w]++;
   }
 
-  *wp++ = physical, *wp++ = magic;
-  *wp++ = fire, *wp++ = lightning;
-  return get_max_weakness_count(weaknesses);
-}
-
-int get_max_weakness_count(int *p) {
-  int max = *p++;
-
+  int max = 0;
   for (size_t i = 1; i < 4; i++) {
-    if (*p > max)
-      max = *p;
-    p++;
+    if (counts[i] > counts[max])
+      max = i;
   }
 
-  return max;
+  if (out_count)
+    *out_count = counts[max];
+
+  return (enum WEAKNESS)max;
 }
 
 int main(void) {
@@ -142,7 +124,9 @@ int main(void) {
     bp++;
   }
 
-  printf("%d bosses are weak to LIGHTNING\n", most_common_weakness(bosses));
+  int count;
+  enum WEAKNESS most = most_common_weakness(bosses, &count);
+  printf("%d bosses are weak to %s\n", count, weak_to_string(most));
 
   return 0;
 }
