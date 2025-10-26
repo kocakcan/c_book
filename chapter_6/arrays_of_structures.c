@@ -58,14 +58,6 @@
 #define MAXWORD 100
 #define NKEYS (sizeof keytab / sizeof(keytab[0]))
 
-int getword(char *, int);
-int binsearch(char *, struct key *, int);
-int getch(void);
-void ungetch(int);
-
-static char buf[MAXWORD];
-static char *bufp = buf;
-
 struct key {
 	char *word;
 	int count;
@@ -82,6 +74,14 @@ struct key {
 	"volatile", 0,
 	"while", 0
 };
+
+int getword(char *, int);
+int binsearch(char *, struct key *, int);
+int getch(void);
+void ungetch(int);
+
+static char buf[MAXWORD];
+static char *bufp = buf;
 	
 /* count C keywords */
 int main() {
