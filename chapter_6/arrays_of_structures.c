@@ -56,10 +56,33 @@
 #include <string.h>
 
 #define MAXWORD 100
+#define NKEYS (sizeof keytab / sizeof(keytab[0]))
 
 int getword(char *, int);
 int binsearch(char *, struct key *, int);
+int getch(void);
+void ungetch(int);
 
+static char buf[MAXWORD];
+static char *bufp = buf;
+
+struct key {
+	char *word;
+	int count;
+} keytab[] = {
+	"auto", 0,
+	"break", 0,
+	"case", 0,
+	"char", 0,
+	"const", 0,
+	"continue", 0,
+	"default", 0,
+	"unsigned", 0,
+	"void", 0,
+	"volatile", 0,
+	"while", 0
+};
+	
 /* count C keywords */
 int main() {
 	int n;
@@ -127,8 +150,7 @@ int binsearch(char *word, struct key tab[], int n) {
 
 /* getword: get next word or character from input */
 int getword(char *word, int lim) {
-	int c, getch(void);
-	void ungetch(int);
+	int c;
 	char *w = word;
 	
 	while (isspace(c = getch()))
@@ -151,3 +173,15 @@ int getword(char *word, int lim) {
 /***
  * getword uses the getch and ungetch. When the collection of an alphanumeric token stops, getword has gone one character too far. The call to ungetch pushes that character back on the input for the next call. getword also uses isspace to skip whitespace, isalpha to identify letters, and isalnum to identify letters and digits; all are from the standard header <ctype.h>
  */
+
+int getch(void) {
+	return (bufp - buf > MAXWORD) ? *--bufp : getchar();
+}
+
+void ungetch(int c) {
+	if (bufp - buf >= MAXWORD)
+		printf("ungetch: too many characters\n");
+	else
+		*bufp++ = c;
+}
+		
