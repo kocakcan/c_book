@@ -19,7 +19,7 @@ int getword(char *word, int lim) {
 				break;
 			}
 	} else if (c == '\'' || c == '"') {
-		for (; --lim > 0; w++)
+		for (; --lim > 0; w++) {
 			if ((*w = getch()) == '\\')
 				*++w = getch();
 			else if (*w == c) {
@@ -27,12 +27,14 @@ int getword(char *word, int lim) {
 				break;
 			} else if (*w == EOF)
 				break;
-			} else if (c == '/') {
+			else if (c == '/') {
 				if ((d = getch()) == '*')
 					c = comment();
 				else
 					ungetch(d);
 			}
+		}
+	}
 	*w = '\0';
 	return c;
 }
