@@ -1,52 +1,72 @@
-/* Our version of getword does not properly handle underscores, string constants, comments, or preprocessor control lines. Write a better version. */
-#include <stdio.h>
+/* Our version of getword does not properly handle underscores, string
+ * constants, comments, or preprocessor control lines. Write a better version.
+ */
 #include <ctype.h>
+#include <stdio.h>
+#define MAXWORD 100
+
+static char buf[MAXWORD];
+static char *bufp = buf;
+
+int getch(void);
+void ungetch(int);
+int comment(void);
+int getword(char *, int);
 
 /* getword: get next word or character from input */
 int getword(char *word, int lim) {
-	int c, d, comment(void), getch(void);
-	void ungetch(int);
-	char *w = word;
+  int c, d;
+  char *w = word;
 
-	while (isspace(c = getch()))
-		;
-	if (c != EOF)
-		*w++ = c;
-	if (isalpha(c) || c == '_' || c == '#') {
-		for (; --lim > 0; w++)
-			if (!isalnum(*w = getch()) && *w != '_') {
-				ungetch(*w);
-				break;
-			}
-	} else if (c == '\'' || c == '"') {
-		for (; --lim > 0; w++) {
-			if ((*w = getch()) == '\\')
-				*++w = getch();
-			else if (*w == c) {
-				w++;
-				break;
-			} else if (*w == EOF)
-				break;
-			else if (c == '/') {
-				if ((d = getch()) == '*')
-					c = comment();
-				else
-					ungetch(d);
-			}
-		}
-	}
-	*w = '\0';
-	return c;
+  while (isspace(c = getch()))
+    ;
+  if (c != EOF)
+    *w++ = c;
+  if (isalpha(c) || c == '_' || c == '#') {
+    for (; --lim > 0; w++)
+      if (!isalnum(*w = getch()) && *w != '_') {
+        ungetch(*w);
+        break;
+      }
+  } else if (c == '\'' || c == '"') {
+    for (; --lim > 0; w++) {
+      if ((*w = getch()) == '\\')
+        *++w = getch();
+      else if (*w == c) {
+        w++;
+        break;
+      } else if (*w == EOF)
+        break;
+      else if (c == '/') {
+        if ((d = getch()) == '*')
+          c = comment();
+        else
+          ungetch(d);
+      }
+    }
+  }
+  *w = '\0';
+  return c;
 }
 
 /* comment: skip over comment and return a character */
 int comment(void) {
-	int c;
-	while ((c = getch()) != EOF)
-		if (c == '*')
-			if ((c = getch()) == '/')
-				break;
-			else
-				ungetch(c);
-	return c;
+  int c;
+  while ((c = getch()) != EOF)
+    if (c == '*') {
+      if ((c = getch()) == '/')
+        break;
+      else
+        ungetch(c);
+    }
+  return c;
+}
+
+int getch(void) { return (bufp - buf > MAXWORD) ? *--bufp : getchar(); }
+
+void ungetch(int c) {
+  if (bufp - buf >= MAXWORD)
+    printf("ungetch: too many characters\n");
+  else
+    *bufp++ = c;
 }
