@@ -1,14 +1,15 @@
 #include <limits.h>
 #include <stdio.h>
-#define BOSS_COUNT 27
+
 #define PRINTB(b, n, l)                                                        \
   printf(                                                                      \
-      "Name: %-*s | Location: %-*s | HP: %-4d | Souls: %-5d | Weakness: %s\n"  \
+      "Name: %-*s | Location: %-*s | HP: %-5d | Souls: %-5d | Weakness: %s\n"  \
       "Physical: %d | Fire: %d | Magic: %d | Lightning: %d\n",                 \
       (int)(n), (b)->name, (int)(l), (b)->location, (b)->hp, (b)->souls,       \
       weak_to_string((b)->weakness), (b)->pres, (b)->fres, (b)->mres,          \
       (b)->lres)
 
+#define BOSS_COUNT 44
 enum WEAKNESS { PHYSICAL, MAGIC, FIRE, LIGHTNING };
 
 struct Boss {
