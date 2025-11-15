@@ -113,7 +113,24 @@ int main(void) {
                           artorias,
                           manus,
                           kalameet,
-                          gwyn};
+                          gwyn,
+                          gundyr,
+                          vordt,
+                          greatwood,
+                          sage,
+                          deacons,
+                          abyss_watchers,
+                          wolnir,
+                          odk,
+                          pontiff,
+                          aldrich,
+                          yhorm,
+                          dancer,
+                          oceiros,
+                          champ_gundyr,
+                          wyvern,
+                          nameless_king,
+                          dragonslayer_armour};
   struct Boss *bp = bosses;
 
   struct Boss *result = find_by_name(bosses, "Sif, the Great Grey Wolf");
