@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#define NEMPLOYEES (sizeof employees / sizeof(employees[0]))
+
 struct Employee {
   char *name;
   char *department;
@@ -11,25 +13,15 @@ int main(void) {
       "Joe Doe", "R&D", {"Compliance Training", "AI Training", NULL}};
   struct Employee jane = {
       "Jane Doe", "Quality", {"Compliance Training", "Quality Training", NULL}};
-  struct Employee employees[] = {joe, jane};
-  struct Employee *ep = employees;
-  size_t employee_count = 2;
+  struct Employee leonhard = {
+      "Leonhard Ringfinger",
+      "Manufacturing",
+      {"How to Invade Efficiently", "Intro to Invasion", NULL}};
+  struct Employee employees[] = {joe, jane, leonhard};
 
-  while (employee_count--) {
+  for (struct Employee *ep = employees; ep - employees < NEMPLOYEES; ep++) {
     printf("Name: %s | Department: %s\n", ep->name, ep->department);
-    char **tp = ep->trainings;
-    while (*tp != NULL) {
+    for (char **tp = ep->trainings; *tp != NULL; tp++)
       printf("Training: %s\n", *tp);
-      tp++;
-    }
-    // while (*(ep->trainings) != NULL) {
-    //   printf("Training: %s\n", *(ep->trainings));
-    //   ep++;
-    // }
-    ep++;
   }
-
-  // char *first_training = *(ep++->trainings);
-  // printf("First training: %s\n", first_training);
-  // printf("Second training: %s\n", *(ep->trainings));
 }
