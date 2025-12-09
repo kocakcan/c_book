@@ -138,3 +138,65 @@ void ungetch(int c) {
   else
     *bufp++ = c;
 }
+
+/***
+ * There are several things worthy of note here. First, the declaration of
+ * binsearch must indicate that it returns a pointer to struct key instead of an
+ * integer; this is declared both in the function prototype and in binsearch. If
+ * binsearch finds the word, it returns a pointer to it, if it fails, it returns
+ * NULL.
+ *
+ * Second, the elements of keytab are now accessed by pointers. This requires
+ * significant changes in binsearch.
+ *
+ * The initializers for low and high are now pointers to the beginning and just
+ * past the end of the table.
+ *
+ * The computation of the middle element can no longer be simply
+ *
+ *   mid = (low + high) / 2; -> WRONG
+ * because the addition of pointers is illegal. Subtraction is legal, however,
+ * so high-low is the number of elements, and thus
+ *
+ *   mid = low + (high - low) / 2
+ * sets mid to the element halfway between low and high.
+ *
+ * The most important change is to adjust the algorithm to make sure that it
+ * does not generate an illegal pointer or attempt to access an element outside
+ * the array. The problem is that &tab[-1] and &tab[n] are both outside the
+ * limits of the array tab. The former is strictly illegal, and it is illegal to
+ * dereference the latter. The language definition does guarantee, however, that
+ * pointer arithmetic that involves the first element beyond the end of an array
+ * (that is, &tab[n]) will work correctly.
+ *
+ * In main we wrote
+ *
+ *   for (p = keytab; p < keytab + NKEYS; p++)
+ * If p is a pointer to a structure, arithmetic on p takes into account the size
+ * of the structure, so p++ increments p by the correct amount to get the next
+ * element of the array of structures, and the test stops the loop at the right
+ * time.
+ *
+ * Don't assume, however, that the size of a structure is the sum of the sizes
+ * of its members. Because of alignment requirements for different objects,
+ * there may be unnamed "holes" in a structure. Thus, for instance, if a char is
+ * one byte and an int four bytes, the structure
+ *
+ *   struct {
+ *     char c;
+ *     int i;
+ *   };
+ * might well require eight bytes, not five. The sizeof operator returns the
+ * proper value.
+ *
+ * Finally, an aside on program format: when a function returns a complicated
+ * type like a structure pointer, as in
+ *
+ *   struct key *binsearch(char *word, struct key *tab, int n)
+ * the function name can be hard to see, and to find with a text editor.
+ * Accordingly an alternate style is sometimes used:
+ *
+ *   struct key *
+ *   binsearch(char *word, struct key *tab, int n)
+ * This is a matter of personal taste; pick the form you like and hold to it.
+ */
