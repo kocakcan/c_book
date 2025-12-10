@@ -44,10 +44,7 @@ int main(void) {
   for (p = keytab; p < keytab + NKEYS; p++)
     if (p->count > 0)
       printf("%4d %s\n", p->count, p->word);
-  const char *name = "can";
-  const char *nick = "can";
-  if (strcmp_(name, nick))
-    printf("that's correct\n");
+
   return 0;
 }
 
