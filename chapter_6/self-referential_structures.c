@@ -69,3 +69,32 @@
  * supporting routines like getword that we have already written. The main
  * routine reads words with getword and installs them in the tree with addtree.
  */
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+
+#define MAXWORD 100
+
+struct tnode {
+  char *word;
+  int count;
+  struct tnode *left;
+  struct tnode *right;
+};
+
+struct tnode *addtree(struct tnode *, char *);
+void treeprint(struct tnode *);
+int getword(char *, int);
+
+/* word frequency count */
+int main(void) {
+  struct tnode *root;
+  char word[MAXWORD];
+
+  root = NULL;
+  while (getword(word, MAXWORD) != EOF)
+    if (isalpha(word[0]))
+      root = addtree(root, word);
+  treeprint(root);
+  return 0;
+}
