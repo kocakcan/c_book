@@ -83,6 +83,8 @@ struct tnode {
 };
 
 struct tnode *addtree(struct tnode *, char *);
+struct tnode *talloc(void);
+char *strdup_(char *);
 void treeprint(struct tnode *);
 int getword(char *, int);
 
@@ -97,4 +99,52 @@ int main(void) {
       root = addtree(root, word);
   treeprint(root);
   return 0;
+}
+
+/* addtree: add a node with w, at or below p */
+struct tnode *addtree(struct tnode *p, char *w) {
+  int cond;
+
+  if (p == NULL) { /* a new word has arrived */
+    p = talloc();  /* make a new node */
+    p->word = strdup(w);
+    p->count = 1;
+    p->left = p->right = NULL;
+  } else if ((cond = strcmp(w, p->word) == 0))
+    p->count++;      /* repeated word */
+  else if (cond < 0) /* less than into left subtree */
+    p->left = addtree(p->left, w);
+  else /* greater than into right subtree */
+    p->right = addtree(p->right, w);
+  return p;
+}
+
+/***
+ * The function addtree is recursive. A word is presented by main to the top
+ * level (the root) of the tree. At each stage, that word is compared to the
+ * word already stored at the node, and is percolated down to either left or
+ * right subtree by a recursive call to addtree. Eventually, the word either
+ * matches something already in the tree (in which case the count is
+ * incremented), or a null pointer is encountered, indicating that a node must
+ * be created and added to the tree. If a new node is created, addtree returns a
+ * pointer to it, which is installed in the parent node.
+ *
+ * Storage for the new node is fetched by a routine talloc, which returns a
+ * pointer to a free space suitable for holding a tree node, and the new word
+ * is copied into a hidden space by strdup. The count is initialized, and the
+ * two children are made null. This part of the code is executed only at the
+ * leaves of the tree, when a new node is being added.
+ *
+ * treeprint prints the tree in sorted order; at each node, it prints the left
+ * subtree (all the words less than this word), then the word itself, then the
+ * right subtree (all the words greater).
+ */
+
+/* treeprint: in-order print of tree p */
+void treeprint(struct tnode *p) {
+  if (p != NULL) {
+    treeprint(p->left);
+    printf("%4d %s\n", p->count, p->word);
+    treeprint(p->right);
+  }
 }
