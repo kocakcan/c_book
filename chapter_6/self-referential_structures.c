@@ -71,6 +71,7 @@
  */
 #include <ctype.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #define MAXWORD 100
@@ -87,6 +88,11 @@ struct tnode *talloc(void);
 char *strdup_(char *);
 void treeprint(struct tnode *);
 int getword(char *, int);
+int getch(void);
+void ungetch(int);
+
+static char buf[MAXWORD];
+static char *bufp = buf;
 
 /* word frequency count */
 int main(void) {
@@ -148,3 +154,48 @@ void treeprint(struct tnode *p) {
     treeprint(p->right);
   }
 }
+
+/***
+ * A practical note: if the tree becomes "unbalanced" because the words don't
+ * arrive in random order, the running time of the program can grow too much.
+ * As a worst case, if the words are already in order, this program does an
+ * expensive simulation of linear search. There are generalizations of the
+ * binary tree that do not suffer from this worst-case behaviour.
+ *
+ * Clearly it's desirable that there be only one storage allocator in a program,
+ * even though it allocates different kinds of objects. But if one allocator is
+ * to process requests for, say, pointers to chars and pointers to struct
+ * tnodes, two questions arise. First, how does it meet the requirement of most
+ * real machines that objects of certain types must satisfy alignment
+ * restrictions (for example, integers often must be located at even addresses)?
+ * Second, what declarations can cope with the fact that an allocator must
+ * necessarily return different kinds of pointers?
+ *
+ * Alignment requirements can generally be satisfied easily, at the cost of some
+ * wasted space, by ensuring that the allocator always returns a pointer that
+ * meets all alignment restrictions.
+ *
+ * The question of the type declaration for a function like malloc is a vexing
+ * one for any language that takes its type-checking seriously. In C, the proper
+ * method is to declare that malloc returns a pointer to void, then explicitly
+ * coerce the pointer into the desired type with a cast.
+ */
+
+/* talloc: make a tnode */
+struct tnode *talloc(void) {
+  return (struct tnode *)malloc(sizeof(struct tnode));
+}
+
+// strdup merely copies the string given by its argument into a safe place,
+// obtained by a call on malloc:
+char *strdup_(char *s) { /* make a duplicate of s */
+  char *p;
+
+  p = (char *)malloc(strlen(s) + 1); /* +1 for '\0' */
+  if (p != NULL)
+    strcpy(p, s);
+  return p;
+}
+
+// malloc returns NULL if no space is available; strdup passes that value on,
+// leaving error handling to its caller.
