@@ -199,3 +199,34 @@ char *strdup_(char *s) { /* make a duplicate of s */
 
 // malloc returns NULL if no space is available; strdup passes that value on,
 // leaving error handling to its caller.
+
+/* getword: get next word or character from input */
+int getword(char *word, int lim) {
+  int c;
+  char *w = word;
+
+  while (isspace(c = getch()))
+    ;
+  if (c != EOF)
+    *w++ = c;
+  if (!isalpha(c)) {
+    *w = '\0';
+    return c;
+  }
+  for (; --lim > 0; w++)
+    if (!isalnum(*w = getch())) {
+      ungetch(*w);
+      break;
+    }
+  *w = '\0';
+  return word[0];
+}
+
+int getch(void) { return (bufp - buf > MAXWORD) ? *--bufp : getchar(); }
+
+void ungetch(int c) {
+  if (bufp - buf >= MAXWORD)
+    printf("ungetch: too many characters\n");
+  else
+    *bufp++ = c;
+}
