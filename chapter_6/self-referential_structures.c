@@ -86,6 +86,7 @@ struct tnode {
 struct tnode *addtree(struct tnode *, char *);
 struct tnode *talloc(void);
 char *strdup_(char *);
+void strcpy_(char *, const char *);
 void treeprint(struct tnode *);
 int getword(char *, int);
 int getch(void);
@@ -113,7 +114,7 @@ struct tnode *addtree(struct tnode *p, char *w) {
 
   if (p == NULL) { /* a new word has arrived */
     p = talloc();  /* make a new node */
-    p->word = strdup(w);
+    p->word = strdup_(w);
     p->count = 1;
     p->left = p->right = NULL;
   } else if ((cond = strcmp(w, p->word) == 0))
@@ -145,6 +146,11 @@ struct tnode *addtree(struct tnode *p, char *w) {
  * subtree (all the words less than this word), then the word itself, then the
  * right subtree (all the words greater).
  */
+
+void strcpy_(char *s, const char *t) {
+  while (*s++ = *t++)
+    ;
+}
 
 /* treeprint: in-order print of tree p */
 void treeprint(struct tnode *p) {
@@ -193,7 +199,7 @@ char *strdup_(char *s) { /* make a duplicate of s */
 
   p = (char *)malloc(strlen(s) + 1); /* +1 for '\0' */
   if (p != NULL)
-    strcpy(p, s);
+    strcpy_(p, s);
   return p;
 }
 
