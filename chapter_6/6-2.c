@@ -25,8 +25,8 @@ int main(int argc, char *argv[]) {
   //   printf("Result: %d\n", *++argv[0] - '0');
 
   if ((*++argv)[0] == '-') {
-    char *flag = *argv;
-    if (strcmp_(flag + 1, "help") == 0)
+    // char *flag = *argv;
+    if (strcmp_((*argv) + 1, "help") == 0)
       printf("You played us like a damn fiddle\n");
   }
 
