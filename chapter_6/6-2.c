@@ -6,18 +6,39 @@
  */
 #include <stdio.h>
 
+int strcmp_(const char *, const char *);
+
 int main(int argc, char *argv[]) {
   // while (argc--)
   //   printf("%s\n", *argv++);
 
-  if ((*++argv)[0] == '-') {
-    char *s = *argv;
-    printf("Result: %s\n", s + 1);
-  }
+  // if ((*++argv)[0] == '-') {
+  //   char *s = *argv;
+  //   printf("Result: %s\n", s + 1);
+  // }
 
   // if ((*argv++)[0] == '.') {
   //   printf("Result: %s\n", *argv);
   // }
 
+  // if ((*++argv)[0] == '-')
+  //   printf("Result: %d\n", *++argv[0] - '0');
+
+  if ((*++argv)[0] == '-') {
+    char *flag = *argv;
+    if (strcmp_(flag + 1, "help") == 0)
+      printf("You played us like a damn fiddle\n");
+  }
+
   return 0;
+}
+
+int strcmp_(const char *s, const char *t) {
+  while (*s && *s == *t) {
+    if (*s == '\0')
+      return 0;
+    s++, t++;
+  }
+
+  return (unsigned char)*s - (unsigned char)*t;
 }
