@@ -24,11 +24,29 @@ int main(int argc, char *argv[]) {
   // if ((*++argv)[0] == '-')
   //   printf("Result: %d\n", *++argv[0] - '0');
 
-  if ((*++argv)[0] == '-') {
-    // char *flag = *argv;
-    if (strcmp_((*argv) + 1, "help") == 0)
-      printf("You played us like a damn fiddle\n");
-  }
+  // if ((*++argv)[0] == '-') {
+  //   // char *flag = *argv;
+  //   if (strcmp_((*argv) + 1, "help") == 0)
+  //     printf("You played us like a damn fiddle\n");
+  // }
+
+  int verbose = 0, force = 0;
+  int c;
+
+  while (--argc > 0 && (*++argv)[0] == '-')
+    while (c = *++argv[0])
+      switch (c) {
+      case 'v':
+        verbose = 1;
+        break;
+      case 'f':
+        force = 1;
+        break;
+      default:
+        printf("unknown flag %c\n", **argv);
+      }
+
+  printf("verbose: %d | force: %d\n", verbose, force);
 
   return 0;
 }
