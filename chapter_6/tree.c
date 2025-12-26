@@ -20,7 +20,7 @@ struct tnode *talloc(void);
 int getch(void);
 void ungetch(int);
 int getword(char *, int);
-char *strdup_(char *);
+char *strdup_(const char *);
 int strcmp_(const char *, const char *);
 void strcpy_(char *, const char *);
 void treeprint(struct tnode *);
@@ -41,15 +41,17 @@ int main(void) {
 }
 
 struct tnode *talloc(void) {
-  return (struct tnode *)malloc(sizeof(struct tnode));
+  struct tnode *p = (struct tnode *)malloc(sizeof(struct tnode));
+  if (p == NULL) {
+    fprintf(stderr, "talloc: out of memory\n");
+    exit(EXIT_FAILURE);
+  }
+  return p;
 }
 
 int strcmp_(const char *s, const char *t) {
-  while (*s && *s == *t) {
-    if (*s == '\0')
-      return 0;
+  while (*s && *s == *t)
     s++, t++;
-  }
   return (unsigned char)*s - (unsigned char)*t;
 }
 
@@ -95,10 +97,12 @@ int getword(char *word, int lim) {
 int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
 
 void ungetch(int c) {
+  if (c == EOF)
+    return;
   if (bufp - buf >= MAXWORD)
     printf("ungetch: too many characters\n");
   else
-    *bufp++ = c;
+    *bufp++ = (char)c;
 }
 
 void strcpy_(char *s, const char *t) {
@@ -106,12 +110,15 @@ void strcpy_(char *s, const char *t) {
     ;
 }
 
-char *strdup_(char *s) {
+char *strdup_(const char *s) {
   char *p;
 
   p = (char *)malloc(strlen(s) + 1);
-  if (p != NULL)
-    strcpy_(p, s);
+  if (p == NULL) {
+    fprintf(stderr, "strdup_: out of memory\n");
+    exit(EXIT_FAILURE);
+  }
+  strcpy_(p, s);
   return p;
 }
 
