@@ -105,11 +105,8 @@ int getword(char *word, int lim) {
 
 /* strcmp_: return < 0 if s < t, 0 if s == t, > 0 if s > t */
 int strcmp_(const char *s, const char *t) {
-  while (*s && *s == *t) {
-    if (*s == '\0')
-      return 0;
+  while (*s && *s == *t)
     s++, t++;
-  }
   return (unsigned char)*s - (unsigned char)*t;
 }
 
