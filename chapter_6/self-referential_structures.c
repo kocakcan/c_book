@@ -228,7 +228,7 @@ int getword(char *word, int lim) {
   return word[0];
 }
 
-int getch(void) { return (bufp - buf > MAXWORD) ? *--bufp : getchar(); }
+int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
 
 void ungetch(int c) {
   if (bufp - buf >= MAXWORD)
