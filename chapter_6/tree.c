@@ -24,6 +24,7 @@ char *strdup_(char *);
 int strcmp_(const char *, const char *);
 void strcpy_(char *, const char *);
 void treeprint(struct tnode *);
+void freetree(struct tnode *);
 
 int main(void) {
   struct tnode *root;
@@ -35,7 +36,7 @@ int main(void) {
       root = addtree(root, word);
   treeprint(root);
 
-  free(root);
+  freetree(root);
   return 0;
 }
 
@@ -120,4 +121,13 @@ void treeprint(struct tnode *p) {
     printf("%4d %s\n", p->count, p->word);
     treeprint(p->right);
   }
+}
+
+void freetree(struct tnode *p) {
+  if (p == NULL)
+    return;
+  freetree(p->left);
+  freetree(p->right);
+  free(p->word);
+  free(p);
 }
