@@ -32,7 +32,7 @@ int main(void) {
 
   root = NULL;
   while (getword(word, MAXWORD) != EOF)
-    if (isalpha(word[0]))
+    if (isalpha((unsigned char)word[0]))
       root = addtree(root, word);
   treeprint(root);
 
@@ -76,20 +76,24 @@ int getword(char *word, int lim) {
   int c;
   char *w = word;
 
-  while (isspace(c = getch()))
+  while ((c = getch()) != EOF && isspace((unsigned char)c))
     ;
-  if (c != EOF) {
-    *w++ = c;
-  }
-  if (!isalpha(c)) {
+  if (c == EOF)
+    return EOF;
+  *w++ = (char)c;
+  if (!isalpha((unsigned char)c)) {
     *w = '\0';
     return c;
   }
-  for (; --lim > 0; w++)
-    if (!isalnum(*w = getch())) {
-      ungetch(*w);
+  for (; --lim > 0; w++) {
+    c = getch();
+    if (c == EOF || !isalnum((unsigned char)c)) {
+      if (c != EOF)
+        ungetch(c);
       break;
     }
+    *w = (char)c;
+  }
   *w = '\0';
   return word[0];
 }

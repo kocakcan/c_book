@@ -83,9 +83,11 @@ int strcmp_(const char *s, const char *t) {
   return (unsigned char)*s - (unsigned char)*t;
 }
 
-int getch(void) { return (bufp - buf > MAXWORD) ? *--bufp : getchar(); }
+int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
 
 void ungetch(int c) {
+  if (c == EOF)
+    return;
   if (bufp - buf >= MAXWORD)
     printf("error: too many characters\n");
   else

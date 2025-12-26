@@ -109,9 +109,11 @@ struct linklist *lalloc(void) {
   return (struct linklist *)malloc(sizeof(struct linklist));
 }
 
-int getch(void) { return (bufp - buf > MAXWORD) ? *--bufp : getchar(); }
+int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
 
 void ungetch(int c) {
+  if (c == EOF)
+    return;
   if (bufp - buf >= MAXWORD)
     printf("ungetch: too many characters\n");
   else

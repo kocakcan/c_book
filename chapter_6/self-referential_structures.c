@@ -231,6 +231,8 @@ int getword(char *word, int lim) {
 int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
 
 void ungetch(int c) {
+  if (c == EOF)
+    return;
   if (bufp - buf >= MAXWORD)
     printf("ungetch: too many characters\n");
   else
