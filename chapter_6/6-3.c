@@ -34,6 +34,8 @@ void treexprint(struct tnode *);
 struct tnode *talloc(void);
 struct linklist *lalloc(void);
 void addln(struct tnode *, int);
+void freetree(struct tnode *);
+void freelist(struct linklist *);
 
 /* cross-referencer */
 int main(void) {
@@ -43,11 +45,12 @@ int main(void) {
 
   root = NULL;
   while (getword(word, MAXWORD) != EOF)
-    if (isalpha(word[0]) && noiseword(word) == -1)
+    if (isalpha((unsigned char)word[0]) && noiseword(word) == -1)
       root = addtreex(root, word, linenum);
     else if (word[0] == '\n')
       linenum++;
   treexprint(root);
+  freetree(root);
   return 0;
 }
 
@@ -101,12 +104,22 @@ void treexprint(struct tnode *p) {
 
 /* talloc: make a tnode */
 struct tnode *talloc(void) {
-  return (struct tnode *)malloc(sizeof(struct tnode));
+  struct tnode *p = (struct tnode *)malloc(sizeof(struct tnode));
+  if (p == NULL) {
+    fprintf(stderr, "talloc: out of memory\n");
+    exit(EXIT_FAILURE);
+  }
+  return p;
 }
 
 /* lalloc: make a linklist node */
 struct linklist *lalloc(void) {
-  return (struct linklist *)malloc(sizeof(struct linklist));
+  struct linklist *p = (struct linklist *)malloc(sizeof(struct linklist));
+  if (p == NULL) {
+    fprintf(stderr, "lalloc: out of memory\n");
+    exit(EXIT_FAILURE);
+  }
+  return p;
 }
 
 int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
@@ -160,4 +173,24 @@ int noiseword(char *w) {
       return mid;
   }
   return -1;
+}
+
+void freetree(struct tnode *p) {
+  if (p == NULL)
+    return;
+  freetree(p->left);
+  freetree(p->right);
+  freelist(p->lines);
+  free(p->word);
+  free(p);
+}
+
+void freelist(struct linklist *p) {
+  struct linklist *next;
+
+  while (p != NULL) {
+    next = p->ptr;
+    free(p);
+    p = next;
+  }
 }
