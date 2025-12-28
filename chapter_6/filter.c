@@ -21,8 +21,8 @@
   }                                                                            \
   printf("]\n");
 
-int *filter(int (*)(int *), int *, int);
-int is_even(int *);
+int *filter(int (*)(int), int *, int);
+int is_even(int);
 
 int main(void) {
   int nums[SIZE], *res;
@@ -35,13 +35,13 @@ int main(void) {
   return 0;
 }
 
-int *filter(int (*f)(int *), int *v, int n) {
+int *filter(int (*f)(int), int *v, int n) {
   int *new = malloc(n * sizeof(int));
   size_t count = 0;
   for (int *temp = v; temp - v < n; temp++)
-    if ((*f)(&v[temp - v]) == 0)
+    if ((*f)(v[temp - v]) == 0)
       new[count++] = v[temp - v];
   return new;
 }
 
-int is_even(int *x) { return *x % 2; }
+int is_even(int x) { return x % 2; }

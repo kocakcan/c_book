@@ -13,8 +13,8 @@
   }                                                                            \
   printf("]\n");
 
-void apply_all(int *, int, int (*)(int *));
-int multiply(int *);
+void apply_all(int *, int, int (*)(int));
+int multiply(int);
 
 int main(void) {
   srand(time(NULL));
@@ -28,9 +28,9 @@ int main(void) {
   return 0;
 }
 
-void apply_all(int *v, int n, int (*f)(int *)) {
+void apply_all(int *v, int n, int (*f)(int)) {
   for (int *temp = v; temp - v < n; temp++)
-    v[temp - v] = (*f)(&v[temp - v]);
+    v[temp - v] = (*f)(v[temp - v]);
 }
 
-int multiply(int *x) { return *x * 2; }
+int multiply(int x) { return x * 2; }
