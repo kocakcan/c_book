@@ -27,16 +27,27 @@ void treeprint(struct tnode *);
 void freetree(struct tnode *);
 
 int main(void) {
-  struct tnode *root;
-  char word[MAXWORD];
-
-  root = NULL;
-  while (getword(word, MAXWORD) != EOF)
-    if (isalpha((unsigned char)word[0]))
-      root = addtree(root, word);
-  treeprint(root);
-
-  freetree(root);
+  struct tnode *root = talloc();
+  // char word[MAXWORD];
+  //
+  // root = NULL;
+  // while (getword(word, MAXWORD) != EOF)
+  //   if (isalpha((unsigned char)word[0]))
+  //     root = addtree(root, word);
+  // treeprint(root);
+  //
+  // freetree(root);
+  root->word = "Can";
+  root->count = 1;
+  root->left = NULL;
+  root->right = NULL;
+  root = addtree(root, "Medet");
+  root = addtree(root, "Seyfi");
+  root = addtree(root, "Boromir");
+  printf("self: %s | left: %s | right: %s | right->right: %s\n", root->word,
+         root->left != NULL ? root->left->word : "NULL",
+         root->right != NULL ? root->right->word : "NULL",
+         root->right->right != NULL ? root->right->right->word : "NULL");
   return 0;
 }
 

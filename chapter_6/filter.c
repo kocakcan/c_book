@@ -4,7 +4,6 @@
 //
 // if __name__ == "__main__":
 //     main()
-// TODO: Implement filter in C
 
 // filter(function, iterable, /)
 #include <stdio.h>
