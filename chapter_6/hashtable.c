@@ -11,9 +11,10 @@ struct nlist {        /* table entry: */
 };
 
 static struct nlist *hashtab[HASHSIZE]; /* pointer table */
+void freetable(void);
 
 /* hash: from hash value for string s */
-unsigned hash(char *s) {
+unsigned hash(const char *s) {
   unsigned hashval;
 
   for (hashval = 0; *s != '\0'; s++)
@@ -22,7 +23,7 @@ unsigned hash(char *s) {
 }
 
 /* lookup: look for s in hashtab */
-struct nlist *lookup(char *s) {
+struct nlist *lookup(const char *s) {
   struct nlist *np;
 
   for (np = hashtab[hash(s)]; np != NULL; np = np->next)
@@ -32,7 +33,7 @@ struct nlist *lookup(char *s) {
 }
 
 /* install: put (name, defn) in hashtab */
-struct nlist *install(char *name, char *defn) {
+struct nlist *install(const char *name, const char *defn) {
   struct nlist *np;
   unsigned hashval;
   char *newname = NULL;
@@ -41,10 +42,8 @@ struct nlist *install(char *name, char *defn) {
   np = lookup(name);
   if (np == NULL) { /* not found, create a new entry */
     np = malloc(sizeof(*np));
-    if (np == NULL) {
-      free(np);
+    if (np == NULL)
       return NULL;
-    }
     newname = strdup(name);
     if (newname == NULL) {
       free(np);
@@ -73,8 +72,25 @@ struct nlist *install(char *name, char *defn) {
 
 int main(void) {
   struct nlist *first = install("NAME", "Can");
+  if (first == NULL) {
+    fprintf(stderr, "install failed\n");
+    return 1;
+  }
   struct nlist *result = lookup("NAME");
+  if (result == NULL) {
+    fprintf(stderr, "lookup not found\n");
+    freetable();
+    return 1;
+  }
+  struct nlist *occupation = install("OCCUPATION", "Software Engineer");
+  if (occupation == NULL) {
+    fprintf(stderr, "install failed\n");
+    return 1;
+  }
+  struct nlist *value = lookup("OCCUPATION");
   printf("%s is mapped to %s\n", result->name, result->defn);
+  printf("%s is mapped to %s\n", value->name, value->defn);
+  freetable();
 
   return 0;
 }
@@ -84,7 +100,7 @@ void freetable(void) {
   int i;
 
   for (i = 0; i < HASHSIZE; i++) {
-    for (np = hashtab[i]; np != NULL; np = np->next) {
+    for (np = hashtab[i]; np != NULL; np = next) {
       next = np->next;
       free(np->name);
       free(np->defn);
