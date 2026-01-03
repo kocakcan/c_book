@@ -71,8 +71,8 @@ struct nlist *install(const char *name, const char *defn) {
 }
 
 int main(void) {
-  struct nlist *first = install("NAME", "Can");
-  if (first == NULL) {
+  struct nlist *name = install("NAME", "Can");
+  if (name == NULL) {
     fprintf(stderr, "install failed\n");
     return 1;
   }
@@ -88,6 +88,11 @@ int main(void) {
     return 1;
   }
   struct nlist *value = lookup("OCCUPATION");
+  if (value == NULL) {
+    fprintf(stderr, "look up not found\n");
+    freetable();
+    return 1;
+  }
   printf("%s is mapped to %s\n", result->name, result->defn);
   printf("%s is mapped to %s\n", value->name, value->defn);
   freetable();
