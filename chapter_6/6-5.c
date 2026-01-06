@@ -44,12 +44,12 @@ int main(void) {
   }
   printf("%s is mapped to %s\n", query->name, query->defn);
   printf("%s is mapped to %s\n", result->name, result->defn);
-  // freetable();
   undef("TEST");
   if (lookup("TEST") == NULL)
 	  printf("TEST was successfully removed!\n");
   else
 	  printf("TEST still present :/n");
+  freetable();
 
   return 0;
 }
@@ -80,7 +80,7 @@ struct nlist *install(const char *name, const char *defn) {
     }
     newdef = strdup(defn);
     if (newdef == NULL) {
-      free((void *)name);
+      free((void *)newname);
       free(np);
       return NULL;
     }
