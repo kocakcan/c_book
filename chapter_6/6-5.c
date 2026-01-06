@@ -20,6 +20,7 @@ unsigned hash(const char *);
 struct nlist *install(const char *, const char *);
 struct nlist *lookup(const char *);
 void freetable(void);
+void undef(const char *);
 
 int main(void) {
   struct nlist *key = install("NAME", "Can");
@@ -43,7 +44,11 @@ int main(void) {
   }
   printf("%s is mapped to %s\n", query->name, query->defn);
   printf("%s is mapped to %s\n", result->name, result->defn);
-  freetable();
+  // freetable();
+  undef("TEST");
+  if (test->name == NULL)
+    printf("it's null mate\n");
+  printf("%s is mapped to %s\n", result->name, result->defn);
 
   return 0;
 }
@@ -100,6 +105,18 @@ struct nlist *lookup(const char *name) {
     if ((strcmp(np->name, name)) == 0)
       return np;
   return NULL;
+}
+
+void undef(const char *name) {
+  struct nlist *result = lookup(name);
+  if (result == NULL) {
+    fprintf(stderr, "definition not found\n");
+    exit(EXIT_FAILURE);
+  }
+  // free(result->name);
+  // free(result->defn);
+  result->name = NULL;
+  result->defn = NULL;
 }
 
 void freetable(void) {
