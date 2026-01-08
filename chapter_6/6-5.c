@@ -46,9 +46,9 @@ int main(void) {
   printf("%s is mapped to %s\n", result->name, result->defn);
   undef("TEST");
   if (lookup("TEST") == NULL)
-	  printf("TEST was successfully removed!\n");
+    printf("TEST was successfully removed!\n");
   else
-	  printf("TEST still present :/n");
+    printf("TEST still present :/n");
   freetable();
 
   return 0;
@@ -109,25 +109,25 @@ struct nlist *lookup(const char *name) {
 }
 
 void undef(const char *name) {
-	unsigned hashval = hash(name);
-	struct nlist *curr = hashtab[hashval];
-	struct nlist *prev = NULL;
+  unsigned hashval = hash(name);
+  struct nlist *curr = hashtab[hashval];
+  struct nlist *prev = NULL;
 
-	while (curr != NULL) {
-		if (strcmp(curr->name, name) == 0) {
-			if (prev == NULL)
-				hashtab[hashval] = curr->next;
-			else
-				prev->next = curr->next;
-			free(curr->name);
-			free(curr->defn);
-			free(curr);
-			return;
-		}
-		prev = curr;
-		curr = curr->next;
-	}
-	fprintf(stderr, "definition not found!\n");
+  while (curr != NULL) {
+    if (strcmp(curr->name, name) == 0) {
+      if (prev == NULL)
+        hashtab[hashval] = curr->next;
+      else
+        prev->next = curr->next;
+      free(curr->name);
+      free(curr->defn);
+      free(curr);
+      return;
+    }
+    prev = curr;
+    curr = curr->next;
+  }
+  fprintf(stderr, "definition not found!\n");
 }
 
 void freetable(void) {
