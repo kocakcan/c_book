@@ -108,6 +108,28 @@ struct nlist *lookup(char *name) {
   return NULL;
 }
 
+void undef(char *name) {
+  unsigned hashval = hash(name);
+  struct nlist *curr = hashtab[hashval];
+  struct nlist *prev = NULL;
+
+  while (curr != NULL) {
+    if (strcmp(curr->name, name) == 0) {
+      if (prev == NULL)
+        hashtab[hashval] = curr->next;
+      else
+        prev->next = curr->next;
+      free(curr->name);
+      free(curr->defn);
+      free(curr);
+      return;
+    }
+    prev = curr;
+    curr = curr->next;
+  }
+  fprintf(stderr, "definition not found\n");
+}
+
 void freetable(void) {
   struct nlist *p, *next;
   int i;
