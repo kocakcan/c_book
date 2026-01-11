@@ -110,24 +110,25 @@ struct nlist *lookup(char *name) {
 
 void undef(char *name) {
   unsigned hashval = hash(name);
-  struct nlist *curr = hashtab[hashval];
-  struct nlist *prev = NULL;
+  struct nlist *curr = hashtab[hashval]; /* points to the head of the bucket */
+  struct nlist *prev = NULL;             /* NULL as curr points to the head */
 
-  while (curr != NULL) {
-    if (strcmp(curr->name, name) == 0) {
-      if (prev == NULL)
-        hashtab[hashval] = curr->next;
-      else
+  while (curr != NULL) {                 /* traverse the linked list */
+    if (strcmp(curr->name, name) == 0) { /* found a match */
+      if (prev == NULL)                  /* node to remove at the head */
+        hashtab[hashval] = curr->next;   /* update head to be the next node */
+      else /* otherwise, bypass the current node */
         prev->next = curr->next;
-      free(curr->name);
+      free(curr->name); /* free allocated resources */
       free(curr->defn);
       free(curr);
-      return;
+      return; /* exit early */
     }
+    // advance pointers
     prev = curr;
     curr = curr->next;
   }
-  fprintf(stderr, "definition not found\n");
+  fprintf(stderr, "definition not found\n"); /* the name was not found */
 }
 
 void freetable(void) {
