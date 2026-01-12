@@ -35,20 +35,18 @@ void ungets(char *);
 void freetable(void);
 
 int main(void) {
-  struct nlist *key = install("NAME", "Can");
-  if (key == NULL) {
-    fprintf(stderr, "install failed mate\n");
-    return 1;
-  }
-  struct nlist *query = lookup("NAME");
-  if (query == NULL) {
-    fprintf(stderr, "definition not found\n");
-    freetable();
-    return 1;
-  }
-  printf("%s is mapped to %s\n", query->name, query->defn);
-  freetable();
+  char w[MAXWORD];
+  struct nlist *p;
 
+  while (getword(w, MAXWORD) != EOF)
+    if (strcmp(w, "#") == 0) /* beginning of direct. */
+      getdef();
+    else if (!isalpha(w[0]))
+      printf("%s", w); /* cannot be defined */
+    else if ((p = lookup(w)) == NULL)
+      printf("%s", w); /* not defined */
+    else
+      ungets(p->defn); /* push definition */
   return 0;
 }
 
@@ -144,4 +142,93 @@ void freetable(void) {
     }
     hashtab[i] = NULL;
   }
+}
+
+int getword(char *word, int lim) {
+  int c;
+  char *w = word;
+
+  while (isspace(c = getch()) && c != '\n')
+    ;
+  if (c != EOF)
+    *w++ = c;
+  if (!isalpha(c)) {
+    *w = '\0';
+    return c;
+  }
+  for (; --lim > 0; w++)
+    if (!isalnum(*w = getch())) {
+      ungetch(*w);
+      break;
+    }
+  *w = '\0';
+  return word[0];
+}
+
+int getch(void) { return (bufp - buf > 0) ? *--bufp : getchar(); }
+
+void ungetch(int c) {
+  if (c == EOF)
+    return;
+  if (bufp - buf >= MAXWORD)
+    printf("ungetch: too many characters\n");
+  else
+    *bufp++ = c;
+}
+
+/* getdef: get definition and install it */
+void getdef(void) {
+  int c, i;
+  char def[MAXWORD], dir[MAXWORD], name[MAXWORD];
+
+  skipblanks();
+  if (!isalpha(getword(dir, MAXWORD)))
+    error(dir[0], "getdef: expecting a directive after #");
+  else if (strcmp(dir, "define") == 0) {
+    skipblanks();
+    if (!isalpha(getword(name, MAXWORD)))
+      error(name[0], "getdef: non-alpha - name expected");
+    else {
+      skipblanks();
+      for (i = 0; i < MAXWORD - 1; i++)
+        if ((def[i] = getch()) == EOF || def[i] == '\n')
+          break; /* end of definition */
+      def[i] = '\0';
+      if (i <= 0) /* no definition? */
+        error('\n', "getdef: incomplete define");
+      else
+        install(name, def); /* install definition */
+    }
+  } else if (strcmp(dir, "undef") == 0) {
+    skipblanks();
+    if (!isalpha(getword(name, MAXWORD)))
+      error(name[0], "getdef: non-alpha in undef");
+    else
+      undef(name);
+  } else {
+    error(dir[0], "getdef: expecting a directive after #");
+  }
+}
+
+/* error: print error message and skip the rest of the line */
+void error(int c, char *s) {
+  printf("error: %s\n", s);
+  while (c != EOF && c != '\n')
+    c = getch();
+}
+
+/* skipblanks: skip blank and tab characters */
+void skipblanks(void) {
+  int c;
+
+  while ((c = getch()) == ' ' || c == '\t')
+    ;
+  ungetch(c);
+}
+
+void ungets(char *s) {
+  int i = strlen(s);
+
+  while (i)
+    ungetch(*(s + (--i)));
 }
