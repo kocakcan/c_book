@@ -230,5 +230,5 @@ void ungets(char *s) {
   int i = strlen(s);
 
   while (i)
-    ungetch(*(s + (--i)));
+    ungetch(*(s + --i));
 }
