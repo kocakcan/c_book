@@ -47,6 +47,7 @@ int main(void) {
       printf("%s", w); /* not defined */
     else
       ungets(p->defn); /* push definition */
+  freetable();
   return 0;
 }
 
