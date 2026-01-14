@@ -27,20 +27,48 @@
  */
 #include <stdio.h>
 
-#define TEAM_SIZE 4
+#define TEAM_SIZE 5
 
 typedef char *String;
 
-static String expedition_33[TEAM_SIZE] = {"Lune", "Maelle", "Sciel", "Verso"};
+typedef struct {
+  String name;
+  int health;
+  int ad;
+  int speed;
+  int defense;
+  float luck;
+} Expeditioner;
 
-void printk(String *);
+static Expeditioner expedition_33[TEAM_SIZE] = {
+    {"Verso", 756, 700, 450, 600, 0.1f},
+    {"Lune", 950, 400, 238, 371, 0.05f},
+    {"Maelle", 1742, 749, 321, 826, 0.15f},
+    {"Sciel", 1289, 629, 311, 499, 0.05f},
+    {"Monoco", 400, 632, 354, 411, 0.05f}};
+
+void printe(Expeditioner *);
+int get_max_ad(Expeditioner *);
 
 int main(void) {
-  printk(expedition_33);
+  printe(expedition_33);
+  printf("Max AD amongst expeditioners is: %d\n", get_max_ad(expedition_33));
   return 0;
 }
 
-void printk(String *s) {
+/* printe: print the names of the Expeditioners */
+void printe(Expeditioner *e) {
   for (size_t i = 0; i < TEAM_SIZE; i++)
-    printf("%s\n", *s++);
+    printf("Name: %s\n", e++->name);
+}
+
+int get_max_ad(Expeditioner *e) {
+  int max = e++->ad;
+
+  for (size_t i = 1; i < TEAM_SIZE; i++) {
+    if (e->ad > max)
+      max = e->ad;
+    e++;
+  }
+  return max;
 }
