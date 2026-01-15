@@ -26,6 +26,7 @@
  * typedefs makes them stand out.
  */
 #include <stdio.h>
+#include <stdlib.h>
 
 #define TEAM_SIZE 5
 
@@ -49,10 +50,13 @@ static Expeditioner expedition_33[TEAM_SIZE] = {
 
 void printe(Expeditioner *);
 int get_max_ad(Expeditioner *);
+int strcmp_(const char *, const char *);
+int namecmp(const void *, const void *);
 
 int main(void) {
-  printe(expedition_33);
   printf("Max AD amongst expeditioners is: %d\n", get_max_ad(expedition_33));
+  qsort(expedition_33, TEAM_SIZE, sizeof(Expeditioner), namecmp);
+  printe(expedition_33);
   return 0;
 }
 
@@ -71,4 +75,16 @@ int get_max_ad(Expeditioner *e) {
     e++;
   }
   return max;
+}
+
+int strcmp_(const char *s, const char *t) {
+  while (*s && *s == *t)
+    s++, t++;
+  return (unsigned char)*s - (unsigned char)*t;
+}
+
+int namecmp(const void *s, const void *t) {
+  const Expeditioner *a = (const Expeditioner *)s;
+  const Expeditioner *b = (const Expeditioner *)t;
+  return strcmp_(a->name, b->name);
 }
