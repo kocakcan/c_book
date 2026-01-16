@@ -43,7 +43,29 @@
  *    return (Treeptr) malloc(sizeof(Treenode));
  *  }
  * It must be emphasized that a typedef declaration does not create a new type
- * in any sense; it merely adds a new name for some existing type.
+ * in any sense; it merely adds a new name for some existing type. Nor are there
+ * any new semantics: variables declared this way have exactly the same
+ * properties as variables whose declarations are spelled out explicitly. In
+ * effect, typedef is like #define, except that since it is interpreted by the
+ * compiler, it can cope with textual substitutions that are beyond the
+ * capabilities of the preprocessor. For example,
+ *
+ *  typedef int (*PFI)(char *, char *);
+ * creates the type PFI, for "pointer to function (of to char * arguments)
+ * returning int," which can be used in contexts like
+ *
+ *  PFI strcmp, numcmp
+ * Besides purely aesthetic issues, there are two main reasons for using
+ * typedefs. The first is to parameterize a program against portability
+ * problems. If typedefs are used for data types that may be machine-dependent,
+ * only the typedefs need change when the program is moved. One common situation
+ * is to use typedef names for various integer quantities, then make an
+ * appropriate set of choices of short, int, and long for each host machine.
+ * Types like size_t and ptrdiff_t from the standard library are examples.
+ *
+ * The second purpose of typedefs is to provide better documentation for a
+ * program - a type called Treeptr may be easier to understand than one declared
+ * only as a pointer to a complicated structure.
  */
 #include <stdio.h>
 #include <stdlib.h>
