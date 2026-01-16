@@ -24,6 +24,26 @@
  * a variable name, not right after the word typedef. Syntactically, typedef is
  * like the storage classes extern, static, etc. Using capitalized names for
  * typedefs makes them stand out.
+ *
+ * As a more complicated example, we could make typedefs for the tree nodes
+ * shown earlier in this chapter:
+ *
+ *  typedef struct tnode *Treeptr;
+ *
+ *  typedef struct tnode {  -> the tree node
+ *    char *word;           -> points to the text
+ *    int count;            -> number of occurrences
+ *    struct tnode *left;   -> left child
+ *    struct tnode *right;  -> right child
+ *  } Treenode;
+ * This creates two new type keywords called Treenode (a structure) and Treeptr
+ * (a pointer to the structure). Then the routine talloc could become
+ *
+ *  Treeptr talloc(void) {
+ *    return (Treeptr) malloc(sizeof(Treenode));
+ *  }
+ * It must be emphasized that a typedef declaration does not create a new type
+ * in any sense; it merely adds a new name for some existing type.
  */
 #include <stdio.h>
 #include <stdlib.h>
