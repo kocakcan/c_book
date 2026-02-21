@@ -5,13 +5,21 @@
 
 void minscanf(char *, ...);
 
-int main(void) { return 0; }
+int main(void) {
+  printf("char * int double ");
+  char name[100];
+  int ival;
+  double dval;
+  minscanf("%s %d %f", name, &ival, &dval);
+  printf("%s %d %f\n", name, ival, dval);
+  return 0;
+}
 
 void minscanf(char *fmt, ...) {
   va_list ap;
   char *p, *sval;
-  double dval;
-  int ival;
+  double *dval;
+  int *ival;
 
   va_start(ap, fmt);
   for (p = fmt; *p; p++) {
@@ -21,16 +29,16 @@ void minscanf(char *fmt, ...) {
     }
     switch (*++p) {
     case 'd':
-      ival = va_arg(ap, int);
-      scanf("%d", &ival);
+      ival = va_arg(ap, int *);
+      scanf("%d", ival);
       break;
     case 'f':
-      dval = va_arg(ap, double);
-      scanf("%lf", &dval);
+      dval = va_arg(ap, double *);
+      scanf("%lf", dval);
       break;
     case 's':
-      for (sval = va_arg(ap, char *); *sval; sval++)
-        getchar();
+      sval = va_arg(ap, char *);
+      scanf("%s", sval);
       break;
     default:
       getchar();
