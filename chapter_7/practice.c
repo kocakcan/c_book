@@ -50,9 +50,9 @@ int main(void) {
       .log_level = ERROR,
   };
   Log fourth_log = {
-      .author = "Hacker",
-      .message = "This is an hacked message",
-      .log_level = 42,
+      .author = "TEST",
+      .message = "This is a test",
+      .log_level = INFO,
   };
   Log logs[] = {first_log, second_log, third_log, fourth_log};
 
