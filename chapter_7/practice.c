@@ -38,38 +38,10 @@ int main(void) {
   FILE *fp;
 
   Log *first_log = create_log("This is a test", "Can", INFO);
-  
-  if (first_log == NULL) {
-	  fprintf(stderr, "Log creation failed!\n");
-	  return 1;
-  }
-
   Log *second_log = create_log("This is yet another test", "Can", ERROR);
-
-  if (second_log == NULL) {
-	  fprintf(stderr, "Log creation failed!\n");
-	  return 1;
-  }
-
   Log *third_log = create_log("Kept you waiting, huh?", "Solid Snake", INFO);
-
-  if (third_log == NULL) {
-	  fprintf(stderr, "Log creation failed!\n");
-	  return 1;
-  }
   Log *fourth_log = create_log("You're pretty good.", "Revolver Ocelot", INFO);
-
-  if (fourth_log == NULL) {
-	  fprintf(stderr, "Log creation failed!\n");
-	  return 1;
-  }
-
   Log *fifth_log = create_log("This log is on the heap", "Can", INFO);
-
-  if (fifth_log == NULL) {
-	  fprintf(stderr, "Failed to create log!\n");
-	  return 1;
-  }
   Log *logs[] = {first_log, second_log, third_log, fourth_log, fifth_log};
 
   for (size_t i = 0; i < 5; i++)
@@ -77,12 +49,12 @@ int main(void) {
 
   if ((fp = fopen("test.log", "w")) != NULL) {
     for (size_t i = 0; i < 5; i++)
-      fprintf(fp, "Message: %s | Log level: %s | Author: %s\n", logs[i]->message,
-              parse_log_level(logs[i]), logs[i]->author);
-	  fclose(fp);
+      fprintf(fp, "Message: %s | Log level: %s | Author: %s\n",
+              logs[i]->message, parse_log_level(logs[i]), logs[i]->author);
+    fclose(fp);
   }
   for (size_t i = 0; i < 5; i++)
-	  destroy_log(logs[i]);
+    destroy_log(logs[i]);
 
   return 0;
 }
