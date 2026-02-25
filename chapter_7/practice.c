@@ -37,47 +37,52 @@ void printl(Log *);
 int main(void) {
   FILE *fp;
 
-  Log first_log = {
-      .author = "Can",
-      .message = "This is a test",
-      .log_level = INFO,
-  };
-  Log second_log = {
-      .author = "Can",
-      .message = "This is another test",
-      .log_level = WARNING,
-  };
-  Log third_log = {
-      .author = "Can",
-      .message = "This is yet another test",
-      .log_level = ERROR,
-  };
-  Log fourth_log = {
-      .author = "TEST",
-      .message = "This is a test",
-      .log_level = INFO,
-  };
+  Log *first_log = create_log("This is a test", "Can", INFO);
+  
+  if (first_log == NULL) {
+	  fprintf(stderr, "Log creation failed!\n");
+	  return 1;
+  }
+
+  Log *second_log = create_log("This is yet another test", "Can", ERROR);
+
+  if (second_log == NULL) {
+	  fprintf(stderr, "Log creation failed!\n");
+	  return 1;
+  }
+
+  Log *third_log = create_log("Kept you waiting, huh?", "Solid Snake", INFO);
+
+  if (third_log == NULL) {
+	  fprintf(stderr, "Log creation failed!\n");
+	  return 1;
+  }
+  Log *fourth_log = create_log("You're pretty good.", "Revolver Ocelot", INFO);
+
+  if (fourth_log == NULL) {
+	  fprintf(stderr, "Log creation failed!\n");
+	  return 1;
+  }
+
   Log *fifth_log = create_log("This log is on the heap", "Can", INFO);
+
   if (fifth_log == NULL) {
 	  fprintf(stderr, "Failed to create log!\n");
 	  return 1;
   }
+  Log *logs[] = {first_log, second_log, third_log, fourth_log, fifth_log};
 
-  VALIDATE_LOG(fifth_log);
-  Log logs[] = {first_log, second_log, third_log, fourth_log};
-
-  for (size_t i = 0; i < 4; i++)
-    VALIDATE_LOG(&logs[i]);
+  for (size_t i = 0; i < 5; i++)
+    VALIDATE_LOG(logs[i]);
 
   if ((fp = fopen("test.log", "w")) != NULL) {
-    for (size_t i = 0; i < 4; i++)
-      fprintf(fp, "Message: %s | Log level: %s | Author: %s\n", logs[i].message,
-              parse_log_level(&logs[i]), logs[i].author);
-	  fprintf(fp, "Message: %s | Log level: %s | Author: %s\n", fifth_log->message,
-          parse_log_level(fifth_log), fifth_log->author);
+    for (size_t i = 0; i < 5; i++)
+      fprintf(fp, "Message: %s | Log level: %s | Author: %s\n", logs[i]->message,
+              parse_log_level(logs[i]), logs[i]->author);
 	  fclose(fp);
   }
-  destroy_log(fifth_log);
+  for (size_t i = 0; i < 5; i++)
+	  destroy_log(logs[i]);
 
   return 0;
 }
