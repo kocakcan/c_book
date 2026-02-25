@@ -63,13 +63,10 @@ char *parse_log_level(Log *l) {
   switch (l->log_level) {
   case INFO:
     return "INFO";
-    break;
   case WARNING:
     return "WARNING";
-    break;
   case ERROR:
     return "ERROR";
-    break;
   default:
     fprintf(stderr, "error: Unknown log level %d\n", l->log_level);
     return "UNKNOWN";
