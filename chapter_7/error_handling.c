@@ -78,6 +78,6 @@ void filecopy(FILE *ifp, FILE *ofp) {
  *
  *  int feof(FILE *fp)
  * We have generally not worried about exit status in our small illustrative
- * prgorams, but any serious program should take care to return sensible, useful
+ * programs, but any serious program should take care to return sensible, useful
  * status values.
  */
