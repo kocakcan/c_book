@@ -27,13 +27,13 @@
 #include <stdio.h>
 #include <string.h>
 
-/* fgets: get at most n chars from top */
-char *_fgets(char *s, int n, FILE *fp) {
+/* fgets: get at most n chars from iop */
+char *_fgets(char *s, int n, FILE *iop) {
   register int c;
   register char *cs;
 
   cs = s;
-  while (--n > 0 && (c = getchar()) != EOF)
+  while (--n > 0 && (c = getc(iop)) != EOF)
     if ((*cs++ = c) == '\n')
       break;
   *cs = '\0';
