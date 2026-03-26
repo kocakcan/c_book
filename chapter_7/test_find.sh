@@ -60,9 +60,9 @@ echo -e "${CYAN}============================================${RESET}\n"
 # ============================================
 # TEST 1: Basic pattern match in a single file
 # ============================================
-expected="Captain Blackbeard sailed the seven seas
-Captain Hook feared the crocodile
-Captain Sparrow was the luckiest of them all"
+expected="test/pirates.txt - Captain Blackbeard sailed the seven seas
+test/pirates.txt - Captain Hook feared the crocodile
+test/pirates.txt - Captain Sparrow was the luckiest of them all"
 
 actual=$($BIN "Captain" test/pirates.txt)
 run_test "Basic pattern match in single file" "$expected" "$actual"
@@ -70,9 +70,9 @@ run_test "Basic pattern match in single file" "$expected" "$actual"
 # ============================================
 # TEST 2: Pattern match with line numbers (-n)
 # ============================================
-expected="1: Captain Blackbeard sailed the seven seas
-5: Captain Hook feared the crocodile
-8: Captain Sparrow was the luckiest of them all"
+expected="test/pirates.txt - 1: Captain Blackbeard sailed the seven seas
+test/pirates.txt - 5: Captain Hook feared the crocodile
+test/pirates.txt - 8: Captain Sparrow was the luckiest of them all"
 
 actual=$($BIN -n "Captain" test/pirates.txt)
 run_test "Pattern match with line numbers (-n)" "$expected" "$actual"
@@ -80,13 +80,13 @@ run_test "Pattern match with line numbers (-n)" "$expected" "$actual"
 # ============================================
 # TEST 3: Inverted match (-x)
 # ============================================
-expected="The crew was loyal and brave
-Treasure was hidden on a remote island
-The parrot squawked at every sunrise
-No pirate ever refused a good rum
-The anchor was dropped at midnight
-The treasure map was torn and faded
-Every pirate needs a sharp cutlass"
+expected="test/pirates.txt - The crew was loyal and brave
+test/pirates.txt - Treasure was hidden on a remote island
+test/pirates.txt - The parrot squawked at every sunrise
+test/pirates.txt - No pirate ever refused a good rum
+test/pirates.txt - The anchor was dropped at midnight
+test/pirates.txt - The treasure map was torn and faded
+test/pirates.txt - Every pirate needs a sharp cutlass"
 
 actual=$($BIN -x "Captain" test/pirates.txt)
 run_test "Inverted match (-x)" "$expected" "$actual"
@@ -94,13 +94,13 @@ run_test "Inverted match (-x)" "$expected" "$actual"
 # ============================================
 # TEST 4: Combined flags (-xn)
 # ============================================
-expected="2: The crew was loyal and brave
-3: Treasure was hidden on a remote island
-4: The parrot squawked at every sunrise
-6: No pirate ever refused a good rum
-7: The anchor was dropped at midnight
-9: The treasure map was torn and faded
-10: Every pirate needs a sharp cutlass"
+expected="test/pirates.txt - 2: The crew was loyal and brave
+test/pirates.txt - 3: Treasure was hidden on a remote island
+test/pirates.txt - 4: The parrot squawked at every sunrise
+test/pirates.txt - 6: No pirate ever refused a good rum
+test/pirates.txt - 7: The anchor was dropped at midnight
+test/pirates.txt - 9: The treasure map was torn and faded
+test/pirates.txt - 10: Every pirate needs a sharp cutlass"
 
 actual=$($BIN -xn "Captain" test/pirates.txt)
 run_test "Combined flags (-xn)" "$expected" "$actual"
@@ -148,7 +148,16 @@ run_test "No matches found (empty output)" "$expected" "$actual"
 # ============================================
 # TEST 9: Pattern that matches every line
 # ============================================
-expected=$(cat test/crew.txt)
+expected="test/crew.txt - John Silver - First Mate
+test/crew.txt - Anne Bonny - Quartermaster
+test/crew.txt - Calico Jack - Navigator
+test/crew.txt - Edward Teach - Captain
+test/crew.txt - Mary Read - Gunner
+test/crew.txt - Henry Morgan - Boatswain
+test/crew.txt - Bartholomew Roberts - Lookout
+test/crew.txt - Samuel Bellamy - Carpenter
+test/crew.txt - Charles Vane - Surgeon
+test/crew.txt - Stede Bonnet - Cook"
 
 actual=$($BIN " - " test/crew.txt)
 run_test "Pattern matches every line" "$expected" "$actual"
@@ -162,40 +171,23 @@ actual=$($BIN "captain" test/pirates.txt)
 run_test "Case sensitivity (lowercase 'captain' finds nothing)" "$expected" "$actual"
 
 # ============================================
-# TEST 11: Search for a dash character
+# TEST 11: Pattern 'mid' across multiple files
 # ============================================
-expected="test/crew.txt - John Silver - First Mate
-test/crew.txt - Anne Bonny - Quartermaster
-test/crew.txt - Calico Jack - Navigator
-test/crew.txt - Edward Teach - Captain
-test/crew.txt - Mary Read - Gunner
-test/crew.txt - Henry Morgan - Boatswain
-test/crew.txt - Bartholomew Roberts - Lookout
-test/crew.txt - Samuel Bellamy - Carpenter
-test/crew.txt - Charles Vane - Surgeon
-test/crew.txt - Stede Bonnet - Cook
-test/ship_log.txt - Day 5: Storm hit at midnight, lost two barrels of rum"
+expected="test/ship_log.txt - Day 5: Storm hit at midnight, lost two barrels of rum"
 
 actual=$($BIN "mid" test/crew.txt test/ship_log.txt)
 run_test "Pattern 'mid' across multiple files" "$expected" "$actual"
 
 # ============================================
 # TEST 12: Inverted match with stdin
+#   Lines in crew.txt WITHOUT "o":
+#     Edward Teach - Captain      (no 'o')
+#     Mary Read - Gunner          (no 'o')
+#     Samuel Bellamy - Carpenter  (no 'o')
 # ============================================
-expected="Anne Bonny - Quartermaster
-Calico Jack - Navigator
+expected="Edward Teach - Captain
 Mary Read - Gunner
-Henry Morgan - Boatswain
-Bartholomew Roberts - Lookout
-Samuel Bellamy - Carpenter
-Charles Vane - Surgeon
-Stede Bonnet - Cook"
-
-actual=$(cat test/crew.txt | $BIN -x "Edward\|John")
-# strstr doesn't do regex, so let's just exclude "a" pattern that hits 2 lines
-expected="Calico Jack - Navigator
-Mary Read - Gunner
-Stede Bonnet - Cook"
+Samuel Bellamy - Carpenter"
 
 actual=$(cat test/crew.txt | $BIN -x "o")
 run_test "Inverted match with stdin" "$expected" "$actual"
