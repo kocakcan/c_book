@@ -53,4 +53,39 @@
  * standard output. system returns a system-dependent integer status from the
  * command executed. In the UNIX system, the status return is the value returned
  * by exit.
+ *
+ * 7.8.5 Storage Management
+ *
+ * The functions malloc and calloc obtain blocks of memory dynamically.
+ *
+ *  void *malloc(size_t n)
+ * returns a pointer to n bytes of uninitialized storage, or NULL if the request
+ * cannot be satisfied.
+ *
+ *  void *calloc(size_t n, size_t size)
+ * returns a pointer to enough free space for an array of n objects of the
+ * specified size, or NULL if the request cannot be satisfied. The storage is
+ * initialized to zero.
+ *
+ * The pointer returned by malloc or calloc has the proper alignment for the
+ * object in question, but it must be cast into the appropriate type, as in
+ *
+ *  int *ip;
+ *
+ *  ip = (int *) calloc(n, sizeof(int));
+ * free(p) frees the space pointed to by p, where p was originally obtained by a
+ * call to malloc or calloc. There are no restrictions on the order in which
+ * space is freed, but it is a ghastly error to free something not obtained by
+ * calling malloc or calloc.
+ *
+ * It is also an error to use something after it has been freed. A typical but
+ * incorrect piece of code is this loop that frees items from a list:
+ *
+ *  for (p = head; p != NULL; p = p->next)  -> WRONG
+ * The right way is to save whatever is needed before freeing:
+ *
+ *  for (p = head; p != NULL; p = q) {
+ *    q = p->next;
+ *    free(p);
+ *  }
  */
