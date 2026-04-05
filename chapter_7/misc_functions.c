@@ -88,4 +88,32 @@
  *    q = p->next;
  *    free(p);
  *  }
+ *
+ * 7.8.6 Mathematical Functions
+ *
+ * There are more than twenty mathematical functions declared in <math.h>; here
+ * are some of the more frequently used. Each takes one or two double arguments
+ * and returns a double.
+ *
+ *  sin(x)      sine of x, x in radius
+ *  cos(x)      cosine of x, x in radius
+ *  atan2(y, x) arctangent of y/x, in radius
+ *  exp(x)      exponential function
+ *  log(x)      natural (base e) logarithm of x (x > 0)
+ *  log10(x)    common (base 10) logarithm of x (x > 0)
+ *  pow(x, y)   x to the power of y
+ *  sqrt(x)     square root of x (x > 0)
+ *  fabs(x)     absolute value of x
+ *
+ * 7.8.7 Random Number generation
+ *
+ * The function rand() computes a sequence of pseudo-random integers in the
+ * range zero to RAND_MAX, which is defined in <stdlib.h>. One way to produce
+ * random floating-point numbers greater than or equal to zero but less than one
+ * is
+ *
+ *  #define frand() ((double) rand() / (RAND_MAX + 1.0))
+ * (If your library already provides a function for floating-point random
+ * numbers, it is likely to have better statistical properties than this one.)
+ * The function srand(unsigned) sets the seed for rand.
  */
