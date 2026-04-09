@@ -42,4 +42,26 @@
  * The user of a program can redirect I/O and from files with < and >:
  *
  *  prog < infile > outfile
+ * In this case, the shell changes the default assignments for the file
+ * descriptors 0 and 1 to the named files. Normally file descriptor 2 remains
+ * attached to the screen, so error messages can go there. Similar observations
+ * hold for input or output associated with a pipe. In all cases, the file
+ * assignments are changed by the shell, not by the program. The program does
+ * not know where its input comes from nor where its output goes, so long as it
+ * uses file 0 for input and 1 and 2 for output.
  */
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+int main(void) {
+  srand(time(NULL));
+  int v[100];
+
+  for (size_t i = 0; i < 100; i++)
+    v[i] = rand() % 100;
+  for (size_t i = 0; i < 100; i++)
+    printf("%d ", v[i]);
+  printf("\n");
+  return 0;
+}
