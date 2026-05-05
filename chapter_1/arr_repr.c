@@ -15,14 +15,10 @@ int main() {
   return 0;
 }
 
-void printa(const int arr[], size_t size) {
-  printf("[");
+void printa(const int *arr, size_t size) {
+  putchar('[');
   for (size_t i = 0; i < size; ++i) {
-    if (i == size - 1) {
-      printf("%d", arr[i]);
-    } else {
-      printf("%d, ", arr[i]);
-    }
+    printf("%u%s", arr[i], i + 1 < size ? ", " : "");
   }
-  printf("]\n");
+  puts("]");
 }
