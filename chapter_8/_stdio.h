@@ -30,9 +30,9 @@ typedef struct _iobuf {
   char *base; /* location of buffer */
   int flag;   /* mode of file access */
   int fd;     /* file descriptor */
-} FILE;
+} _FILE;
 
-extern FILE _iob[OPEN_MAX];
+extern _FILE _iob[OPEN_MAX];
 
 #define stdin (&_iob[0])
 #define stdout (&_iob[1])
@@ -46,16 +46,15 @@ enum _flags {
   _ERR = 020   /* error occurred on this file */
 };
 
-int _fillbuf(FILE *);
-int _flushbuf(int, FILE *);
+int _fillbuf(_FILE *);
+int _flushbuf(int, _FILE *);
 
-#define feof(p)     ((p)->flag & _EOF) != 0)
-#define ferror(p)   ((p)->flag & _ERR) != 0)
+#define feof(p) (((p)->flag & _EOF) != 0)
+#define ferror(p) ((p)->flag & _ERR) != 0
 #define fileno(p) ((p)->fd)
 
-#define getc(p)     (--(p)->cnt >= 0) \
-                  ? (unsigned char) *(p)->ptr++ : _fillbuf(p))
-#define putc(x, p) (--(p)->cnt > = 0 ? *(p)->ptr++ = (x) : _flushbuf((x), p))
+#define getc(p) (--(p)->cnt >= 0) ? (unsigned char)*(p)->ptr++ : _fillbuf(p)
+#define putc(x, p) (--(p)->cnt >= 0 ? *(p)->ptr++ = (x) : _flushbuf((x), p))
 
 #define getchar() getc(stdin)
 #define putcher(x) putc((x), stdout)
@@ -82,9 +81,9 @@ int _flushbuf(int, FILE *);
 #include <unistd.h>
 #define PERMS 0666 /* RW for owners, group, others */
 
-FILE *_fopen(char *name, char *mode) {
+_FILE *_fopen(char *name, char *mode) {
   int fd;
-  FILE *fp;
+  _FILE *fp;
 
   if (*mode != 'r' && *mode != 'w' && *mode != 'a')
     return NULL;
@@ -126,6 +125,39 @@ FILE *_fopen(char *name, char *mode) {
  * count and pointers, and returns the character at the beginning of the buffer.
  * Subsequent calls to _fillbuf will find a buffer allocated.
  */
+#include <stdlib.h>
 #include <unistd.h>
 
 /* _fillbuf: allocate and fill input buffer */
+int _fillbuf(_FILE *fp) {
+  int bufsize;
+
+  if ((fp->flag & (_READ | _EOF | _ERR)) != _READ)
+    return EOF;
+  bufsize = (fp->flag & _UNBUF) ? 1 : BUFSIZ;
+  if (fp->base == NULL) /* no buffer yet */
+    if ((fp->base = (char *)malloc(bufsize)) == NULL)
+      return EOF; /* can't get buffer */
+  fp->ptr = fp->base;
+  fp->cnt = read(fp->fd, fp->ptr, bufsize);
+  if (--fp->cnt < 0) {
+    if (fp->cnt == -1)
+      fp->flag |= _EOF;
+    else
+      fp->flag |= _ERR;
+    fp->cnt = 0;
+    return EOF;
+  }
+  return (unsigned char)*fp->ptr++;
+}
+
+// The only remaining loose end is how everything gets started. The array _iob
+// must be defined and initialized for stdin, stdout and stderr:
+
+_FILE _iob[OPEN_MAX] = {/* stdin, stdout, stderr */
+                        {0, (char *)0, (char *)0, _READ, 0},
+                        {0, (char *)0, (char *)0, _WRITE, 1},
+                        {0, (char *)0, (char *)0, _WRITE | _UNBUF, 2}};
+
+// The initialization of the flag part of the structure shows that stdin is to
+// be read, stdout is to be written, and stderr is to be written unbuffered.
