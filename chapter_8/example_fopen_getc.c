@@ -126,3 +126,6 @@ FILE *_fopen(char *name, char *mode) {
  * count and pointers, and returns the character at the beginning of the buffer.
  * Subsequent calls to _fillbuf will find a buffer allocated.
  */
+#include <unistd.h>
+
+/* _fillbuf: allocate and fill input buffer */
