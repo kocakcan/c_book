@@ -26,21 +26,21 @@
 #define BUFSIZ 1024
 #define OPEN_MAX 20 /* max #files open at once */
 
-struct flag_field {
-  unsigned is_read : 1;
-  unsigned is_write : 1;
-  unsigned is_unbuf : 1;
-  unsigned is_buf : 1;
-  unsigned is_eof : 1;
-  unsigned is_err : 1;
-};
+// struct flag_field {
+//   unsigned is_read : 1;
+//   unsigned is_write : 1;
+//   unsigned is_unbuf : 1;
+//   unsigned is_buf : 1;
+//   unsigned is_eof : 1;
+//   unsigned is_err : 1;
+// };
 
 typedef struct _iobuf {
-  int cnt;                /* characters left */
-  char *ptr;              /* next character position */
-  char *base;             /* location of buffer */
-  struct flag_field flag; /* mode of file access */
-  int fd;                 /* file descriptor */
+  int cnt;    /* characters left */
+  char *ptr;  /* next character position */
+  char *base; /* location of buffer */
+  int flag;   /* mode of file access */
+  int fd;     /* file descriptor */
 } _FILE;
 
 extern _FILE _iob[OPEN_MAX];
