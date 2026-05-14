@@ -42,4 +42,66 @@
  * value, opendir returns a pointer to a structure called DIR, analogous to
  * FILE, which is used by readdir and closedir. This information is collected
  * into a file called dirent.h.
+ *
+ * The system call stat takes a filename and returns all of the information in the ino-
+ * de for that file, or -1 if there is an error. That is,
+ *
+ * fills the structure stbuf with the inode information for the file name. The struct-
+ * ure describing the value returned by stat is in <sys/stat.h>, and typically looks l-
+ * ike this:
  */
+#include <sys/types.h>
+#include <sys/stat.h>
+
+struct _stat {				/* inode information returned by stat */
+	dev_t		st_dev;		/* device of inode */
+	ino_t		st_ino;		/* inode number */
+	short		st_mode;	/* mode bits */
+	short		st_nlink;	/* number of links to file */
+	short		st_uid;		/* owners user id */
+	short		st_gid;		/* owners group id */
+	dev_t		st_rdev;	/* for special files */
+	off_t		st_size;	/* file size in characters */
+	time_t		st_atime;	/* time last accessed */
+	time_t		st_mtime;	/* time last modified */
+	time_t		st_ctime;	/* time originally created */
+};
+/***
+ * Most of the values are explained by the comment fields. The types like dev_t and i-
+ * no_t are defined in <sys/types.h>, which must be included too.
+ *
+ * The st_mode entry contains a set of flags describing the file. The flag definitions
+ * are also included in <sys/types.h>; we need only the part that deals with file type:
+ */
+#define S_IFMT		0160000		/* type of file */
+#define S_IFDIR		0040000		/* directory */
+#define S_IFCHR		0020000		/* character special */
+#define S_IFBLK		0060000		/* block special */
+#define S_IFREG		0010000		/* regular */
+/***
+ * Now we are ready to write the program fsize. If the mode obtained from stat indicat-
+ * es that a file is not a directory, then the size is at hand and can be printed dire-
+ * ctly. If the name is a directory, however, then we have to process that directory o-
+ * ne file at a time; it may in turn contain sub-directories, so the process is recurs-
+ * ive.
+ *
+ * The main routine deals with command-line arguments; it hands each argument to the f-
+ * unction fsize.
+ */
+#include <stdio.h>
+#include <string.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include "dirent.h"
+
+void fsize(char *);
+
+/* print file name */
+int main(int argc, char **argv) {
+	if (argc == 1)	/* default current directory */
+		fsize(".");
+	else
+		while (--argc > 0)
+			fsize(*++argv);
+	return 0;
+}
