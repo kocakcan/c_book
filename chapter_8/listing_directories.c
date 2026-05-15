@@ -105,3 +105,112 @@ int main(int argc, char **argv) {
 			fsize(*++argv);
 	return 0;
 }
+/***
+ * The function fsize prints the size of the file. If the file is a directory, however, fsize first calls dirwalk to handle all the files in it. Note how the flag names S_IF-
+ * MT and S_IFDR are used to decide if the file is a directory. Paranthesization matte-
+ * rs, because the precedence of & is lower than that of ==.
+ */
+int stat(char *, struct _stat *);
+void dirwalk(char *, void (*fcn)(char *));
+
+/* fsize: print the name of file "name" */
+void fsize(char *name) {
+	struct _stat stbuf;
+
+	if (stat(name, &stbuf) == -1) {
+		fprintf(stderr, "fsize: can't access %s\n", name);
+		return;
+	}
+	if ((stbuf.st_mode & S_IFMT) == S_IFDIR)
+		dirwalk(name, fsize);
+	printf("%8ld %s\n", stbuf.st_size, name);
+}
+/***
+ * The function dirwalk is a general routine that applies a function to each file in a
+ * directory. It opens the directory, loops through the files in it, calling the func-
+ * tion on each, then closes the directory and returns. Since fsize calls dirwalk on e-
+ * ach directory, the two functions call each other recursively.
+ */
+#define MAX_PATH	1024
+
+/* dirwalk: apply fcn to all files in dir */
+void dirwalk(char *dir, void (*fcn)(char *)) {
+	char name[MAX_PATH];
+	Dirent *dp;
+	DIR *dfd;
+
+	if ((dfd = opendir(dir)) == NULL) {
+		fprintf(stderr, "dirwalk: can't open %s\n", dir);
+		return;
+	}
+	while ((dp = readdir(dfd)) != NULL) {
+		if (strcmp(dp->name, ".") == 0
+			|| strcmp(dp->name, ".."))
+			continue;	/* skip self and parent */
+		if (strlen(dir) + strlen(dp->name) + 2 > sizeof(name))
+			fprintf(stderr, "dirwalk: name %s %s too long\n",
+				dir, dp->name);
+		else {
+			sprintf(name, "%s/%s", dir, dp->name);
+			(*fcn)(name);
+		}
+	}
+	closedir(dfd);
+}
+/***
+ * Each call to readdir returns a pointer to information for the next file, or NULL wh-
+ * en there are no files left. Each directory always contains entries for itself, call-
+ * ed ".", and its parent ".."; these must be skipped, or the program will loop forever.
+ *
+ * Down to this last level, the code is independent of how directories are formatted. 
+ * The next step is to present minimal versions of opendir, readdir, and closedir for
+ * a specific system, The following routines are for Version 7 and System V UNIX syste-
+ * ms; they use the directory information in the header <sys/dir.h>, which looks like 
+ * this:
+ */
+#ifndef DIRSIZ
+#define DIRSIZ	14
+#endif
+struct direct {	/* directory entry */
+	ino_t d_ino;		/* inode number */
+	char d_name[DIRSIZ];	/* long name does not have '\0' */
+};
+/***
+ * Some versions of the system permit much longer names and have a more complicated d-
+ * irectory structure.
+ *
+ * The type ino_t is a typedef that describes the index into the inode list. It happen-
+ * s to be unsigned short on the systems we use regularly, but this is not the sort of
+ * information to embed in a program; it might be different on a different system, so 
+ * the typedef is better. A complete set of "system" types is found in <sys/types.h>.
+ *
+ * opendir opens the directory, verifies that the files is a directory (this time by t-
+ * the system call fstat, which is like stat except that it applies to a file descrip-
+ * tor), allocates a directory structure, and records the information:
+ */
+int fstat(int fd, struct stat *);
+
+/* opendir: open a directory for readdir calls */
+DIR *opendir(char *dirname) {
+	int fd;
+	struct stat stbuf;
+	DIR *dp;
+
+	if ((fd = open(dirname, O_RDONLY, 0)) == -1
+	  || fstat(fd, &stbuf) == -1
+	  || (stbuf.st_mode & S_IFMT) != S_IFDIR
+	  || ((dp = (DIR *)malloc(sizeof(DIR))) == NULL)
+		return NULL;
+	dp->fd = fd;
+	return dp;
+}
+// closedir closes the directory file and frees the space:
+
+/* closedir: close directory opened by opendir */
+void closedir(DIR *dp) {
+	if (dp) {
+		close(dp->fd);
+		free(dp);
+	}
+}
+
