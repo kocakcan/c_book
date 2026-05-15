@@ -213,4 +213,38 @@ void closedir(DIR *dp) {
 		free(dp);
 	}
 }
+/***
+ * Finally, readdir uses read to read each directory entry. If a directory slot is not
+ * currently in use (because a file has been removed), the inode number is zero, and t-
+ * this position is skipped. Otherwise, the inode number and name are placed in a stat-
+ * ic structure and a pointer to that is returned to the user. Each call overwrite the
+ * information from the previous one:
+ */
+#include <sys/dir.h>	/* local directory structure */
 
+/* readdir: read directory entries in sequence */
+Dirent *readdir(DIR *dp) {
+	struct direct dirbuf;	/* local directory structure */
+	static Dirent d;	/* return: portable structure */
+
+	while (read(dp->fd, (char *)&dirbuf, sizeof(dirbuf))
+			== sizeof(dirbuf)) {
+		if (dirbuf.d_ino == 0)	/* slot not in use */
+			continue;
+		d.ino = dirbuf.d_ino;
+		strncpy(d.name, dirbuf.d_name, DIRSIZ);
+		d.name[DIRSIZ] = '\0';	/* ensure termination */
+		return &d;
+	}
+	return NULL;
+}
+/***
+ * Although the fsize program is rather specialized, it does illustrate a couple of im-
+ * portant ideas. First, many programs are not "system programs"; they merely use info-
+ * rmation that is maintained by the operating system. For such programs, it is cruci-
+ * al that the representation of the information appear only in standard headers, and 
+ * that programs include those headers instead of embedding the declarations in themse-
+ * lves. The second observation is that with care it is possible to create an interfa-
+ * ce to system-dependent objects that is itself relatively system-independent. The fu-
+ * nctions of the standard library are good examples.
+ */
