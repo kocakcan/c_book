@@ -84,7 +84,24 @@ union u_tag {
   char *sval;
 } u;
 
+union Data {
+  int i;
+  float f;
+  char c;
+};
+
 int main(void) {
+  u.sval = "Can";
   printf("sizeof(u): %zu\n", sizeof(u));
+  union Data d;
+  printf("sizeof(u): %zu\n", sizeof(d));
+
+  d.i = 42;
+  printf("int: %d\n", d.i);
+  printf("&d.i: %p\n", &d.i);
+  d.f = 3.14f;
+  printf("float: %f\n", d.f);
+  printf("&d.f: %p\n", &d.f);
+  printf("int: %d\n", d.i); /* contains garbage as f overwrote it */
   return 0;
 }
