@@ -43,160 +43,165 @@
  * FILE, which is used by readdir and closedir. This information is collected
  * into a file called dirent.h.
  *
- * The system call stat takes a filename and returns all of the information in the ino-
- * de for that file, or -1 if there is an error. That is,
+ * The system call stat takes a filename and returns all of the information in
+ * the ino- de for that file, or -1 if there is an error. That is,
  *
- * fills the structure stbuf with the inode information for the file name. The struct-
- * ure describing the value returned by stat is in <sys/stat.h>, and typically looks l-
- * ike this:
+ * fills the structure stbuf with the inode information for the file name. The
+ * struct- ure describing the value returned by stat is in <sys/stat.h>, and
+ * typically looks l- ike this:
  */
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 
-struct _stat {				/* inode information returned by stat */
-	dev_t		st_dev;		/* device of inode */
-	ino_t		st_ino;		/* inode number */
-	short		st_mode;	/* mode bits */
-	short		st_nlink;	/* number of links to file */
-	short		st_uid;		/* owners user id */
-	short		st_gid;		/* owners group id */
-	dev_t		st_rdev;	/* for special files */
-	off_t		st_size;	/* file size in characters */
-	time_t		st_atime;	/* time last accessed */
-	time_t		st_mtime;	/* time last modified */
-	time_t		st_ctime;	/* time originally created */
+struct _stat {     /* inode information returned by stat */
+  dev_t st_dev;    /* device of inode */
+  ino_t st_ino;    /* inode number */
+  short st_mode;   /* mode bits */
+  short st_nlink;  /* number of links to file */
+  short st_uid;    /* owners user id */
+  short st_gid;    /* owners group id */
+  dev_t st_rdev;   /* for special files */
+  off_t st_size;   /* file size in characters */
+  time_t st_atime; /* time last accessed */
+  time_t st_mtime; /* time last modified */
+  time_t st_ctime; /* time originally created */
 };
 /***
- * Most of the values are explained by the comment fields. The types like dev_t and i-
- * no_t are defined in <sys/types.h>, which must be included too.
+ * Most of the values are explained by the comment fields. The types like dev_t
+ * and i- no_t are defined in <sys/types.h>, which must be included too.
  *
- * The st_mode entry contains a set of flags describing the file. The flag definitions
- * are also included in <sys/types.h>; we need only the part that deals with file type:
+ * The st_mode entry contains a set of flags describing the file. The flag
+ * definitions are also included in <sys/types.h>; we need only the part that
+ * deals with file type:
  */
-#define S_IFMT		0160000		/* type of file */
-#define S_IFDIR		0040000		/* directory */
-#define S_IFCHR		0020000		/* character special */
-#define S_IFBLK		0060000		/* block special */
-#define S_IFREG		0010000		/* regular */
+#define S_IFMT 0160000  /* type of file */
+#define S_IFDIR 0040000 /* directory */
+#define S_IFCHR 0020000 /* character special */
+#define S_IFBLK 0060000 /* block special */
+#define S_IFREG 0010000 /* regular */
 /***
- * Now we are ready to write the program fsize. If the mode obtained from stat indicat-
- * es that a file is not a directory, then the size is at hand and can be printed dire-
- * ctly. If the name is a directory, however, then we have to process that directory o-
- * ne file at a time; it may in turn contain sub-directories, so the process is recurs-
- * ive.
+ * Now we are ready to write the program fsize. If the mode obtained from stat
+ * indicat- es that a file is not a directory, then the size is at hand and can
+ * be printed dire- ctly. If the name is a directory, however, then we have to
+ * process that directory o- ne file at a time; it may in turn contain
+ * sub-directories, so the process is recurs- ive.
  *
- * The main routine deals with command-line arguments; it hands each argument to the f-
- * unction fsize.
+ * The main routine deals with command-line arguments; it hands each argument to
+ * the f- unction fsize.
  */
+#include "dirent.h"
+#include <fcntl.h>
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include <fcntl.h>
-#include "dirent.h"
 
 void fsize(char *);
 
 /* print file name */
 int main(int argc, char **argv) {
-	if (argc == 1)	/* default current directory */
-		fsize(".");
-	else
-		while (--argc > 0)
-			fsize(*++argv);
-	return 0;
+  if (argc == 1) /* default current directory */
+    fsize(".");
+  else
+    while (--argc > 0)
+      fsize(*++argv);
+  return 0;
 }
 /***
- * The function fsize prints the size of the file. If the file is a directory, however, fsize first calls dirwalk to handle all the files in it. Note how the flag names S_IF-
- * MT and S_IFDR are used to decide if the file is a directory. Paranthesization matte-
- * rs, because the precedence of & is lower than that of ==.
+ * The function fsize prints the size of the file. If the file is a directory,
+ * however, fsize first calls dirwalk to handle all the files in it. Note how
+ * the flag names S_IF- MT and S_IFDR are used to decide if the file is a
+ * directory. Paranthesization matte- rs, because the precedence of & is lower
+ * than that of ==.
  */
 int stat(char *, struct _stat *);
 void dirwalk(char *, void (*fcn)(char *));
 
 /* fsize: print the name of file "name" */
 void fsize(char *name) {
-	struct _stat stbuf;
+  struct _stat stbuf;
 
-	if (stat(name, &stbuf) == -1) {
-		fprintf(stderr, "fsize: can't access %s\n", name);
-		return;
-	}
-	if ((stbuf.st_mode & S_IFMT) == S_IFDIR)
-		dirwalk(name, fsize);
-	printf("%8ld %s\n", stbuf.st_size, name);
+  if (stat(name, &stbuf) == -1) {
+    fprintf(stderr, "fsize: can't access %s\n", name);
+    return;
+  }
+  if ((stbuf.st_mode & S_IFMT) == S_IFDIR)
+    dirwalk(name, fsize);
+  printf("%8ld %s\n", stbuf.st_size, name);
 }
 /***
- * The function dirwalk is a general routine that applies a function to each file in a
- * directory. It opens the directory, loops through the files in it, calling the func-
- * tion on each, then closes the directory and returns. Since fsize calls dirwalk on e-
- * ach directory, the two functions call each other recursively.
+ * The function dirwalk is a general routine that applies a function to each
+ * file in a directory. It opens the directory, loops through the files in it,
+ * calling the func- tion on each, then closes the directory and returns. Since
+ * fsize calls dirwalk on e- ach directory, the two functions call each other
+ * recursively.
  */
-#define MAX_PATH	1024
+#define MAX_PATH 1024
 
 /* dirwalk: apply fcn to all files in dir */
 void dirwalk(char *dir, void (*fcn)(char *)) {
-	char name[MAX_PATH];
-	Dirent *dp;
-	DIR *dfd;
+  char name[MAX_PATH];
+  Dirent *dp;
+  DIR *dfd;
 
-	if ((dfd = opendir(dir)) == NULL) {
-		fprintf(stderr, "dirwalk: can't open %s\n", dir);
-		return;
-	}
-	while ((dp = readdir(dfd)) != NULL) {
-		if (strcmp(dp->name, ".") == 0
-			|| strcmp(dp->name, ".."))
-			continue;	/* skip self and parent */
-		if (strlen(dir) + strlen(dp->name) + 2 > sizeof(name))
-			fprintf(stderr, "dirwalk: name %s %s too long\n",
-				dir, dp->name);
-		else {
-			sprintf(name, "%s/%s", dir, dp->name);
-			(*fcn)(name);
-		}
-	}
-	closedir(dfd);
+  if ((dfd = opendir(dir)) == NULL) {
+    fprintf(stderr, "dirwalk: can't open %s\n", dir);
+    return;
+  }
+  while ((dp = readdir(dfd)) != NULL) {
+    if (strcmp(dp->name, ".") == 0 || strcmp(dp->name, ".."))
+      continue; /* skip self and parent */
+    if (strlen(dir) + strlen(dp->name) + 2 > sizeof(name))
+      fprintf(stderr, "dirwalk: name %s %s too long\n", dir, dp->name);
+    else {
+      sprintf(name, "%s/%s", dir, dp->name);
+      (*fcn)(name);
+    }
+  }
+  closedir(dfd);
 }
 /***
- * Each call to readdir returns a pointer to information for the next file, or NULL wh-
- * en there are no files left. Each directory always contains entries for itself, call-
- * ed ".", and its parent ".."; these must be skipped, or the program will loop forever.
+ * Each call to readdir returns a pointer to information for the next file, or
+ * NULL wh- en there are no files left. Each directory always contains entries
+ * for itself, call- ed ".", and its parent ".."; these must be skipped, or the
+ * program will loop forever.
  *
- * Down to this last level, the code is independent of how directories are formatted. 
- * The next step is to present minimal versions of opendir, readdir, and closedir for
- * a specific system, The following routines are for Version 7 and System V UNIX syste-
- * ms; they use the directory information in the header <sys/dir.h>, which looks like 
- * this:
+ * Down to this last level, the code is independent of how directories are
+ * formatted. The next step is to present minimal versions of opendir, readdir,
+ * and closedir for a specific system, The following routines are for Version 7
+ * and System V UNIX syste- ms; they use the directory information in the header
+ * <sys/dir.h>, which looks like this:
  */
 #ifndef DIRSIZ
-#define DIRSIZ	14
+#define DIRSIZ 14
 #endif
-struct direct {	/* directory entry */
-	ino_t d_ino;		/* inode number */
-	char d_name[DIRSIZ];	/* long name does not have '\0' */
+struct direct {        /* directory entry */
+  ino_t d_ino;         /* inode number */
+  char d_name[DIRSIZ]; /* long name does not have '\0' */
 };
 /***
- * Some versions of the system permit much longer names and have a more complicated d-
- * irectory structure.
+ * Some versions of the system permit much longer names and have a more
+ * complicated d- irectory structure.
  *
- * The type ino_t is a typedef that describes the index into the inode list. It happen-
- * s to be unsigned short on the systems we use regularly, but this is not the sort of
- * information to embed in a program; it might be different on a different system, so 
- * the typedef is better. A complete set of "system" types is found in <sys/types.h>.
+ * The type ino_t is a typedef that describes the index into the inode list. It
+ * happen- s to be unsigned short on the systems we use regularly, but this is
+ * not the sort of information to embed in a program; it might be different on a
+ * different system, so the typedef is better. A complete set of "system" types
+ * is found in <sys/types.h>.
  *
- * opendir opens the directory, verifies that the files is a directory (this time by t-
- * the system call fstat, which is like stat except that it applies to a file descrip-
- * tor), allocates a directory structure, and records the information:
+ * opendir opens the directory, verifies that the files is a directory (this
+ * time by t- the system call fstat, which is like stat except that it applies
+ * to a file descrip- tor), allocates a directory structure, and records the
+ * information:
  */
 int fstat(int fd, struct stat *);
 
 /* opendir: open a directory for readdir calls */
 DIR *opendir(char *dirname) {
-	int fd;
-	struct stat stbuf;
-	DIR *dp;
+  int fd;
+  struct stat stbuf;
+  DIR *dp;
 
-	if ((fd = open(dirname, O_RDONLY, 0)) == -1
+        if ((fd = open(dirname, O_RDONLY, 0)) == -1
 	  || fstat(fd, &stbuf) == -1
 	  || (stbuf.st_mode & S_IFMT) != S_IFDIR
 	  || ((dp = (DIR *)malloc(sizeof(DIR))) == NULL)
@@ -208,43 +213,43 @@ DIR *opendir(char *dirname) {
 
 /* closedir: close directory opened by opendir */
 void closedir(DIR *dp) {
-	if (dp) {
-		close(dp->fd);
-		free(dp);
-	}
+  if (dp) {
+    close(dp->fd);
+    free(dp);
+  }
 }
 /***
- * Finally, readdir uses read to read each directory entry. If a directory slot is not
- * currently in use (because a file has been removed), the inode number is zero, and t-
- * this position is skipped. Otherwise, the inode number and name are placed in a stat-
- * ic structure and a pointer to that is returned to the user. Each call overwrite the
- * information from the previous one:
+ * Finally, readdir uses read to read each directory entry. If a directory slot
+ * is not currently in use (because a file has been removed), the inode number
+ * is zero, and t- this position is skipped. Otherwise, the inode number and
+ * name are placed in a stat- ic structure and a pointer to that is returned to
+ * the user. Each call overwrite the information from the previous one:
  */
-#include <sys/dir.h>	/* local directory structure */
+#include <sys/dir.h> /* local directory structure */
 
 /* readdir: read directory entries in sequence */
 Dirent *readdir(DIR *dp) {
-	struct direct dirbuf;	/* local directory structure */
-	static Dirent d;	/* return: portable structure */
+  struct direct dirbuf; /* local directory structure */
+  static Dirent d;      /* return: portable structure */
 
-	while (read(dp->fd, (char *)&dirbuf, sizeof(dirbuf))
-			== sizeof(dirbuf)) {
-		if (dirbuf.d_ino == 0)	/* slot not in use */
-			continue;
-		d.ino = dirbuf.d_ino;
-		strncpy(d.name, dirbuf.d_name, DIRSIZ);
-		d.name[DIRSIZ] = '\0';	/* ensure termination */
-		return &d;
-	}
-	return NULL;
+  while (read(dp->fd, (char *)&dirbuf, sizeof(dirbuf)) == sizeof(dirbuf)) {
+    if (dirbuf.d_ino == 0) /* slot not in use */
+      continue;
+    d.ino = dirbuf.d_ino;
+    strncpy(d.name, dirbuf.d_name, DIRSIZ);
+    d.name[DIRSIZ] = '\0'; /* ensure termination */
+    return &d;
+  }
+  return NULL;
 }
 /***
- * Although the fsize program is rather specialized, it does illustrate a couple of im-
- * portant ideas. First, many programs are not "system programs"; they merely use info-
- * rmation that is maintained by the operating system. For such programs, it is cruci-
- * al that the representation of the information appear only in standard headers, and 
- * that programs include those headers instead of embedding the declarations in themse-
- * lves. The second observation is that with care it is possible to create an interfa-
- * ce to system-dependent objects that is itself relatively system-independent. The fu-
- * nctions of the standard library are good examples.
+ * Although the fsize program is rather specialized, it does illustrate a couple
+ * of im- portant ideas. First, many programs are not "system programs"; they
+ * merely use info- rmation that is maintained by the operating system. For such
+ * programs, it is cruci- al that the representation of the information appear
+ * only in standard headers, and that programs include those headers instead of
+ * embedding the declarations in themse- lves. The second observation is that
+ * with care it is possible to create an interfa- ce to system-dependent objects
+ * that is itself relatively system-independent. The fu- nctions of the standard
+ * library are good examples.
  */
