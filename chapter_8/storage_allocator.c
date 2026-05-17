@@ -56,6 +56,8 @@ union header { /* block header */
   Align x; /* force alignment of blocks */
 };
 
+typedef union header Header;
+
 /***
  * The Align field is never used; it just forces each header to be aligned on a
  * worst-case boundary.
@@ -80,4 +82,131 @@ union header { /* block header */
  * user; in this way the header of the original needs only to have its size
  * adjusted. In all cases, the pointer returned to the user points to the free
  * space within the block, which begins one unit beyond the header.
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+static Header base;          /* empty list to get started */
+static Header *freep = NULL; /* start of free list */
+static Header *_morecore(unsigned);
+
+/* malloc: general-purpose storage allocator */
+void *_malloc(unsigned nbytes) {
+  Header *p, *prevp;
+  unsigned nunits;
+
+  nunits = (nbytes + sizeof(Header) - 1) / sizeof(Header) + 1;
+  if ((prevp = freep) == NULL) { /* no free list yet */
+    base.s.ptr = freep = prevp = &base;
+    base.s.size = 0;
+  }
+  for (p = prevp->s.ptr;; prevp = p, p = p->s.ptr) {
+    if (p->s.size >= nunits) {   /* big enough */
+      if (p->s.size == nunits) { /* exactly */
+        prevp->s.ptr = p->s.ptr;
+      } else { /* allocate tail end */
+        p->s.size -= nunits;
+        p += p->s.size;
+        p->s.size = nunits;
+      }
+      freep = prevp;
+      return (void *)(p + 1);
+    }
+    if (p == freep) { /* wrapped around free list */
+      if ((p = _morecore(nunits)) == NULL)
+        return NULL; /* none left */
+    }
+  }
+}
+/***
+ * The function morecore obtains storage from the operating system. The details
+ * of how it does this vary from system to system. Since asking the system for
+ * memory is a comparatively expensive operation, we don't want to do that on
+ * every call to malloc, so morecore requests at least NALLOC units; this larger
+ * block will be chopped up as needed. After setting the size field, morecore
+ * inserts the additional memory into the arena by calling free.
+ *
+ * The UNIX system call sbrk(n) returns a pointer to n more bytes of storage.
+ * sbrk returns -1 if there was no space, even though NULL could have been a
+ * better design. The -1 must be cast to char * so it can be compared with the
+ * return value. Again, casts make the function relatively immune to the details
+ * of pointer representation on different machines. There is still one
+ * assumption, however, that pointers to differet block returned by sbrk can be
+ * meaningfully compared. This is not guaranteed by the standard, which permits
+ * pointer comparisons only within an array. Thus this version of malloc is
+ * portable only among machines for which general pointer comparison is
+ * meaningful.
+ */
+#define NALLOC 1024 /* minimum #units to request */
+
+void _free(void *);
+
+/* morecore: ask system for more memory */
+static Header *_morecore(unsigned nu) {
+  char *cp;
+  Header *up;
+
+  if (nu < NALLOC)
+    nu = NALLOC;
+  cp = sbrk(nu * sizeof(Header));
+  if (cp == (char *)-1) /* no space at all */
+    return NULL;
+  up = (Header *)cp;
+  up->s.size = nu;
+  _free((void *)(up + 1));
+  return freep;
+}
+/***
+ * free itself is the last thing. It scans the free list, starting at freep,
+ * looking for the place to insert the free block. This is either between two
+ * existing blocks or at the end of the list. In any case, if the block being
+ * freed is adjacent to either neighbor, the adjacent blocks are combined. The
+ * only troubles are keeping the pointers pointing to the right things and the
+ * sizes correct.
+ */
+/* _free: put block ap in free list */
+void _free(void *ap) {
+  Header *bp, *p;
+
+  bp = (Header *)ap - 1; /* point to block header */
+  for (p = freep; !(bp > p && bp < p->s.ptr); p = p->s.ptr)
+    if (p >= p->s.ptr && (bp > p || bp < p->s.ptr))
+      break;                         /* freed block at start of end of arena */
+  if (bp + bp->s.size == p->s.ptr) { /* join to upper nbr */
+    bp->s.size += p->s.ptr->s.size;
+    bp->s.ptr = p->s.ptr->s.ptr;
+  } else {
+    bp->s.ptr = p->s.ptr;
+  }
+  if (p + p->s.size == bp) { /* join to lower nbr */
+    p->s.size += bp->s.size;
+    p->s.ptr = bp->s.ptr;
+  } else {
+    p->s.ptr = bp;
+  }
+  freep = p;
+}
+
+int main(void) {
+  char *name = _malloc(sizeof(char) * 4);
+  if (name == NULL) {
+    fprintf(stderr, "malloc: out-of-memory\n");
+    return 1;
+  }
+  strcpy(name, "Can");
+  printf("My name is %s\n", name);
+  _free(name);
+  return 0;
+}
+/***
+ * Although storage allocation is intrinsically machine-dependent, the code
+ * above illustrates how the machine dependencies can be controlled and confined
+ * to a very small part of the program. The use of typedef and union handles
+ * alignment (given that sbrk supplies an appropriate pointer). Casts arrange
+ * that pointer conversions are made explicit, and even cope with a
+ * badly-designed system interface. Even though the details here are related to
+ * storage allocation, the general approach is applicable to other situations as
+ * well.
  */
